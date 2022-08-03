@@ -1,0 +1,38 @@
+export function altLookUp(name: string): string {
+    const altMapping = {
+        "Tytebyte": "Tytenyte",
+        "Woowewoowe": "Wewoowewoo",
+        "Yakman": "Yakman",
+        "Yakmon": "Yakman",
+        "Emesîs": "Emesìs",
+        "Lumpé": "Lumpe",
+        "Haydez": "Haydes",
+        "Waragor": "Waragore",
+        "Chanarach": "Mimmosa",
+        "Nelen": "Dreadsails",
+        "Moonnipplez": "Baiil",
+        "Cowd": "Çöw",
+        "Djinnpachi": "Jinpachii",
+        "Biddybop": "Shieet",
+        "Streeps": "Strips",
+        "Menyokki": "Wísps",
+        "Wísp": "Wísps",
+        "Whísps": "Wísps",
+        "Redheadscorp": "Yinnifer",
+        "Baiill": "Baiil",
+        "Weewwoo": "Wewoowewoo",
+        "Ataribarikar": "Tytenyte",
+        "Agator": "Jfb",
+        "Daiichi": "Nangus",
+        "Pointythings": "Yakman",
+        "Vissenna": "Yinnifer",
+        "Pine": "Strips",
+        "Moomooman": "Hanitoko",
+        "Hitmayne": "Showershank",
+        "Bobohizan": "Yinnifer",
+        "Zinyra": "Yinnifer",
+        "Squawkbox": "Nangus",
+    } as Record<string, string>;
+
+    return altMapping[name] ? altMapping[name] : name;
+}
