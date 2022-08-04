@@ -30,10 +30,8 @@ export default Vue.extend({
     watch: {
         '$store.state.Error.error': function(newValue) {
             if (newValue) {
-                console.log("show")
                 this.show = true;
             } else {
-                console.log("hide")
                 this.show = false;
             }
         }

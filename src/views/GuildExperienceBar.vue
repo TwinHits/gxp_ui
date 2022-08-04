@@ -22,7 +22,7 @@ export default Vue.extend({
     },
     computed: {
         percent(): number {
-            return this.experience / 100 * 100;
+            return this.experience ? this.experience / 300 * 100 : 0;
         }
     }
 });

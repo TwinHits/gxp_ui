@@ -1,10 +1,10 @@
 <template>
     <v-card class="player-nameplate-card" elevation="10">
         <v-card-title>
-            {{ name }}
+            {{ raider.name }}
         </v-card-title>
         <v-card-text v-if="raider">
-            <GuildExperienceBar :experience="59" />
+            <GuildExperienceBar :experience="raider.experience" />
         </v-card-text>
     </v-card>
 </template>
@@ -26,10 +26,10 @@ export default Vue.extend({
         },
     },
     computed: {
-        name(): string {
-            return this.raider.name;
-        },
-    },
+        experience(): number {
+            return this.raider.experience ? this.raider.experience : 0;
+        }
+    }
 });
 </script>
 

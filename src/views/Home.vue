@@ -17,13 +17,20 @@ import Vue from 'vue';
 
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
 
-import * as RaidersApi from '@/api/raiders.api';
-import * as AltsApi from '@/api/alts.api';
-import * as RaidsApi from '@/api/raids.api';
-
 import { Alt } from '@/common/types/alt';
+import { ExperienceEvent } from '@/common/types/experienceEvent';
+import { ExperienceGain } from '@/common/types/experienceGain';
 import { Raid } from '@/common/types/raid';
 import { Raider } from '@/common/types/raider';
+
+import * as AltsApi from '@/api/alts.api';
+import * as ExperienceEventsApi from '@/api/experienceEvents.api';
+import * as ExperienceGainsApi from '@/api/experienceGains.api';
+import * as RaidersApi from '@/api/raiders.api';
+import * as RaidsApi from '@/api/raids.api';
+
+import * as Utils from '@/common/utils/utils';
+import * as ExperienceGainsUtils from '@/common/utils/experienceGains';
 
 export default Vue.extend({
     components: { 
@@ -36,6 +43,8 @@ export default Vue.extend({
             raiders: [] as Raider[],
             raids: [] as Raid[],
             alts: [] as Alt[],
+            events: [] as ExperienceEvent[],
+            gains: [] as ExperienceGain[],
         };
     },
     computed: {
@@ -48,13 +57,17 @@ export default Vue.extend({
     },
     methods: {
         async testSomething() {
+            for (let raider of this.raiders) {
+                raider.experience = await ExperienceGainsUtils.calculateExperienceForRaider(raider);
+            }
         }
     },
     async mounted() {
         this.raiders = await RaidersApi.getRaiders();
         this.alts = await AltsApi.getAlts();
         this.raids = await RaidsApi.getRaids();
-        this.$store.commit("setError", new Error("This is a message:)"));
+        this.events = await ExperienceEventsApi.getExperienceEvents();
+        this.gains = await ExperienceGainsApi.getExperienceGains();
     }
 });
 </script>
