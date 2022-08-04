@@ -1,26 +1,35 @@
 <template>
-<v-card class="player-nameplate-card">
-    <v-card-text v-if="raider">
-        {{ name }} {{ attendance }}
-    </v-card-text>
-</v-card>
+    <v-card class="player-nameplate-card" elevation="10">
+        <v-card-title>
+            {{ name }}
+        </v-card-title>
+        <v-card-text v-if="raider">
+            <GuildExperienceBar :experience="59" />
+        </v-card-text>
+    </v-card>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
+
+import { Raider } from '@/common/types/raider';
+import GuildExperienceBar from '@/views/GuildExperienceBar.vue';
 
 export default Vue.extend({
-    props: {
-        raider: undefined 
+    components: { 
+        GuildExperienceBar 
     },
-    data() {
-        return {}
+    props: {
+        raider: {
+            type: Object as PropType<Raider>,
+            required: true,
+        },
     },
     computed: {
-        name(): string | undefined {
-            return this.raider?.name;
+        name(): string {
+            return this.raider.name;
         },
-    }
+    },
 });
 </script>
 

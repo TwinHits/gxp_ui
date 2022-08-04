@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="containing-div">
         <v-row class="nameplate-row" v-for="(n, rowIndex) in numberOfRows" :key="rowIndex">
-            <v-col v-for="(n, columnIndex) in numberOfColumns" :key="rowIndex * numberOfColumns + columnIndex">
-                <PlayerNameplate :raider="raiders[rowIndex * numberOfColumns + columnIndex]" />
+            <v-col class="player-nameplate-col" v-for="(n, columnIndex) in numberOfColumns" :key="rowIndex * numberOfColumns + columnIndex">
+                <PlayerNameplate :raider="raiders[rowIndex * numberOfColumns + columnIndex]"/>
             </v-col>
         </v-row>
     </div>
@@ -11,8 +11,6 @@
 import Vue from 'vue';
 
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
-
-import * as Api from '@/api/api';
 
 import * as RaidersApi from '@/api/raiders.api';
 import * as AltsApi from '@/api/alts.api';
@@ -28,6 +26,7 @@ export default Vue.extend({
     },
     data() {
         return {
+            columns: 3,
             error: undefined,
             raiders: [] as Raider[],
             raids: [] as Raid[],
@@ -36,13 +35,14 @@ export default Vue.extend({
     },
     computed: {
         numberOfRows(): number {
-            return this.raiders.length / 4 ? Math.ceil(this.raiders.length / 4) : 0; // Don't divide by zero
+            return this.raiders.length / this.columns ? Math.ceil(this.raiders.length / this.columns) : 0; // Don't divide by zero
         },
         numberOfColumns(): number {
             return this.raiders.length / this.numberOfRows ? Math.ceil(this.raiders.length / this.numberOfRows) : 0; // Don't divide by zero
         }
     },
     methods: {
+    },
     async mounted() {
         this.raiders = await RaidersApi.getRaiders();
         this.alts = await AltsApi.getAlts();
@@ -52,5 +52,16 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.containing-div {
+    width: 100%;
+}
+
+.player-nameplate-row {
+    width: 100%;
+}
+
+.player-nameplate-col {
+    width: 20%;
+}
 
 </style>

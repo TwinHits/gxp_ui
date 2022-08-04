@@ -36,7 +36,8 @@ export default Vue.extend({
 
 .container {
     background-color: $background;
-    padding: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 </style>
