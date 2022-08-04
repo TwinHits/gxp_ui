@@ -3,6 +3,7 @@
         <v-content class="content" app>
             <v-container fluid :fill-height="true" class="container font-family">
                 <router-view />
+                <ErrorBanner />
             </v-container>
         </v-content>
     </v-app>
@@ -10,10 +11,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import ErrorBanner from '@/views/ErrorBanner.vue';
 
 export default Vue.extend({
     components: {
-
+        ErrorBanner
     },
     methods: {
 

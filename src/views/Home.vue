@@ -1,5 +1,10 @@
 <template>
     <div class="containing-div">
+        <v-row>
+            <v-col>
+                <v-btn @click="testSomething">Test Something</v-btn>
+            </v-col>
+        </v-row>
         <v-row class="nameplate-row" v-for="(n, rowIndex) in numberOfRows" :key="rowIndex">
             <v-col class="player-nameplate-col" v-for="(n, columnIndex) in numberOfColumns" :key="rowIndex * numberOfColumns + columnIndex">
                 <PlayerNameplate :raider="raiders[rowIndex * numberOfColumns + columnIndex]"/>
@@ -42,11 +47,14 @@ export default Vue.extend({
         }
     },
     methods: {
+        async testSomething() {
+        }
     },
     async mounted() {
         this.raiders = await RaidersApi.getRaiders();
         this.alts = await AltsApi.getAlts();
         this.raids = await RaidsApi.getRaids();
+        this.$store.commit("setError", new Error("This is a message:)"));
     }
 });
 </script>
