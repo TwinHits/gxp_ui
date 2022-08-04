@@ -5,7 +5,6 @@
                 <PlayerNameplate :raider="raiders[rowIndex * numberOfColumns + columnIndex]" />
             </v-col>
         </v-row>
-        <v-btn @click="getAttendance">Go</v-btn>
     </div>
 </template>
 <script lang="ts">
@@ -15,8 +14,13 @@ import PlayerNameplate from '@/views/PlayerNameplate.vue';
 
 import * as Api from '@/api/api';
 
-import * as Queries from '@/common/constants/queries';
-import * as Utils from '@/common/utils/utils';
+import * as RaidersApi from '@/api/raiders.api';
+import * as AltsApi from '@/api/alts.api';
+import * as RaidsApi from '@/api/raids.api';
+
+import { Alt } from '@/common/types/alt';
+import { Raid } from '@/common/types/raid';
+import { Raider } from '@/common/types/raider';
 
 export default Vue.extend({
     components: { 
@@ -25,8 +29,9 @@ export default Vue.extend({
     data() {
         return {
             error: undefined,
-            raiders: [],
-            raids: [],
+            raiders: [] as Raider[],
+            raids: [] as Raid[],
+            alts: [] as Alt[],
         };
     },
     computed: {
@@ -38,79 +43,11 @@ export default Vue.extend({
         }
     },
     methods: {
-        async getAttendance() {
-            const url = '/api/v2/client';
-            let body = { 
-                "query": Queries.GUILD_ATTENDANCE_QUERY,
-                "variables":  { 
-                    "page": 0
-                }
-            };
-
-            try {
-
-                let response;
-                do {
-                    body.variables.page = body.variables.page + 1;
-                    response = await Api.post(url, body);
-                    this.raids = this.raids.concat(response.data.guildData.guild.attendance.data);
-                } while (response?.data.guildData.guild.attendance.has_more_pages)
-
-            } catch (error) {
-                this.error = error;
-            }
-
-            const raiders = this.filterRaids();
-            this.filterRaiders(raiders);
-        },
-        filterRaids() {
-            this.raids.sort((lhs, rhs) => { return lhs.startTime > rhs.startTime ? -1 : 1;} )
-            const raidersMap = {};
-            for (let [i, raid] of this.raids.entries()) {
-
-                raid.date = new Date(raid.startTime) as Date;
-                let dayOfWeek = raid.date.getDay();
-
-                if (dayOfWeek == 2 || dayOfWeek == 4) {
-                    raid.mainStageRaid = true;
-                }
-
-                if (raid.date.getDate() === this.raids[i-1]?.date.getDate()) {
-                    continue; 
-                }
-
-                if (raid.mainStageRaid) {
-                    let playersInRaid = [];
-                    for (let player of raid.players) {
-                        let name = Utils.altLookUp(player.name)
-                        if (!playersInRaid.includes(player)) {
-                            playersInRaid.push(name);
-                            if (!raidersMap[name]) {
-                                raidersMap[name] = 0;
-                            }
-                            raidersMap[name] = raidersMap[name] + 1;
-                        }
-                    }
-                }
-
-            }
-            return raidersMap;
-        },
-        filterRaiders(raidersMap) {
-            const raiders = [];
-            for (let [player, attendance] of Object.entries(raidersMap)) {
-                if (attendance > 1) {
-                    raiders.push({
-                        player,
-                        attendance
-                    });
-                }
-            }
-
-            raiders.sort((lhs, rhs) => { return lhs.attendance > rhs.attendance ? -1 : 1;});
-            this.raiders = raiders;
-        },
-    },
+    async mounted() {
+        this.raiders = await RaidersApi.getRaiders();
+        this.alts = await AltsApi.getAlts();
+        this.raids = await RaidsApi.getRaids();
+    }
 });
 </script>
 

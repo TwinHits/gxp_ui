@@ -18,16 +18,12 @@ export default Vue.extend({
     },
     computed: {
         name(): string | undefined {
-            return this.raider?.player;
-        },
-        attendance(): number | undefined {
-            return this.raider?.attendance;
+            return this.raider?.name;
         },
     }
 });
 </script>
 
 <style scoped lang="scss">
-
 
 </style>

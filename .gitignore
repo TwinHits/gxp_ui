@@ -29,3 +29,6 @@ lib/*.js
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+# Development
+data/
