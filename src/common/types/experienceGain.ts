@@ -3,5 +3,5 @@ export interface ExperienceGain {
     raiderId: string,
     raidId?: string,
     eventId: string,
-    dateTimeStamp: number,
+    timeStamp: number,
 }

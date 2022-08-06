@@ -30,7 +30,7 @@ export async function getGainsForAttendance(raid: Raid) {
             raiderId,
             raidId: raid.id,
             eventId: event.id,
-            dateTimeStamp: raid.unixTimeStamp,
+            timeStamp: raid.timeStamp,
         });
     }
 
@@ -42,7 +42,7 @@ export async function calculateExperienceForRaider(raider: Raider): number {
     const gains = await ExperienceGainsApi.getExperienceGainsForRaider(raider.id);
     for (const gain of gains) {
         const event = await ExperienceEventsApi.getExperienceEvent(gain.eventId);
-        experience += event.gain;
+        experience += event.value;
     }
     return experience;
 }

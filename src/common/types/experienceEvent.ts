@@ -1,5 +1,5 @@
 export interface ExperienceEvent {
     id: string,
-    event: string,
-    gain: number,
+    description: string,
+    value: number,
 }

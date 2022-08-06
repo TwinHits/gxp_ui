@@ -45,55 +45,55 @@ export function generateExperienceEvents() {
     const experienceEvents = [
         {
             event: "Killing a boss",
-            gain: 1,
+            value: 1,
         },
         {
             event: "Completing an entire raid from start to finish ",
-            gain: 1,
+            value: 1,
         },
         {
             event: "Having a flask on during a boss kill ",
-            gain: 1,
+            value: 1,
         },
         {
             event: "Having food on during a boss kill ",
-            gain: 1,
+            value: 1,
         },
         {
             event: "Parsing 95 or higher on a boss kill",
-            gain: 1,
+            value: 1,
         },
         {
             event: "Signing up for the raid, including absent or late",
-            gain: 3,
+            value: 3,
         },
         {
             event: "Missing a boss kill (afk in raid only)",
-            gain: -1,
+            value: -1,
         },
         {
             event: "Signing up but not showing up to the raid with no warning",
-            gain: -3,
+            value: -3,
         },
         {
             event: "Missing any raid for any reason = -1 GXP per boss in the raid.",
-            gain: -1,
+            value: -1,
         },
         {
             event: "Not having a flask on for a boss kill",
-            gain: -1,
+            value: -1,
         },
         {
             event: "Not having food for a boss kill",
-            gain: -1,
+            value: -1,
         },
         {
             event: "Parsing below their classes average for a boss",
-            gain: -1,
+            value: -1,
         },
         {
             event: "Weekly Decay",
-            gain: -14,
+            value: -14,
         },
 
     ] as ExperienceEvent[];
@@ -124,7 +124,7 @@ export function getRaidsFromLogs(raidLogs: any[], raiders: Raider[], alts: Alt[]
 
         // Get correct date format
         const date = new Date(raidLog.startTime) as Date;
-        raid.unixTimeStamp = DateTimeUtils.getUnixTimeFromDate(date);
+        raid.timeStamp = DateTimeUtils.getUnixTimeFromDate(date);
         const dayOfWeek = date.getDay();
 
         // Is it optional?
@@ -161,7 +161,7 @@ export function getRaidsFromLogs(raidLogs: any[], raiders: Raider[], alts: Alt[]
         // Is it two logs from the same raid?
         const previouslyParsedRaid = raids[i-1];
         if (previouslyParsedRaid) {
-            if (date.getDate() === DateTimeUtils.getDateFromUnixTime(previouslyParsedRaid.unixTimeStamp).getDate()) {
+            if (date.getDate() === DateTimeUtils.getDateFromUnixTime(previouslyParsedRaid.timeStamp).getDate()) {
                 // Are they from the same zone?
                 console.log("Detected two raids from the same day:");
                 console.log(raid);
