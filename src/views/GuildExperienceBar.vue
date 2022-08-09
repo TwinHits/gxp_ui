@@ -11,7 +11,8 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import { ExperienceLevel } from '@/common/types/experienceLevel';
+import Vue from 'vue';
 
 export default Vue.extend({
     props: {
@@ -21,8 +22,11 @@ export default Vue.extend({
         },
     },
     computed: {
+        nextLevel(): ExperienceLevel {
+            return this.$store.getters.nextExperienceLevel(this.experience);
+        },
         percent(): number {
-            return this.experience ? this.experience / 300 * 100 : 0;
+            return this.experience ? this.experience / this.nextLevel.experience_required * 100 : 0;
         }
     }
 });
