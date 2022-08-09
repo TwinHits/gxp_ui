@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 
 import Auth from '@/store/Auth';
 import Error from '@/store/Error';
-import ExperienceLevels from '@/store/ExperienceLevels';
+import Experience from '@/store/Experience';
 
 Vue.use(Vuex);
 
@@ -11,6 +11,6 @@ export default new Vuex.Store({
     modules: {
         Auth,
         Error,
-        ExperienceLevels,
+        Experience,
     },
 });

@@ -12,6 +12,13 @@ export async function getExperienceGains(): Promise<ExperienceGain[]> {
     return await Api.getAllPaginated(`${config.gxpApi.baseUrl}/experienceGains/`) as ExperienceGain[];
 }
 
+export async function getExperienceGainsForRaiderId(raiderId: string): Promise<ExperienceGain[]> {
+    const queryParams = {
+        raiderId
+    }
+    return await Api.getAllPaginated(`${config.gxpApi.baseUrl}/experienceGains/`, queryParams) as ExperienceGain[];
+}
+
 export async function deleteExperienceGain(id: string) {
     await Api.del(`${config.gxpApi.baseUrl}/experienceGains/${id}`);
 }

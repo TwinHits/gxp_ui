@@ -9,7 +9,7 @@
         </v-row>
         <v-row class="nameplate-row" v-for="(n, rowIndex) in numberOfRows" :key="rowIndex">
             <v-col class="player-nameplate-col" v-for="(n, columnIndex) in numberOfColumns" :key="rowIndex * numberOfColumns + columnIndex">
-                <PlayerNameplate :raider="raiders[rowIndex * numberOfColumns + columnIndex]"/>
+                <PlayerNameplate v-if="rowIndex * numberOfColumns + columnIndex < raiders.length" :raider="raiders[rowIndex * numberOfColumns + columnIndex]"/>
             </v-col>
         </v-row>
     </div>
@@ -21,14 +21,12 @@ import PlayerNameplate from '@/views/PlayerNameplate.vue';
 
 import { Alt } from '@/common/types/alt';
 import { ExperienceEvent } from '@/common/types/experienceEvent';
-import { ExperienceGain } from '@/common/types/experienceGain';
 import { ExperienceLevel } from '@/common/types/experienceLevel';
 import { Raid } from '@/common/types/raid';
 import { Raider } from '@/common/types/raider';
 
 import * as AltsApi from '@/api/alts.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
-import * as ExperienceGainsApi from '@/api/experienceGains.api';
 import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
 import * as RaidersApi from '@/api/raiders.api';
 import * as RaidsApi from '@/api/raids.api';
@@ -44,8 +42,6 @@ export default Vue.extend({
             raiders: [] as Raider[],
             raids: [] as Raid[],
             alts: [] as Alt[],
-            events: [] as ExperienceEvent[],
-            gains: [] as ExperienceGain[],
             levels: [] as ExperienceLevel[],
         };
     },
@@ -64,14 +60,15 @@ export default Vue.extend({
         }
     },
     async mounted() {
-        this.levels = await ExperienceLevelsApi.getExperienceLevels();
-        this.$store.commit('setExperienceLevels', this.levels);
+        const events = await ExperienceEventsApi.getExperienceEvents();
+        this.$store.commit('setExperienceEvents', events);
+
+        const levels = await ExperienceLevelsApi.getExperienceLevels();
+        this.$store.commit('setExperienceLevels', levels);
 
         this.raiders = await RaidersApi.getRaiders();
         this.alts = await AltsApi.getAlts();
         this.raids = await RaidsApi.getRaids();
-        this.events = await ExperienceEventsApi.getExperienceEvents();
-        this.gains = await ExperienceGainsApi.getExperienceGains();
     }
 });
 </script>

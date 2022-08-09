@@ -1,12 +1,19 @@
+import { ExperienceEvent } from "@/common/types/experienceEvent";
 import { ExperienceLevel } from "@/common/types/experienceLevel";
 
 export default {
     state: () => ({
-        experienceLevels: undefined as ExperienceLevel[] | undefined,
+        experienceLevels: [] as ExperienceLevel[],
+        experienceEvents: {} as Record<string, ExperienceEvent>,
     }),
     mutations: {
         setExperienceLevels(state: any, experienceLevels: ExperienceLevel[]) {
             state.experienceLevels = experienceLevels;
+        },
+        setExperienceEvents(state: any, experienceEvents: ExperienceEvent[]) {
+            for (const event of experienceEvents) {
+                state.experienceEvents[event.id] = event;
+            }
         },
     },
     getters: {
@@ -26,6 +33,9 @@ export default {
                     return state.experienceLevels[index - 1];
                 }
             }
+        },
+        experienceEvent: (state: any) => (id: string) => {
+            return state.experienceEvents[id];
         },
     },
 };

@@ -1,4 +1,4 @@
-import axios, { AxiosRequestHeaders } from 'axios';
+import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 import oauth from 'axios-oauth-client';
 
 import config from '@/../config.json';
@@ -88,11 +88,12 @@ export async function put(url: string, body: any): any {
     return response.data;
 }
 
-export async function getAllPaginated(url: string, headers?: AxiosRequestHeaders): Promise<any[]> {
-    let total = [] as any[];
-    let nextUrl = url;
+export async function getAllPaginated(url: string, queryParams?: any, headers?: AxiosRequestHeaders): Promise<any[]> {
+    let response = await get(url, queryParams);
+    let total = response.results;
+    let nextUrl = response.next;
     while (nextUrl) {
-        const response = await get(nextUrl);
+        response = await get(nextUrl);
         total = total.concat(response.results)
         nextUrl = response.next;
     }

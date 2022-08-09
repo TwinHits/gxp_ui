@@ -12,7 +12,6 @@ export async function getGainsFromRaids(raids: Raid[]) {
 
     for (const raid of raids) {
         gains = gains.concat(await getGainsForAttendance(raid));
-        console.log("completed a raid")
     }
 
     return gains;

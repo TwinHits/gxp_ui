@@ -1,13 +1,15 @@
 <template>
   <v-progress-linear
-      v-model="percent"
+      :value="percent"
       rounded
       striped
       prominent
       color="blue"
       height="20"
       buffer-value="100"
-    ></v-progress-linear>
+    >
+    {{ experience }} / {{ nextLevel.experience_required }}
+    </v-progress-linear>
 </template>
 
 <script lang="ts">
