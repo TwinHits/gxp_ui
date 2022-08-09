@@ -8,7 +8,10 @@ export async function getRaider(id: string): Promise<Raider> {
     return await Api.get(`${config.gxpApi.baseUrl}/raiders/${id}`) as Raider;
 }
 
-
 export async function getRaiders(): Promise<Raider[]> {
     return await Api.getAllPaginated(`${config.gxpApi.baseUrl}/raiders/`) as Raider[];
+}
+
+export async function deleteRaider(id: string) {
+    await Api.del(`${config.gxpApi.baseUrl}/raiders/${id}`);
 }

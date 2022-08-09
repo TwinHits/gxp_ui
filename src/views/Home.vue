@@ -57,7 +57,7 @@ export default Vue.extend({
     },
     methods: {
         async testSomething() {
-            return {};
+            RaidsApi.deleteRaid(this.raids[0].id);
         }
     },
     async mounted() {

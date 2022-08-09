@@ -8,7 +8,10 @@ export async function getAlt(id: string): Promise<Alt> {
   return await Api.get(`${config.gxpApi.baseUrl}/alts/${id}`) as Alt;
 }
 
-
 export async function getAlts(): Promise<Alt[]> {
   return await Api.getAllPaginated(`${config.gxpApi.baseUrl}/alts/`) as Alt[];
+}
+
+export async function deleteAlt(id: string) {
+    await Api.del(`${config.gxpApi.baseUrl}/alts/${id}`);
 }

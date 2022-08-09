@@ -78,15 +78,15 @@ export async function getWithBody(url: string, body: any): Promise<any> {
     return response.data;
 }
 
-/*
-export function del(url: string): any {
-
+export async function del(url: string) {
+    const response = await axiosClient.delete(url);
+    return response.data;
 }
 
-export function put(url: string, body: any): any {
-
+export async function put(url: string, body: any): any {
+    const response = await axiosClient.put(url, body);
+    return response.data;
 }
-*/
 
 export async function getAllPaginated(url: string, headers?: AxiosRequestHeaders): Promise<any[]> {
     let total = [] as any[];
@@ -95,7 +95,6 @@ export async function getAllPaginated(url: string, headers?: AxiosRequestHeaders
         const response = await get(nextUrl);
         total = total.concat(response.results)
         nextUrl = response.next;
-        console.log(nextUrl)
     }
 
     return total;
