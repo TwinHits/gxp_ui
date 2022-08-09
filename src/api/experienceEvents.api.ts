@@ -1,21 +1,15 @@
-//import api from "@/api/api";
+import * as Api from "@/api/api";
+
+import config from '@/../config.json';
 
 import { ExperienceEvent } from '@/common/types/experienceEvent';
 
-import experienceEvents from '@/data/gxp_experience_events.json';
 
 export async function getExperienceEvent(id: string): Promise<ExperienceEvent> {
-    const response = JSON.parse(experienceEvents);
-    for (const event of response) {
-        if (event.id === id) {
-            return event;
-        }
-    }
-    throw Error();
+    return await Api.get(`${config.gxpApi.baseUrl}/experienceEvents/${id}`) as ExperienceEvent;
 }
 
 
 export async function getExperienceEvents(): Promise<ExperienceEvent[]> {
-    const response = JSON.parse(experienceEvents);
-    return response;
+    return await Api.getAllPaginated(`${config.gxpApi.baseUrl}/experienceEvents/`) as ExperienceEvent[];
 }

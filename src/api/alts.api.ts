@@ -1,21 +1,14 @@
-//import api from "@/api/api";
+import * as Api from "@/api/api";
+
+import config from '@/../config.json';
 
 import { Alt } from '@/common/types/alt';
 
-import alts from '@/data/gxp_alts.json';
-
 export async function getAlt(id: string): Promise<Alt> {
-    const response = JSON.parse(alts);
-    for (const alt of response) {
-        if (alt.id === id) {
-            return alt;
-        }
-    }
-    throw Error();
+  return await Api.get(`${config.gxpApi.baseUrl}/alts/${id}`) as Alt;
 }
 
 
 export async function getAlts(): Promise<Alt[]> {
-    const response = JSON.parse(alts);
-    return response;
+  return await Api.getAllPaginated(`${config.gxpApi.baseUrl}/alts/`) as Alt[];
 }

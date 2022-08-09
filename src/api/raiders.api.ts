@@ -1,21 +1,14 @@
-//import api from "@/api/api";
+import * as Api from "@/api/api";
 
 import { Raider } from '@/common/types/raider';
 
-import raiders from '@/data/gxp_raiders.json';
+import config from '@/../config.json';
 
 export async function getRaider(id: string): Promise<Raider> {
-    const response = JSON.parse(raiders);
-    for (const raider of response) {
-        if (raider.id === id) {
-            return raider;
-        }
-    }
-    throw Error();
+    return await Api.get(`${config.gxpApi.baseUrl}/raiders/${id}`) as Raider;
 }
 
 
 export async function getRaiders(): Promise<Raider[]> {
-    const response = JSON.parse(raiders);
-    return response;
+    return await Api.getAllPaginated(`${config.gxpApi.baseUrl}/raiders/`) as Raider[];
 }

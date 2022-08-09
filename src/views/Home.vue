@@ -57,9 +57,7 @@ export default Vue.extend({
     },
     methods: {
         async testSomething() {
-            for (let raider of this.raiders) {
-                raider.experience = await ExperienceGainsUtils.calculateExperienceForRaider(raider);
-            }
+            return {};
         }
     },
     async mounted() {

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestHeaders } from 'axios';
 import oauth from 'axios-oauth-client';
 
 import config from '@/../config.json';
@@ -7,6 +7,7 @@ import store from '@/store/index';
 
 const axiosClient = axios.create();
 
+/**
 axiosClient.interceptors.request.use(
     async function (request) {
         const isAuthRequest = request.url?.includes(config.tokenUri);
@@ -23,6 +24,7 @@ axiosClient.interceptors.request.use(
         return Promise.reject(error);
     },
 );
+**/
 
 axiosClient.interceptors.response.use(
     function (response) {
@@ -36,6 +38,7 @@ axiosClient.interceptors.response.use(
     },
 );
 
+/** 
 const getClientCredentials = oauth.client(axiosClient, {
     url: config.baseUrl + config.tokenUri,
     grant_type: 'client_credentials',
@@ -58,22 +61,20 @@ export async function authenticate(): Promise<any> {
         console.error(error);
     }
 }
+**/
 
 export async function post(url: string, body: any): Promise<any> {
-    await authenticate();
-    const response = await axiosClient.post(config.baseUrl + url, body);
+    const response = await axiosClient.post(url, body);
     return response.data;
 }
 
-export async function get(url: string, queryParams: any | undefined): Promise<any> {
-    await authenticate();
-    const response = await axios.get(config.baseUrl + url, { params: queryParams});
+export async function get(url: string, queryParams?: any): Promise<any> {
+    const response = await axios.get(url, { params: queryParams});
     return response.data;
 }
 
 export async function getWithBody(url: string, body: any): Promise<any> {
-    await authenticate();
-    const response = await axiosClient.get(config.baseUrl + url, body);
+    const response = await axiosClient.get(url, body);
     return response.data;
 }
 
@@ -86,3 +87,16 @@ export function put(url: string, body: any): any {
 
 }
 */
+
+export async function getAllPaginated(url: string, headers?: AxiosRequestHeaders): Promise<any[]> {
+    let total = [] as any[];
+    let nextUrl = url;
+    while (nextUrl) {
+        const response = await get(nextUrl);
+        total = total.concat(response.results)
+        nextUrl = response.next;
+        console.log(nextUrl)
+    }
+
+    return total;
+}
