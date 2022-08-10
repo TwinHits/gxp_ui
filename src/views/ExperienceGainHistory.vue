@@ -3,12 +3,13 @@
         <v-dialog v-model="show" width="66%">
             <v-card>
                 <v-card-title>Experience History</v-card-title>
-                <v-card-text>
-                    <HistoryItem v-for="gain of experienceGains" :key="gain.id" :experienceGain="gain" />
-                </v-card-text>
                 <v-card-actions>
                     <v-btn @click="$emit('close')">Close</v-btn>
                 </v-card-actions>
+                <v-card-text>
+                    <LoadingCircle v-if="loading" size="50" />
+                    <HistoryItem v-else v-for="gain of experienceGains" :key="gain.id" :experienceGain="gain" />
+                </v-card-text>
             </v-card>
         </v-dialog>
     </v-row>
@@ -18,13 +19,18 @@
 import Vue, { PropType } from 'vue';
 
 import HistoryItem from '@/views/HistoryItem.vue';
+import LoadingCircle from '@/views/LoadingCircle.vue';
 
 import { ExperienceGain } from '@/common/types/experienceGain';
 import { Raider } from '@/common/types/raider';
 
-import * as ExperienceGainsApi from '@/api/experienceGains.api';
+import * as ExperiencsGainsApi from '@/api/experienceGains.api';
 
 export default Vue.extend({
+    components: {
+        HistoryItem,
+        LoadingCircle
+    },
     props: {
         show: {
             required: true,
@@ -35,16 +41,16 @@ export default Vue.extend({
             type: Object as PropType<Raider>,
         }
     },
-    components: {
-        HistoryItem,
-    },
     data () {
         return {
+            loading: false,
             experienceGains: [] as ExperienceGain[],
         }
     },
     async mounted() {
-        this.experienceGains = await ExperienceGainsApi.getExperienceGainsForRaiderId(this.raider.id);
+        this.loading = true;
+        this.experienceGains = await ExperiencsGainsApi.getExperienceGainsForRaiderId(this.raider.id);
+        this.loading = false;
     }
 });
 </script>
