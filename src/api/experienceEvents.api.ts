@@ -4,6 +4,9 @@ import config from '@/../config.json';
 
 import { ExperienceEvent } from '@/common/types/experienceEvent';
 
+export async function createExperienceEvent(event: ExperienceEvent): Promise<ExperienceEvent> {
+    return await Api.post(`${config.gxpApi.baseUrl}/experienceEvents/`, event) as ExperienceEvent;
+}
 
 export async function getExperienceEvent(id: string): Promise<ExperienceEvent> {
     return await Api.get(`${config.gxpApi.baseUrl}/experienceEvents/${id}`) as ExperienceEvent;

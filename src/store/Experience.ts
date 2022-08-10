@@ -29,7 +29,7 @@ export default {
         },
         nextExperienceLevel: (state: any) => (experience: number) => {
             for (const [index, level] of state.experienceLevels.entries()) {
-                if (experience > level.experience_required) {
+                if (experience >= level.experience_required) {
                     return state.experienceLevels[index - 1];
                 }
             }
