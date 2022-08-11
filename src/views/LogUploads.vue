@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="show" width="66%">
+    <v-dialog :value="show" width="66%">
         <v-card>
             <v-card-title>Raids</v-card-title>
             <v-card-actions>
@@ -7,11 +7,12 @@
             </v-card-actions>
             <v-card-text>
                 <LoadingCircle v-if="loading" :size="50" />
-                <RaidUploadItem v-else 
+                <LogUploadItem v-else 
                     v-for="log in logs" 
                     :key="log.code" 
                     :log="log" 
                     :raid="raidsByCode[log.code]"
+                    :loading="loadingByCode[log.code]"
                     @create="createRaid($event)"
                     @delete="deleteRaid($event)"
                     />
@@ -23,8 +24,8 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 
-import LoadingCircle from '@/views/LoadingCircle.vue';
-import RaidUploadItem from '@/views/RaidUploadItem.vue';
+import LoadingCircle from '@/views/common/LoadingCircle.vue';
+import LogUploadItem from '@/views/LogUploadItem.vue';
 
 import { Raid } from '@/common/types/raid';
 import { Log } from '@/common/types/log';
@@ -35,7 +36,7 @@ import * as LogsApi from '@/api/logs.api';
 export default Vue.extend({
     components: {
         LoadingCircle,
-        RaidUploadItem,
+        LogUploadItem,
     },
     props: {
         show: {
@@ -49,18 +50,23 @@ export default Vue.extend({
             raids: [] as Raid[],
             logs: [] as Log[],
             raidsByCode: {} as Record<string, Raid>,
+            loadingByCode: {} as Record<string, boolean>,
         }
     },
     methods: {
         async createRaid(code: string) {
+            this.loadingByCode[code] = true;
             const raid = await RaidsApi.createRaidFromLogs(code);
             this.raidsByCode[raid.warcraftLogsId] = raid;
+            this.loadingByCode[code] = false;
         },
         deleteRaid(raid: Raid) {
+            this.loadingByCode[raid.warcraftLogsId] = true;
             RaidsApi.deleteRaid(raid.id);
             if (this.raidsByCode[raid.warcraftLogsId]) {
                 delete this.raidsByCode[raid.warcraftLogsId];
             }
+            this.loadingByCode[raid.warcraftLogsId] = false;
         },
 
     },

@@ -44,11 +44,8 @@ export default Vue.extend({
         },
     },
     computed: {
-        experience(): number {
-            return this.raider.experience ? this.raider.experience : 0;
-        },
         level(): ExperienceLevel {
-            return this.$store.getters.experienceLevel(this.experience)
+            return this.$store.getters.experienceLevel(this.raider.experience)
         },
     }
 });

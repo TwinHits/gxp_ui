@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="show" width="66%">
+    <v-dialog :value="show" width="66%">
         <v-card>
             <v-card-title>Experience History</v-card-title>
             <v-card-actions>
@@ -17,7 +17,7 @@
 import Vue, { PropType } from 'vue';
 
 import HistoryItem from '@/views/HistoryItem.vue';
-import LoadingCircle from '@/views/LoadingCircle.vue';
+import LoadingCircle from '@/views/common/LoadingCircle.vue';
 
 import { ExperienceGain } from '@/common/types/experienceGain';
 import { Raider } from '@/common/types/raider';

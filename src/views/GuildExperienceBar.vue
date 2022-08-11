@@ -25,10 +25,10 @@ export default Vue.extend({
     },
     computed: {
         nextLevel(): ExperienceLevel {
-            return this.$store.getters.nextExperienceLevel(this.experience);
+            return this.$store.getters.nextExperienceLevel(this.experienceAboveZero);
         },
         percent(): number {
-            return this.experience ? this.experience / this.nextLevel.experience_required * 100 : 0;
+            return this.experience / this.nextLevel.experience_required * 100;
         }
     }
 });

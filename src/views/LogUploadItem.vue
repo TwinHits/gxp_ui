@@ -10,6 +10,9 @@
             <span v-if="raid">{{ raid.id}}</span>
         </v-col>
         <v-col>
+            <LoadingCircle v-if="loading" :size="25" />
+        </v-col>
+        <v-col>
             <span v-if="!raid">
                 <v-btn @click="$emit('create', log.code)">Upload</v-btn>
             </span>
@@ -29,8 +32,12 @@ import { Log } from '@/common/types/log';
 import { Raid } from '@/common/types/raid';
 
 import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
+import LoadingCircle from '@/views/common/LoadingCircle.vue';
 
 export default Vue.extend({
+    components: { 
+        LoadingCircle 
+    },
     props: {
         raid: {
             type: [Object as PropType<Raid>, undefined],
@@ -38,6 +45,11 @@ export default Vue.extend({
         log: {
             type: Object as PropType<Log>,
             required: true,
+        },
+        loading: {
+            type: Boolean,
+            required: false,
+            default: false,
         }
     },
     computed: {

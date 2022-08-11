@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import ErrorBanner from '@/views/ErrorBanner.vue';
+import ErrorBanner from '@/views/common/ErrorBanner.vue';
 
 export default Vue.extend({
     components: {

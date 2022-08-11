@@ -18,14 +18,14 @@
                 <PlayerNameplate v-if="rowIndex * numberOfColumns + columnIndex < raiders.length" :raider="raiders[rowIndex * numberOfColumns + columnIndex]"/>
             </v-col>
         </v-row>
-        <RaidUploads :show="showRaids" @close="showRaids = false" />
+        <LogUploads :show="showRaids" @close="showRaids = false" />
     </div>
 </template>
 <script lang="ts">
 import Vue from 'vue';
 
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
-import RaidUploads from '@/views/RaidUploads.vue';
+import LogUploads from '@/views/LogUploads.vue';
 
 import { Alt } from '@/common/types/alt';
 import { Raider } from '@/common/types/raider';
@@ -40,7 +40,7 @@ import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
 export default Vue.extend({
     components: { 
         PlayerNameplate,
-        RaidUploads,
+        LogUploads,
     },
     data() {
         return {

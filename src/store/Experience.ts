@@ -22,10 +22,12 @@ export default {
         },
         experienceLevel: (state: any) => (experience: number) => {
             for (const level of state.experienceLevels) {
-                if (experience > level.experience_required) {
+                if (experience >= level.experience_required) {
                     return level;
                 }
             }
+            // Return lowest experience level if there is no matching level
+            return state.experienceLevels[state.experienceLevels.length - 1];
         },
         nextExperienceLevel: (state: any) => (experience: number) => {
             for (const [index, level] of state.experienceLevels.entries()) {
@@ -33,6 +35,8 @@ export default {
                     return state.experienceLevels[index - 1];
                 }
             }
+            // Return highest experience level if there is no next
+            return state.experienceLevels[0];
         },
         experienceEvent: (state: any) => (id: string) => {
             return state.experienceEvents[id];
