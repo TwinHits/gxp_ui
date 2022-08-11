@@ -3,10 +3,7 @@
         <v-row>
             <v-col />
             <v-col cols=2>
-                <v-btn @click="deleteLastRaid">Delete Last Raid</v-btn>
-            </v-col>
-            <v-col cols=2>
-                <v-btn @click="postNewRaid">Create Raid from Logs</v-btn>
+                <v-btn @click="showRaids = true">Raids</v-btn>
             </v-col>
             <v-col cols=2>
                 <v-btn @click="createEvents">Create Events</v-btn>
@@ -21,35 +18,36 @@
                 <PlayerNameplate v-if="rowIndex * numberOfColumns + columnIndex < raiders.length" :raider="raiders[rowIndex * numberOfColumns + columnIndex]"/>
             </v-col>
         </v-row>
+        <RaidUploads :show="showRaids" @close="showRaids = false" />
     </div>
 </template>
 <script lang="ts">
 import Vue from 'vue';
 
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
+import RaidUploads from '@/views/RaidUploads.vue';
 
 import { Alt } from '@/common/types/alt';
-import { Raid } from '@/common/types/raid';
 import { Raider } from '@/common/types/raider';
 
 import * as ExperienceUtils from '@/common/utils/experienceUtils';
 
 import * as AltsApi from '@/api/alts.api';
 import * as RaidersApi from '@/api/raiders.api';
-import * as RaidsApi from '@/api/raids.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
 import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
 
 export default Vue.extend({
     components: { 
-        PlayerNameplate 
+        PlayerNameplate,
+        RaidUploads,
     },
     data() {
         return {
             columns: 3,
             error: undefined,
+            showRaids: false,
             raiders: [] as Raider[],
-            raids: [] as Raid[],
             alts: [] as Alt[],
         };
     },
@@ -62,14 +60,6 @@ export default Vue.extend({
         }
     },
     methods: {
-        async deleteLastRaid() {
-            await RaidsApi.deleteRaid(this.raids[0].id);
-            this.raids = await RaidsApi.getRaids();
-        },
-        async postNewRaid() {
-            const logsId = "RCLJ17WfyqKk9tVa";
-            this.raids.push(await RaidsApi.createRaidFromLogs(logsId))
-        },
         async createLevels() {
             ExperienceUtils.createDefaultLevels();
         },
@@ -86,7 +76,6 @@ export default Vue.extend({
 
         this.raiders = await RaidersApi.getRaiders();
         this.alts = await AltsApi.getAlts();
-        this.raids = await RaidsApi.getRaids();
     }
 });
 </script>

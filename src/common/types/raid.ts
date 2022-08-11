@@ -2,6 +2,6 @@ export interface Raid {
     id: string,
     warcraftLogsId: string,
     zone: string,
-    timeStamp: number,
+    timestamp: number,
     optional: boolean,
 }

@@ -19,5 +19,5 @@ export async function getRaids(): Promise<Raid[]> {
 }
 
 export async function deleteRaid(id: string) {
-    await Api.del(`${config.gxpApi.baseUrl}/raids/${id}`);
+    await Api.del(`${config.gxpApi.baseUrl}/raids/${id}/`);
 }

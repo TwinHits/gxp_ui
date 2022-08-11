@@ -12,7 +12,8 @@ export default Vue.extend({
     props: {
         size: {
             required: true,
-            type: Number,
+            type: [Number, String],
+            default: 50,
         }
     },
     data() {

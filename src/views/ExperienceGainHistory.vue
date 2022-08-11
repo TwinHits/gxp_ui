@@ -1,18 +1,16 @@
 <template>
-    <v-row justify="center">
-        <v-dialog v-model="show" width="66%">
-            <v-card>
-                <v-card-title>Experience History</v-card-title>
-                <v-card-actions>
-                    <v-btn @click="$emit('close')">Close</v-btn>
-                </v-card-actions>
-                <v-card-text>
-                    <LoadingCircle v-if="loading" size="50" />
-                    <HistoryItem v-else v-for="gain of experienceGains" :key="gain.id" :experienceGain="gain" />
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-    </v-row>
+    <v-dialog v-model="show" width="66%">
+        <v-card>
+            <v-card-title>Experience History</v-card-title>
+            <v-card-actions>
+                <v-btn @click="$emit('close')">Close</v-btn>
+            </v-card-actions>
+            <v-card-text>
+                <LoadingCircle v-if="loading" size="50" />
+                <HistoryItem v-else v-for="gain of experienceGains" :key="gain.id" :experienceGain="gain" />
+            </v-card-text>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script lang="ts">
