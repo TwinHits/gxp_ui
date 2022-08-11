@@ -4,10 +4,10 @@ import config from '@/../config.json';
 
 import { Alt } from '@/common/types/alt';
 
-export async function createAlt(name: string, raiderId: string): Promise<Alt> {
+export async function createAlt(altId: string, mainId: string): Promise<Alt> {
   return await Api.post(`${config.gxpApi.baseUrl}/alts/`, {
-    name,
-    raiderId,
+    "alt": altId,
+    "main": mainId,
   }) as Alt;
 }
 

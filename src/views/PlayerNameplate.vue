@@ -9,13 +9,13 @@
         <v-card-text v-if="raider">
             <GuildExperienceBar :experience="raider.experience" />
             <v-list dense disabled>
-                <AltListItem v-for="alt in raider.alts" :key="alt.id" :alt="alt" /> 
+                <AltListItem v-for="alt in raider.alts" :key="alt.id" :alt="alt" @delete="deleteAlt"/> 
             </v-list>
         </v-card-text>
         <v-card-actions>
             <v-row>
                 <v-col>
-                    <v-text-field v-model="newAltName" outlined dense label="Alt"></v-text-field>
+                    <v-text-field v-model="altId" outlined dense label="Alt"></v-text-field>
                 </v-col>
                 <v-col>
                     <v-btn @click.stop='createAlt'>Add Alt</v-btn>
@@ -53,7 +53,7 @@ export default Vue.extend({
     data() {
         return {
             showHistory: false as boolean,
-            newAltName: "" as string,
+            altId: "" as string,
         }
     },
     computed: {
@@ -63,10 +63,12 @@ export default Vue.extend({
     },
     methods: {
         async createAlt() {
-            await AltsApi.createAlt(this.newAltName, this.raider.id);
+            await AltsApi.createAlt(this.altId, this.raider.id);
+            this.$emit("refreshRaiders")
         },
         async deleteAlt(altId: string) {
             await AltsApi.deleteAlt(altId);
+            this.$emit("refreshRaiders")
         },
     }
 });

@@ -16,7 +16,7 @@ export default Vue.extend({
         experienceGain: {
             required: true,
             type: Object as PropType<ExperienceGain>,
-        }
+        },
     },
     data () {
         return {}

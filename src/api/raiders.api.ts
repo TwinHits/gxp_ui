@@ -4,6 +4,12 @@ import { Raider } from '@/common/types/raider';
 
 import config from '@/../config.json';
 
+export async function createRaider(name: string): Promise<Raider> {
+    return await Api.post(`${config.gxpApi.baseUrl}/raiders/`, {
+        name
+    }) as Raider;
+}
+
 export async function getRaider(id: string): Promise<Raider> {
     return await Api.get(`${config.gxpApi.baseUrl}/raiders/${id}`) as Raider;
 }
