@@ -1,19 +1,27 @@
 <template>
     <v-card class="player-nameplate-card" elevation="10" @click.stop="showHistory = true" >
         <v-card-title>
-            <v-row>
-                <v-col md=auto>
-                    {{ raider.name }}
-                </v-col>
-                <v-col />
-                <v-col md=auto>
-                    {{ level.name }}
-                </v-col>
-            </v-row>
+            {{ raider.name }}
         </v-card-title>
+        <v-card-subtitle>
+            {{ level.name }}
+        </v-card-subtitle>
         <v-card-text v-if="raider">
             <GuildExperienceBar :experience="raider.experience" />
+            <v-list dense disabled>
+                <AltListItem v-for="alt in raider.alts" :key="alt.id" :alt="alt" /> 
+            </v-list>
         </v-card-text>
+        <v-card-actions>
+            <v-row>
+                <v-col>
+                    <v-text-field v-model="newAltName" outlined dense label="Alt"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-btn @click.stop='createAlt'>Add Alt</v-btn>
+                </v-col>
+            </v-row>
+        </v-card-actions>
         <ExperienceGainHistory v-if="showHistory" :show="showHistory" :raider="raider" @close="showHistory = false" />
     </v-card>
 </template>
@@ -21,21 +29,20 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 
-import GuildExperienceBar from '@/views/GuildExperienceBar.vue';
+import AltListItem from '@/views/AltListItem.vue';
 import ExperienceGainHistory from '@/views/ExperienceGainHistory.vue';
+import GuildExperienceBar from '@/views/GuildExperienceBar.vue';
 
 import { ExperienceLevel } from '@/common/types/experienceLevel';
 import { Raider } from '@/common/types/raider';
 
+import * as AltsApi from '@/api/alts.api';
+
 export default Vue.extend({
     components: { 
+        AltListItem,
         ExperienceGainHistory,
-        GuildExperienceBar 
-    },
-    data() {
-        return {
-            showHistory: false as boolean,
-        }
+        GuildExperienceBar,
     },
     props: {
         raider: {
@@ -43,9 +50,23 @@ export default Vue.extend({
             required: true,
         },
     },
+    data() {
+        return {
+            showHistory: false as boolean,
+            newAltName: "" as string,
+        }
+    },
     computed: {
         level(): ExperienceLevel {
-            return this.$store.getters.experienceLevel(this.raider.experience)
+            return this.$store.getters.experienceLevel(this.raider.experience);
+        },
+    },
+    methods: {
+        async createAlt() {
+            await AltsApi.createAlt(this.newAltName, this.raider.id);
+        },
+        async deleteAlt(altId: string) {
+            await AltsApi.deleteAlt(altId);
         },
     }
 });
