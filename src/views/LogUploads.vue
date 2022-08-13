@@ -11,8 +11,8 @@
                     v-for="log in logs" 
                     :key="log.code" 
                     :log="log" 
-                    :raid="raidsByCode[log.code]"
-                    :loading="loadingByCode[log.code]"
+                    :raid="log.raid" 
+                    :loading="log.loading" 
                     @create="createRaid($event)"
                     @delete="deleteRaid($event)"
                     />
@@ -47,36 +47,35 @@ export default Vue.extend({
     data() {
         return {
             loading: false,
-            raids: [] as Raid[],
             logs: [] as Log[],
-            raidsByCode: {} as Record<string, Raid>,
-            loadingByCode: {} as Record<string, boolean>,
+            logsByCode: {} as Record<string, Log>,
         }
     },
     methods: {
-        async createRaid(code: string) {
-            this.loadingByCode[code] = true;
-            const raid = await RaidsApi.createRaidFromLogs(code);
-            this.raidsByCode[raid.warcraftLogsId] = raid;
-            this.loadingByCode[code] = false;
+        async createRaid(create: Record<string, string>) {
+            const log = this.logs.filter((log: Log) => log.code === create.code)[0]
+            log.loading = true;
+            const raid = await RaidsApi.createRaid(create.code, create.raidHelperEventId);
+            log.raid = raid;
+            log.loading = false;
         },
         deleteRaid(raid: Raid) {
-            this.loadingByCode[raid.warcraftLogsId] = true;
+            const log = this.logs.filter((log: Log) => log.code === raid.warcraftLogsId)[0]
+            log.loading = true;
             RaidsApi.deleteRaid(raid.id);
-            if (this.raidsByCode[raid.warcraftLogsId]) {
-                delete this.raidsByCode[raid.warcraftLogsId];
-            }
-            this.loadingByCode[raid.warcraftLogsId] = false;
+            log.raid = undefined;
+            log.loading = false;
         },
 
     },
     async mounted() {
         this.loading = true;
 
-        this.raids = await RaidsApi.getRaids();
+        const raids = await RaidsApi.getRaids();
         this.logs = await LogsApi.getLogs();
 
-        this.raids.map((raid: Raid) => this.raidsByCode[raid.warcraftLogsId] = raid);
+        this.logs.map((log: Log) => this.logsByCode[log.code] = log);
+        raids.map((raid: Raid) => this.logsByCode[raid.warcraftLogsId].raid = raid);
 
         this.loading = false;
     }

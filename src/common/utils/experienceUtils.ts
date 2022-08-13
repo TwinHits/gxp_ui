@@ -28,39 +28,51 @@ export async function createDefaultLevels() {
 export async function createDefaultEvents() {
     const events = [{
         "key": "COMPLETE_RAID",
-        "description":"Completing a raid",
+        "description": "Completing a raid.",
         "value": 1,
         "template": "{name} completed {zone} on {date}."
     },
     {
         "key": "BOSS_KILL",
-        "description":"Completing a raid",
+        "description": "Killing a boss.",
         "value": 1,
         "template": "{name} defeated {encounter} at {datetime}."
     },
     {
         "key": "BOSS_KILL_FLASK",
-        "description":"Having a flask on during a boss kill",
+        "description": "Having a flask on during a boss kill.",
         "value": 1,
         "template": "{name} defeated {encounter} with a flask."
     },
     {
         "key": "BOSS_KILL_NO_FLASK",
-        "description":"Not having a flask on for a boss kill",
+        "description": "Not having a flask on for a boss kill.",
         "value": -1,
         "template": "{name} defeated {encounter} while missing a flask."
     },
     {
         "key": "BOSS_KILL_FOOD",
-        "description":"Having food on during a boss kill",
+        "description": "Having food on during a boss kill.",
         "value": 1,
         "template": "{name} defeated {encounter} with food."
     },
     {
         "key": "BOSS_KILL_NO_FOOD",
-        "description":"Not having food on for a boss kill",
+        "description": "Not having food on for a boss kill.",
         "value": -1,
         "template": "{name} defeated {encounter} while missing food."
+    },
+    {
+        "key": "SIGNED_UP_ACCURATELY",
+        "description": "Signing up for the raid, including absent or late.",
+        "value": 3,
+        "template": "{name} signed up {sign_up} for {zone}."
+    },
+    {
+        "key": "SIGNED_UP_INACCURATELY",
+        "description": "Signing up but not showing up to the raid with no warning.",
+        "value": -3,
+        "template": "{name} signed up {sign_up} for {zone} but didn't show."
     }] as ExperienceEvent[];
  
     for (const experienceEvent of events) {

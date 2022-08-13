@@ -1,25 +1,25 @@
 <template>
     <v-row>
-        <v-col>
+        <v-col :cols="3">
             {{ date }}
         </v-col>
-        <v-col>
+        <v-col :cols="3">
             {{ log.code}}
         </v-col>
-        <v-col>
+        <v-col :cols="3">
+            <v-text-field v-if="!raid || !raid.raidHelperEventId" v-model="raidHelperEventId" outlined dense label="Raid Helper Event Id"></v-text-field>
+            <span v-else>{{ raid.raidHelperEventId }}</span>
+        </v-col>
+        <v-col :cols="1">
             <span v-if="raid">{{ raid.id}}</span>
         </v-col>
-        <v-col>
+        <v-col :cols="1">
             <LoadingCircle v-if="loading" :size="25" />
-        </v-col>
-        <v-col>
-            <span v-if="!raid">
-                <v-btn @click="$emit('create', log.code)">Upload</v-btn>
-            </span>
-        </v-col>
-        <v-col>
-            <span v-if="raid">
+            <span v-if="raid && !loading">
                 <v-btn @click="$emit('delete', raid)">Delete</v-btn>
+            </span>
+            <span v-if="!raid && !loading">
+                <v-btn @click="$emit('create', {code: log.code, raidHelperEventId})">Upload</v-btn>
             </span>
         </v-col>
     </v-row>
@@ -39,22 +39,25 @@ export default Vue.extend({
         LoadingCircle 
     },
     props: {
-        raid: {
-            type: [Object as PropType<Raid>, undefined],
-        },
         log: {
             type: Object as PropType<Log>,
             required: true,
         },
-        loading: {
-            type: Boolean,
-            required: false,
-            default: false,
-        }
+    },
+    data() {
+        return {
+            raidHelperEventId: "" as string,
+        };
     },
     computed: {
         date(): string {
             return DateTimeUtils.formatDateForDisplay(DateTimeUtils.getDateFromUnixTime(this.raid ? this.raid.timestamp : this.log.startTime));
+        },
+        raid(): Raid | undefined {
+            return this.log.raid;
+        },
+        loading(): boolean {
+            return this.log.loading;
         }
     }
 });

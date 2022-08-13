@@ -4,8 +4,9 @@ import { Raid } from '@/common/types/raid';
 
 import config from '@/../config.json';
 
-export async function createRaidFromLogs(logsId: string): Promise<Raid> {
+export async function createRaid(logsId: string, raidHelperEventId: string): Promise<Raid> {
     return await Api.post(`${config.gxpApi.baseUrl}/raids/`, {
+        raidHelperEventId: raidHelperEventId,
         warcraftLogsId: logsId,
     }) as Raid;
 }
