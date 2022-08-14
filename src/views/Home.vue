@@ -1,7 +1,11 @@
 <template>
     <div class="containing-div">
         <v-row>
-            <v-col />
+            <v-col>
+                <v-toolbar>
+                    <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
+                </v-toolbar>
+            </v-col>
             <v-col cols=2>
                 <v-btn @click="showRaids = true">Raids</v-btn>
             </v-col>
@@ -14,7 +18,7 @@
         </v-row>
         <v-row class="nameplate-row" v-for="(n, rowIndex) in numberOfRows" :key="rowIndex">
             <v-col class="player-nameplate-col" v-for="(n, columnIndex) in numberOfColumns" :key="rowIndex * numberOfColumns + columnIndex">
-                <PlayerNameplate v-if="rowIndex * numberOfColumns + columnIndex < raiders.length" :raider="raiders[rowIndex * numberOfColumns + columnIndex]" @refreshRaiders="getRaiders"/>
+                <PlayerNameplate v-if="rowIndex * numberOfColumns + columnIndex < filteredRaiders.length" :raider="filteredRaiders[rowIndex * numberOfColumns + columnIndex]" @refreshRaiders="getRaiders"/>
             </v-col>
         </v-row>
         <LogUploads :show="showRaids" @close="showRaids = false" />
@@ -49,15 +53,23 @@ export default Vue.extend({
             error: undefined,
             showRaids: false,
             showCreateRaider: false,
+            searchTerm: "" as string,
             raiders: [] as Raider[],
         };
     },
     computed: {
+        filteredRaiders(): Raider[] {
+            if (this.searchTerm) {
+                return this.raiders.filter((raider: Raider) => raider.name.includes(this.searchTerm));
+            } else {
+                return this.raiders;
+            }
+        },
         numberOfRows(): number {
-            return this.raiders.length / this.columns ? Math.ceil(this.raiders.length / this.columns) : 0; // Don't divide by zero
+            return this.filteredRaiders.length / this.columns ? Math.ceil(this.filteredRaiders.length / this.columns) : 0; // Don't divide by zero
         },
         numberOfColumns(): number {
-            return this.raiders.length / this.numberOfRows ? Math.ceil(this.raiders.length / this.numberOfRows) : 0; // Don't divide by zero
+            return this.filteredRaiders.length / this.numberOfRows ? Math.ceil(this.filteredRaiders.length / this.numberOfRows) : 0; // Don't divide by zero
         }
     },
     methods: {
