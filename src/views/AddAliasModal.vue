@@ -18,7 +18,7 @@ import AliasListItem from '@/views/AliasListItem.vue';
 
 import { Raider } from '@/common/types/raider';
 
-import * as AliasApi from '@/api/alias.api';
+import * as AliasApi from '@/api/aliases.api';
 import { Alias } from '@/common/types/alias';
 
 export default Vue.extend({
