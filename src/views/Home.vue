@@ -9,12 +9,8 @@
                 <v-btn @click="showCreateRaider = true">Create Raider</v-btn>
             </v-col>
             <v-col cols=2>
-                <v-btn @click="createEvents">Create Events</v-btn>
+                <v-btn @click="initialize">Initialize</v-btn>
             </v-col>
-            <v-col cols=2>
-                <v-btn @click="createLevels">Create Levels</v-btn>
-            </v-col>
-            <v-col />
         </v-row>
         <v-row class="nameplate-row" v-for="(n, rowIndex) in numberOfRows" :key="rowIndex">
             <v-col class="player-nameplate-col" v-for="(n, columnIndex) in numberOfColumns" :key="rowIndex * numberOfColumns + columnIndex">
@@ -35,7 +31,7 @@ import PlayerNameplate from '@/views/PlayerNameplate.vue';
 
 import { Raider } from '@/common/types/raider';
 
-import * as ExperienceUtils from '@/common/utils/experienceUtils';
+import * as Utils from '@/common/utils/utils';
 
 import * as RaidersApi from '@/api/raiders.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
@@ -83,11 +79,8 @@ export default Vue.extend({
             }
             this.raiders = Array.from(raiderToIdMap.values());
         },
-        async createLevels() {
-            ExperienceUtils.createDefaultLevels();
-        },
-        async createEvents() {
-            ExperienceUtils.createDefaultEvents();
+        async initialize() {
+            Utils.initializeBackend();
         },
         async createRaider(name: string) {
             this.raiders.push(await RaidersApi.createRaider(name));
@@ -96,11 +89,13 @@ export default Vue.extend({
     async mounted() {
         const events = await ExperienceEventsApi.getExperienceEvents();
         this.$store.commit('setExperienceEvents', events);
+        this.$store.commit('setExperienceEventIcons');
 
         const levels = await ExperienceLevelsApi.getExperienceLevels();
         this.$store.commit('setExperienceLevels', levels);
 
-        this.getRaiders();
+        await this.getRaiders();
+        this.raiders.sort((lhs: Raider, rhs: Raider) => { return lhs.experience > rhs.experience ? -1 : 1});
     }
 });
 </script>

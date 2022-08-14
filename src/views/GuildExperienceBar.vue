@@ -7,6 +7,7 @@
       color="blue"
       height="20"
       buffer-value="100"
+      @click="$emit('click')"
     >
     {{ experience }} / {{ nextLevel.experience_required }}
     </v-progress-linear>

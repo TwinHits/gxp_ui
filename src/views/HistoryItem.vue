@@ -1,7 +1,7 @@
 <template>
-    <v-row justify="center">
-        <v-col cols="11">{{ experienceGain.description }}</v-col>
-        <v-col class="history-item-value">{{ value }}</v-col>
+    <v-row>
+        <v-col cols="9">{{ experienceGain.description }}</v-col>
+        <v-col class="history-item-value" align="left">{{ value }}</v-col>
     </v-row>
 </template>
 
