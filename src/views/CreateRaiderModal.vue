@@ -1,22 +1,21 @@
 <template>
-    <v-dialog :value="show" width="66%" @keydown.esc="$emit('close')" @click:outside="$emit('close')">
-        <v-card>
-            <v-card-title>Create Raider</v-card-title>
-            <v-card-actions>
-                <v-btn @click="$emit('close')">Close</v-btn>
-            </v-card-actions>
-            <v-card-text>
-                <v-text-field v-model="name" dense outlined label="name" />
-                <v-btn @click="$emit('create', name)">Create Raider</v-btn>
-            </v-card-text>
-        </v-card>
-    </v-dialog>
+    <ModalDialog label="Create History" :show="show" @close="$emit('close')">
+        <v-card-text>
+            <v-text-field v-model="name" dense outlined label="name" />
+            <v-btn @click="$emit('create', name)">Create Raider</v-btn>
+        </v-card-text>
+    </ModalDialog>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 
+import ModalDialog from '@/views/common/ModalDialog.vue';
+
 export default Vue.extend({
+    components: { 
+        ModalDialog
+    },
     props: {
         show: {
             required: true,

@@ -1,24 +1,18 @@
 <template>
-    <v-dialog :value="show" width="66%" @keydown.esc="$emit('close')" @click:outside="$emit('close')">
-        <v-card>
-            <v-card-title>Raids</v-card-title>
-            <v-card-actions>
-                <v-btn @click="$emit('close')">Close</v-btn>
-            </v-card-actions>
-            <v-card-text>
-                <LoadingCircle v-if="loading" :size="50" />
-                <LogUploadItem v-else 
-                    v-for="log in logs" 
-                    :key="log.code" 
-                    :log="log" 
-                    :raid="log.raid" 
-                    :loading="log.loading" 
-                    @create="createRaid($event)"
-                    @delete="deleteRaid($event)"
-                    />
-            </v-card-text>
-        </v-card>
-    </v-dialog>
+    <ModalDialog label="Raids" :show="show" @close="$emit('close')">
+        <v-card-text>
+            <LoadingCircle v-if="loading" :size="50" />
+            <LogUploadItem v-else 
+                v-for="log in logs" 
+                :key="log.code" 
+                :log="log" 
+                :raid="log.raid" 
+                :loading="log.loading" 
+                @create="createRaid($event)"
+                @delete="deleteRaid($event)"
+                />
+        </v-card-text>
+    </ModalDialog>
 </template>
 
 <script lang="ts">
@@ -26,6 +20,7 @@ import Vue, { PropType } from 'vue';
 
 import LoadingCircle from '@/views/common/LoadingCircle.vue';
 import LogUploadItem from '@/views/LogUploadItem.vue';
+import ModalDialog from '@/views/common/ModalDialog.vue';
 
 import { Raid } from '@/common/types/raid';
 import { Log } from '@/common/types/log';
@@ -37,6 +32,7 @@ export default Vue.extend({
     components: {
         LoadingCircle,
         LogUploadItem,
+        ModalDialog,
     },
     props: {
         show: {
