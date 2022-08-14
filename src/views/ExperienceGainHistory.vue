@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" width="66%">
+    <v-dialog :value="show" width="66%" @keydown.esc="$emit('close')" @click:outside="$emit('close')">
         <v-card>
             <v-card-title>Experience History</v-card-title>
             <v-card-actions>

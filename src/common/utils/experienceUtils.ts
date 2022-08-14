@@ -72,7 +72,7 @@ export async function createDefaultEvents() {
         "key": "SIGNED_UP_INACCURATELY",
         "description": "Signing up but not showing up to the raid with no warning.",
         "value": -3,
-        "template": "{name} signed up {sign_up} for {zone} but didn't show."
+        "template": "{name} signed up {sign_up} for {zone} but was inaccurate."
     }] as ExperienceEvent[];
  
     for (const experienceEvent of events) {
