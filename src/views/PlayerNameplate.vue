@@ -27,7 +27,7 @@
                             <v-card-actions class="pt-4">
                                 <v-btn @click='createAlt' outlined color="black">Alts</v-btn>
                                 <v-btn @click='showAliases = true' outlined color="black">A.K.A</v-btn>
-                                <v-switch v-model="isGuildMember" label="Guild Member" color="black"></v-switch>
+                                <v-switch v-model="isActive" label="Active" color="black"></v-switch>
                             </v-card-actions>
                         </v-col>    
                         <v-col :cols="1">
@@ -38,7 +38,7 @@
             </v-card>
         </v-expand-transition>
         <ExperienceGainHistory v-if="showHistory" :show="showHistory" :raider="raider" @close="showHistory = false" />
-        <AddAliasModal :show="showAliases" :raider="raider" @close="showAliases = false" />
+        <AddAliasModal v-if="showAliases" :show="showAliases" :raider="raider" @close="showAliases = false" />
     </v-card>
 </template>
 
@@ -74,7 +74,7 @@ export default Vue.extend({
             showHistory: false as boolean,
             showAliases: false as boolean,
             altId: "" as string,
-            isGuildMember: true as boolean,
+            isActive: true as boolean,
         }
     },
     computed: {
