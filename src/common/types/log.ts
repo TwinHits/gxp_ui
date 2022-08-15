@@ -1,11 +1,10 @@
 import { Raid } from "@/common/types/raid"
 
 export interface Log {
-    code: string,
-    startTime: number,
-    zone: {
-        name: string
-    },
+    logsCode: string,
+    timestamp: number,
+    raidHelperEventId: number,
+    zone: string,
     raid?: Raid,
-    loading?: Booleanm
+    loading?: Boolean
 }

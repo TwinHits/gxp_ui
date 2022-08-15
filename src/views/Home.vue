@@ -21,7 +21,7 @@
                 <PlayerNameplate v-if="rowIndex * numberOfColumns + columnIndex < filteredRaiders.length" :raider="filteredRaiders[rowIndex * numberOfColumns + columnIndex]" @refreshRaiders="getRaiders"/>
             </v-col>
         </v-row>
-        <LogUploads :show="showRaids" @close="showRaids = false" />
+        <LogUploads :show="showRaids" @close="showRaids = false" @refreshRaiders="getRaiders"/>
         <CreateRaiderModal :show="showCreateRaider" @close="showCreateRaider = false" @create="createRaider" />
     </div>
 </template>
@@ -59,8 +59,8 @@ export default Vue.extend({
     },
     computed: {
         filteredRaiders(): Raider[] {
-            if (this.searchTerm) {
-                return this.raiders.filter((raider: Raider) => raider.name.includes(this.searchTerm));
+            if (this.searchTerm.toLowerCase()) {
+                return this.raiders.filter((raider: Raider) => raider.name.toLowerCase().includes(this.searchTerm));
             } else {
                 return this.raiders;
             }

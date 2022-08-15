@@ -63,7 +63,7 @@ export async function authenticate(): Promise<any> {
 }
 **/
 
-export async function post(url: string, body: any): Promise<any> {
+export async function post(url: string, body?: any): Promise<any> {
     const response = await axiosClient.post(url, body);
     return response.data;
 }

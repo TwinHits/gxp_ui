@@ -1,6 +1,8 @@
+import { Log } from "@/common/types/log";
+
 export interface Raid {
     id: string,
-    warcraftLogsId: string,
+    log: Log,
     zone: string,
     timestamp: number,
     optional: boolean,
