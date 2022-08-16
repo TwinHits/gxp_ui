@@ -121,7 +121,9 @@ export default Vue.extend({
         if (logs.length > 0) {
             const raidsByCode = {} as Record<string, Raid>;
             for (let raid of raids) {
-                raidsByCode[raid.log.logsCode] = raid;
+                if (raid.log) {
+                    raidsByCode[raid.log.logsCode] = raid;
+                }
             }
 
             for (let log of logs) {

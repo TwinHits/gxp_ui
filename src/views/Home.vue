@@ -90,6 +90,7 @@ export default Vue.extend({
                 raider.alts = altRaiders;
             }
             this.raiders = Array.from(raiderToIdMap.values());
+            this.raiders.sort((lhs: Raider, rhs: Raider) => { return lhs.experience > rhs.experience ? -1 : 1});
         },
         async initialize() {
             Utils.initializeBackend();
@@ -107,7 +108,6 @@ export default Vue.extend({
         this.$store.commit('setExperienceLevels', levels);
 
         await this.getRaiders();
-        this.raiders.sort((lhs: Raider, rhs: Raider) => { return lhs.experience > rhs.experience ? -1 : 1});
     }
 });
 </script>
