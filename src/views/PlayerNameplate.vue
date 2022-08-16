@@ -6,7 +6,7 @@
                     {{ raider.name }}
                 </v-col>    
                 <v-col :cols="1">
-                    <v-btn icon @click="showOptions = true"><v-icon>mdi-dots-vertical</v-icon></v-btn>
+                    <IconButton icon="mdi-dots-vertical" @click="showOptions = true" />
                 </v-col>    
             </v-row>    
         </v-card-title>
@@ -31,7 +31,7 @@
                             </v-card-actions>
                         </v-col>    
                         <v-col :cols="1">
-                            <v-btn icon @click="showOptions = false"><v-icon>mdi-close</v-icon></v-btn>
+                            <IconButton icon="mdi-close" @click="showOptions = false" />
                         </v-col>    
                     </v-row>    
                 </v-card-title>
@@ -47,6 +47,7 @@ import Vue, { PropType } from 'vue';
 
 import AddAliasModal from '@/views/AddAliasModal.vue';
 import AltListItem from '@/views/AltListItem.vue';
+import IconButton from '@/views/common/IconButton.vue';
 import ExperienceGainHistory from '@/views/ExperienceGainHistory.vue';
 import GuildExperienceBar from '@/views/GuildExperienceBar.vue';
 
@@ -60,6 +61,7 @@ export default Vue.extend({
         AddAliasModal,
         AltListItem,
         ExperienceGainHistory,
+        IconButton,
         GuildExperienceBar,
     },
     props: {
@@ -98,10 +100,10 @@ export default Vue.extend({
 <style scoped lang="scss">
 
 .player-nameplate-options-card {
-  bottom: 0;
-  opacity: 1 !important;
-  position: absolute;
-  width: 100%;
-  height: 100%;
+    bottom: 0;
+    opacity: 1 !important;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
 </style>

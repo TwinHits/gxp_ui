@@ -4,16 +4,22 @@
             <v-list-item-title>{{ alias.name }}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-icon>
-            <v-btn icon @click="$emit('deleteAlias', alias)"><v-icon>mdi-trash-can-outline</v-icon></v-btn>
+            <IconButton icon="mdi-trash-can-outline" @click="$emit('deleteAlias', alias)" />
         </v-list-item-icon>
     </v-list-item>
 </template>
 
 <script lang="ts">
-import { Alias } from '@/common/types/alias';
 import Vue, { PropType } from 'vue';
 
+import IconButton from '@/views/common/IconButton.vue';
+
+import { Alias } from '@/common/types/alias';
+
 export default Vue.extend({
+    components: {
+        IconButton
+    },
     props: {
         alias: {
             required: true,  

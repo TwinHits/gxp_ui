@@ -7,7 +7,7 @@
                         {{ label }}
                     </v-col>
                     <v-col :cols="1" align="right">
-                         <v-btn icon @click="$emit('close')"><v-icon>mdi-close</v-icon></v-btn>
+                         <IconButton icon="mdi-close" @click="$emit('close')" />
                     </v-col>
                 </v-row>                
             </v-card-title>
@@ -19,7 +19,12 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import IconButton from '@/views/common/IconButton.vue';
+
 export default Vue.extend({
+    components: {
+        IconButton,
+    },
     props: {
         label: {
             type: String,
