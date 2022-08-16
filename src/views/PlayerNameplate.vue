@@ -11,7 +11,11 @@
             </v-row>    
         </v-card-title>
         <v-card-subtitle>
-            {{ level.name }}
+            <v-row>
+                <v-col cols="8">{{ level.name }}</v-col>
+                <v-col cols="2">Raids: {{ raider.totalRaids }}</v-col>
+                <v-col cols="2">Weeks: {{ weeksSinceTimestamp }}</v-col>
+            </v-row>
         </v-card-subtitle>
         <v-card-text>
             <GuildExperienceBar v-show="!showOptions" :experience="raider.experience" @click="showHistory = true" />
@@ -54,6 +58,8 @@ import GuildExperienceBar from '@/views/GuildExperienceBar.vue';
 import { ExperienceLevel } from '@/common/types/experienceLevel';
 import { Raider } from '@/common/types/raider';
 
+import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
+
 import * as AltsApi from '@/api/alts.api';
 
 export default Vue.extend({
@@ -83,6 +89,9 @@ export default Vue.extend({
         level(): ExperienceLevel {
             return this.$store.getters.experienceLevel(this.raider.experience);
         },
+        weeksSinceTimestamp(): number {
+            return DateTimeUtils.getWeeksSinceUnixTime(this.raider.joinTimestamp);
+        }
     },
     methods: {
         async createAlt() {
