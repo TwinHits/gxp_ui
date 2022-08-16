@@ -31,11 +31,13 @@
                     v-if="rowIndex * numberOfColumns + columnIndex < filteredRaiders.length"
                     :raider="filteredRaiders[rowIndex * numberOfColumns + columnIndex]"
                     @refreshRaiders="getRaiders"
+                    @raiderToAltAdd="raiderToAltAdd = $event; showAddAlt = true"
                 />
             </v-col>
         </v-row>
         <LogUploads :show="showRaids" @close="showRaids = false" @refreshRaiders="getRaiders" />
         <CreateRaiderModal :show="showCreateRaider" @close="showCreateRaider = false" @create="createRaider" />
+        <AddAltModal v-if="raiderToAltAdd" :show="showAddAlt" :raider="raiderToAltAdd" :raiders="raiders" @close="showAddAlt = false" @refreshRaiders="getRaiders" />
     </div>
 </template>
 
@@ -45,6 +47,7 @@ import Vue from 'vue';
 import CreateRaiderModal from '@/views/CreateRaiderModal.vue';
 import LogUploads from '@/views/LogUploads.vue';
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
+import AddAltModal from '@/views/AddAltModal.vue';
 
 import { Raider } from '@/common/types/raider';
 
@@ -53,9 +56,11 @@ import * as Utils from '@/common/utils/utils';
 import * as RaidersApi from '@/api/raiders.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
 import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
+import { Raid } from '@/common/types/raid';
 
 export default Vue.extend({
     components: {
+        AddAltModal,
         PlayerNameplate,
         LogUploads,
         CreateRaiderModal,
@@ -66,8 +71,10 @@ export default Vue.extend({
             error: undefined,
             showRaids: false,
             showCreateRaider: false,
+            showAddAlt: false,
             searchTerm: '' as string,
             raiders: [] as Raider[],
+            raiderToAltAdd: undefined as Raider | undefined,
         };
     },
     computed: {
@@ -93,20 +100,20 @@ export default Vue.extend({
         async getRaiders() {
             this.raiders = await RaidersApi.getRaiders();
 
-            const raiderToIdMap = new Map();
+            // Don't display alts as nameplates
+            const raiderToIdMap = new Map() as Map<string, Raider>;
             for (let raider of this.raiders) {
                 raiderToIdMap.set(raider.id, raider);
             }
 
             for (let raider of this.raiders) {
-                const altRaiders = [];
                 for (let alt of raider.alts) {
-                    altRaiders.push(raiderToIdMap.get(alt));
-                    raiderToIdMap.delete(alt);
+                    raiderToIdMap.delete(alt.id);
                 }
-                raider.alts = altRaiders;
             }
             this.raiders = Array.from(raiderToIdMap.values());
+
+            // Sort by experience
             this.raiders.sort((lhs: Raider, rhs: Raider) => {
                 return lhs.experience > rhs.experience ? -1 : 1;
             });

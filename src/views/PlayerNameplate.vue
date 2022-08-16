@@ -19,8 +19,8 @@
         </v-card-subtitle>
         <v-card-text>
             <GuildExperienceBar v-show="!showOptions" :experience="raider.experience" @click="showHistory = true" />
-            <v-list dense disabled>
-                <AltListItem v-for="alt in raider.alts" :key="alt.id" :alt="alt" @delete="deleteAlt" />
+            <v-list dense disabled v-show="!showOptions" >
+                <AltListItem v-for="alt in raider.alts" :key="alt.id" :alt="alt" @showHistory="showHistory = true" />
             </v-list>
         </v-card-text>
         <v-expand-transition>
@@ -29,7 +29,7 @@
                     <v-row no-gutters>
                         <v-col :cols="11">
                             <v-card-actions class="pt-4">
-                                <v-btn @click="createAlt" outlined color="black">Alts</v-btn>
+                                <v-btn @click="emitRaiderToAddAlt(raider)" outlined color="black">Alts</v-btn>
                                 <v-btn @click="showAliases = true" outlined color="black">A.K.A</v-btn>
                                 <v-switch v-model="isActive" label="Active" color="black"></v-switch>
                             </v-card-actions>
@@ -59,8 +59,6 @@ import { ExperienceLevel } from '@/common/types/experienceLevel';
 import { Raider } from '@/common/types/raider';
 
 import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
-
-import * as AltsApi from '@/api/alts.api';
 
 export default Vue.extend({
     components: {
@@ -94,15 +92,10 @@ export default Vue.extend({
         },
     },
     methods: {
-        async createAlt() {
-            await AltsApi.createAlt(this.altId, this.raider.id);
-            this.$emit('refreshRaiders');
-        },
-        async deleteAlt(altId: string) {
-            await AltsApi.deleteAlt(altId);
-            this.$emit('refreshRaiders');
-        },
-    },
+        emitRaiderToAddAlt(raider: Raider) {
+            this.$emit("raiderToAltAdd", raider);
+        }
+    }
 });
 </script>
 

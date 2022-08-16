@@ -6,6 +6,6 @@ export interface Raider {
     experience: number;
     totalRaids: number;
     joinTimestamp: number;
-    alts: string[];
+    alts: Raider[];
     aliases: Alias[];
 }

@@ -78,4 +78,127 @@ export function initializeBackend() {
     for (const experienceEvent of events) {
         ExperienceEventsApi.createExperienceEvent(experienceEvent);
     }
+
+    [
+        {
+           "main": "Tytenyte",
+           "name":"Tytebyte",
+        },
+        {
+           "main": "Wewoowewoo",
+           "name":"Woowewoowe"
+        },
+        {
+           "main": "Yakmon",
+           "name":"Yakman"
+        },
+        {
+           "main": "",
+           "name":"Emesîs"
+        },
+        {
+           "main": "Lumpe",
+           "name": "Lumpé"
+        },
+        {
+           "main":"Haydez",
+           "name":"Haydes"
+        },
+        {
+           "main":"Waragor",
+           "name":"Waragore"
+        },
+        {
+           "main":"Chanarach",
+           "name":"Mimmosa"
+        },
+        {
+           "main":"Dreadsails",
+           "name":"Nelen"
+        },
+        {
+           "main":"Moonnipplez",
+           "name":"Baiil",
+        },
+        {
+           "main":"Jinpachii",
+           "name":"Djinnpachi"
+        },
+        {
+           "main":"Biddybop",
+           "name": "Shieet"
+        },
+        {
+           "main":"Streeps",
+           "name": "Strips",
+        },
+        {
+           "main":"Hattérs",
+           "name":"Menyokki"
+        },
+        {
+           "main":"Hattérs",
+           "name":"Wísp"
+        },
+        {
+           "main":"Hattérs",
+           "name":"Whísps"
+        },
+        {
+            "main": "Yinnifer",
+           "name":"Redheadscorp"
+        },
+        {
+           "main": "Moonnipplez",
+           "name":"Baiill"
+        },
+        {
+           "main": "Wewoowewoo",
+           "name":"Weewwoo"
+        },
+        {
+           "main": "Tytenyte",
+           "name":"Ataribarikar"
+        },
+        {
+           "main": "Jfb",
+           "name":"Agator"
+        },
+        {
+           "main": "Nangus",
+           "name": "Daiichi"
+        },
+        {
+           "main": "Yakmon",
+           "name":"Pointythings"
+        },
+        {
+           "main": "Yinnifer",
+           "name":"Vissenna"
+        },
+        {
+           "main": "Streeps",
+           "name":"Pine"
+        },
+        {
+           "main": "Hanitoko",
+           "name":"Moomooman"
+        },
+        {
+           "main": "Showershank",
+           "name":"Hitmayne"
+        },
+        {
+           "main": "Yinnifer",
+           "name":"Bobohizan"
+        },
+        {
+           "main": "Yinnifer",
+           "name":"Zinyra"
+        },
+        {
+           "main": "Nangus",
+           "name":"Squawkbox"
+        }
+     ]
 }

@@ -1,5 +1,5 @@
 <template>
-    <ModalDialog label="Create History" :show="show" @close="$emit('close')">
+    <ModalDialog label="Aliases" :show="show" @close="$emit('close')">
         <v-card-text>
             <v-list dense>
                 <AliasListItem
