@@ -3,25 +3,38 @@
         <v-row>
             <v-col>
                 <v-toolbar>
-                    <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
+                    <v-text-field
+                        v-model="searchTerm"
+                        prepend-icon="mdi-magnify"
+                        single-line
+                        label="Search"
+                    ></v-text-field>
                 </v-toolbar>
             </v-col>
-            <v-col cols=2>
+            <v-col cols="2">
                 <v-btn @click="showRaids = true">Raids</v-btn>
             </v-col>
-            <v-col cols=2>
+            <v-col cols="2">
                 <v-btn @click="showCreateRaider = true">Create Raider</v-btn>
             </v-col>
-            <v-col cols=2>
+            <v-col cols="2">
                 <v-btn @click="initialize">Initialize</v-btn>
             </v-col>
         </v-row>
         <v-row class="nameplate-row" v-for="(n, rowIndex) in numberOfRows" :key="rowIndex">
-            <v-col class="player-nameplate-col" v-for="(n, columnIndex) in numberOfColumns" :key="rowIndex * numberOfColumns + columnIndex">
-                <PlayerNameplate v-if="rowIndex * numberOfColumns + columnIndex < filteredRaiders.length" :raider="filteredRaiders[rowIndex * numberOfColumns + columnIndex]" @refreshRaiders="getRaiders"/>
+            <v-col
+                class="player-nameplate-col"
+                v-for="(n, columnIndex) in numberOfColumns"
+                :key="rowIndex * numberOfColumns + columnIndex"
+            >
+                <PlayerNameplate
+                    v-if="rowIndex * numberOfColumns + columnIndex < filteredRaiders.length"
+                    :raider="filteredRaiders[rowIndex * numberOfColumns + columnIndex]"
+                    @refreshRaiders="getRaiders"
+                />
             </v-col>
         </v-row>
-        <LogUploads :show="showRaids" @close="showRaids = false" @refreshRaiders="getRaiders"/>
+        <LogUploads :show="showRaids" @close="showRaids = false" @refreshRaiders="getRaiders" />
         <CreateRaiderModal :show="showCreateRaider" @close="showCreateRaider = false" @create="createRaider" />
     </div>
 </template>
@@ -42,7 +55,7 @@ import * as ExperienceEventsApi from '@/api/experienceEvents.api';
 import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
 
 export default Vue.extend({
-    components: { 
+    components: {
         PlayerNameplate,
         LogUploads,
         CreateRaiderModal,
@@ -53,7 +66,7 @@ export default Vue.extend({
             error: undefined,
             showRaids: false,
             showCreateRaider: false,
-            searchTerm: "" as string,
+            searchTerm: '' as string,
             raiders: [] as Raider[],
         };
     },
@@ -66,11 +79,15 @@ export default Vue.extend({
             }
         },
         numberOfRows(): number {
-            return this.filteredRaiders.length / this.columns ? Math.ceil(this.filteredRaiders.length / this.columns) : 0; // Don't divide by zero
+            return this.filteredRaiders.length / this.columns
+                ? Math.ceil(this.filteredRaiders.length / this.columns)
+                : 0; // Don't divide by zero
         },
         numberOfColumns(): number {
-            return this.filteredRaiders.length / this.numberOfRows ? Math.ceil(this.filteredRaiders.length / this.numberOfRows) : 0; // Don't divide by zero
-        }
+            return this.filteredRaiders.length / this.numberOfRows
+                ? Math.ceil(this.filteredRaiders.length / this.numberOfRows)
+                : 0; // Don't divide by zero
+        },
     },
     methods: {
         async getRaiders() {
@@ -84,20 +101,22 @@ export default Vue.extend({
             for (let raider of this.raiders) {
                 const altRaiders = [];
                 for (let alt of raider.alts) {
-                    altRaiders.push(raiderToIdMap.get(alt))
-                    raiderToIdMap.delete(alt)
+                    altRaiders.push(raiderToIdMap.get(alt));
+                    raiderToIdMap.delete(alt);
                 }
                 raider.alts = altRaiders;
             }
             this.raiders = Array.from(raiderToIdMap.values());
-            this.raiders.sort((lhs: Raider, rhs: Raider) => { return lhs.experience > rhs.experience ? -1 : 1});
+            this.raiders.sort((lhs: Raider, rhs: Raider) => {
+                return lhs.experience > rhs.experience ? -1 : 1;
+            });
         },
         async initialize() {
             Utils.initializeBackend();
         },
         async createRaider(name: string) {
             this.raiders.push(await RaidersApi.createRaider(name));
-        }
+        },
     },
     async mounted() {
         const events = await ExperienceEventsApi.getExperienceEvents();
@@ -108,7 +127,7 @@ export default Vue.extend({
         this.$store.commit('setExperienceLevels', levels);
 
         await this.getRaiders();
-    }
+    },
 });
 </script>
 

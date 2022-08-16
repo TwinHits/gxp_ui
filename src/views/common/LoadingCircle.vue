@@ -1,9 +1,5 @@
 <template>
-     <v-progress-circular
-      :size="size"
-      :color="color"
-      indeterminate
-    ></v-progress-circular>
+    <v-progress-circular :size="size" :color="color" indeterminate></v-progress-circular>
 </template>
 
 <script lang="ts">
@@ -14,17 +10,14 @@ export default Vue.extend({
             required: true,
             type: [Number, String],
             default: 50,
-        }
+        },
     },
     data() {
         return {
-            color: "Red",
-        }
-    }
+            color: 'Red',
+        };
+    },
 });
 </script>
 
-
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

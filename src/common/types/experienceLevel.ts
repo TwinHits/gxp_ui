@@ -1,5 +1,5 @@
 export interface ExperienceLevel {
-    id: string,
-    experience_required: number,
-    name: string,
+    id: string;
+    experience_required: number;
+    name: string;
 }

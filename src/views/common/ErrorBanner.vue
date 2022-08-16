@@ -1,13 +1,7 @@
 <template>
-    <v-alert
-        class="error-alert"
-        v-if="error"
-        v-model="show"
-        color="red"
-        dismissible
-        elevation="6"
-        type="error"
-    >{{ message }}</v-alert>
+    <v-alert class="error-alert" v-if="error" v-model="show" color="red" dismissible elevation="6" type="error">{{
+        message
+    }}</v-alert>
 </template>
 
 <script lang="ts">
@@ -25,17 +19,17 @@ export default Vue.extend({
         },
         message(): string | undefined {
             return this.error?.message;
-        }
+        },
     },
     watch: {
-        '$store.state.Error.error': function(newValue) {
+        '$store.state.Error.error': function (newValue) {
             if (newValue) {
                 this.show = true;
             } else {
                 this.show = false;
             }
-        }
-    }
+        },
+    },
 });
 </script>
 
@@ -45,5 +39,4 @@ export default Vue.extend({
     bottom: 0vh;
     left: 1vw;
 }
-
 </style>

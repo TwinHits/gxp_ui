@@ -1,5 +1,5 @@
 <template>
-    <v-btn icon @click="$emit('click')"> 
+    <v-btn icon @click="$emit('click')">
         <v-icon>
             {{ icon }}
         </v-icon>
@@ -14,11 +14,9 @@ export default Vue.extend({
         icon: {
             type: String,
             required: true,
-        }
-    }    
-})
+        },
+    },
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

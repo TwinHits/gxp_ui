@@ -1,5 +1,5 @@
 <template>
-    <v-list-item> 
+    <v-list-item>
         <v-list-item-content>
             <v-list-item-title>{{ alias.name }}</v-list-item-title>
         </v-list-item-content>
@@ -18,17 +18,15 @@ import { Alias } from '@/common/types/alias';
 
 export default Vue.extend({
     components: {
-        IconButton
+        IconButton,
     },
     props: {
         alias: {
-            required: true,  
+            required: true,
             type: Object as PropType<Alias>,
-        }
-    }
+        },
+    },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

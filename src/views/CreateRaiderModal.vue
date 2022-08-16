@@ -13,23 +13,21 @@ import Vue, { PropType } from 'vue';
 import ModalDialog from '@/views/common/ModalDialog.vue';
 
 export default Vue.extend({
-    components: { 
-        ModalDialog
+    components: {
+        ModalDialog,
     },
     props: {
         show: {
             required: true,
-            type: Boolean
+            type: Boolean,
         },
     },
-    data () {
+    data() {
         return {
-            name: "" as string,
-        }
+            name: '' as string,
+        };
     },
 });
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

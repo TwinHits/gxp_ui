@@ -18,18 +18,18 @@ export default Vue.extend({
             type: Object as PropType<ExperienceGain>,
         },
     },
-    data () {
-        return {}
+    data() {
+        return {};
     },
     computed: {
         experienceEvent(): ExperienceEvent {
             return this.$store.getters.experienceEvent(this.experienceGain.experienceEventId);
         },
         value(): string {
-            const value = this.experienceEvent.value;   
+            const value = this.experienceEvent.value;
             return value > 0 ? `+${value}` : `${value}`;
-        }
-    }
+        },
+    },
 });
 </script>
 

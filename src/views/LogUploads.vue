@@ -11,7 +11,7 @@
                 firstIcon: 'mdi-arrow-collapse-left',
                 lastIcon: 'mdi-arrow-collapse-right',
                 prevIcon: 'mdi-arrow-left',
-                nextIcon: 'mdi-arrow-right'
+                nextIcon: 'mdi-arrow-right',
             }"
             no-data-text="No logs have been pulled from Wacraft Logs yet. Use the Pull button above."
         >
@@ -55,7 +55,7 @@ export default Vue.extend({
     props: {
         show: {
             required: true,
-            type: Boolean
+            type: Boolean,
         },
     },
     data() {
@@ -67,25 +67,25 @@ export default Vue.extend({
                     text: 'Time',
                     value: 'timestamp',
                 },
-                { 
-                    text: 'Warcraft Logs Report Code', 
-                    value: 'logsCode' 
+                {
+                    text: 'Warcraft Logs Report Code',
+                    value: 'logsCode',
                 },
-                { 
-                    text: 'Raid Helper Event Id', 
-                    value: 'raidHelperEventId' 
+                {
+                    text: 'Raid Helper Event Id',
+                    value: 'raidHelperEventId',
                 },
                 {
                     text: 'Raid Id',
-                    value: 'raid.id'
+                    value: 'raid.id',
                 },
                 {
                     text: 'Actions',
                     value: 'actions',
                     sortable: false,
-                }
+                },
             ],
-        }
+        };
     },
     methods: {
         async pullLogs(): Promise<Log[]> {
@@ -93,15 +93,15 @@ export default Vue.extend({
         },
         async createRaid(log: Log) {
             // This method gives off false positives to es lint, so disabling that rule for those lines
-            log.loading = true; 
-            await LogsApi.updateLog(log); 
+            log.loading = true;
+            await LogsApi.updateLog(log);
             log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId); // eslint-disable-line require-atomic-updates
             this.$emit('refreshRaiders');
             log.loading = false; // eslint-disable-line require-atomic-updates
         },
         deleteRaid(log: Log) {
             if (log.raid) {
-                log.loading = true
+                log.loading = true;
                 RaidsApi.deleteRaid(log.raid.id);
                 log.raid = undefined;
                 this.$emit('refreshRaiders');
@@ -110,7 +110,7 @@ export default Vue.extend({
         },
         getFormattedDate(timestamp: number) {
             return DateTimeUtils.formatDateForDisplay(DateTimeUtils.getDateFromUnixTime(timestamp));
-        }
+        },
     },
     async mounted() {
         this.loading = true;
@@ -128,15 +128,14 @@ export default Vue.extend({
 
             for (let log of logs) {
                 log.raid = raidsByCode[log.logsCode];
-                log.loading= false;
+                log.loading = false;
             }
         }
 
         this.logs = logs;
         this.loading = false;
-    }
+    },
 });
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

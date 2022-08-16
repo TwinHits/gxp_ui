@@ -1,5 +1,5 @@
 export interface Alias {
-    id: string,
-    raider: string,
-    name: string,
+    id: string;
+    raider: string;
+    name: string;
 }

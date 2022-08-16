@@ -1,15 +1,15 @@
 <template>
-  <v-progress-linear
-      :value="percent"
-      rounded
-      striped
-      prominent
-      color="blue"
-      height="20"
-      buffer-value="100"
-      @click="$emit('click')"
+    <v-progress-linear
+        :value="percent"
+        rounded
+        striped
+        prominent
+        color="blue"
+        height="20"
+        buffer-value="100"
+        @click="$emit('click')"
     >
-    {{ experience }} / {{ nextLevel.experience_required }}
+        {{ experience }} / {{ nextLevel.experience_required }}
     </v-progress-linear>
 </template>
 
@@ -26,15 +26,13 @@ export default Vue.extend({
     },
     computed: {
         nextLevel(): ExperienceLevel {
-            return this.$store.getters.nextExperienceLevel(this.experience)
+            return this.$store.getters.nextExperienceLevel(this.experience);
         },
         percent(): number {
-            return this.experience / this.nextLevel.experience_required * 100;
-        }
-    }
+            return (this.experience / this.nextLevel.experience_required) * 100;
+        },
+    },
 });
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

@@ -2,7 +2,12 @@
     <ModalDialog label="Create History" :show="show" @close="$emit('close')">
         <v-card-text>
             <v-list dense>
-                <AliasListItem v-for="alias in raider.aliases" :key="alias.id" :alias="alias" @deleteAlias="deleteAlias"/> 
+                <AliasListItem
+                    v-for="alias in raider.aliases"
+                    :key="alias.id"
+                    :alias="alias"
+                    @deleteAlias="deleteAlias"
+                />
             </v-list>
             <v-text-field v-model="name" dense outlined label="Alias" />
             <v-btn @click="createAlias">Add Alias</v-btn>
@@ -22,24 +27,24 @@ import * as AliasApi from '@/api/aliases.api';
 import { Alias } from '@/common/types/alias';
 
 export default Vue.extend({
-    components: { 
+    components: {
         ModalDialog,
-        AliasListItem
+        AliasListItem,
     },
     props: {
         show: {
             required: true,
-            type: Boolean
+            type: Boolean,
         },
         raider: {
             required: true,
             type: Object as PropType<Raider>,
-        }
+        },
     },
-    data () {
+    data() {
         return {
-            name: "" as string,
-        }
+            name: '' as string,
+        };
     },
     methods: {
         async createAlias() {
@@ -47,13 +52,14 @@ export default Vue.extend({
             this.raider.aliases.push(alias);
         },
         async deleteAlias(alias: Alias) {
-           AliasApi.deleteAlias(alias.id);
-           this.raider.aliases.splice(this.raider.aliases.findIndex((a: Alias) => a.id === alias.id), 1)
-        }
-    }
+            AliasApi.deleteAlias(alias.id);
+            this.raider.aliases.splice(
+                this.raider.aliases.findIndex((a: Alias) => a.id === alias.id),
+                1,
+            );
+        },
+    },
 });
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

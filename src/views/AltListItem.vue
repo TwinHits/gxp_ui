@@ -1,5 +1,5 @@
 <template>
-    <v-list-item> 
+    <v-list-item>
         <v-list-item-content>
             <v-list-item-title>{{ alt.name }}</v-list-item-title>
         </v-list-item-content>
@@ -16,13 +16,11 @@ import Vue, { PropType } from 'vue';
 export default Vue.extend({
     props: {
         alt: {
-            required: true,  
+            required: true,
             type: Object as PropType<Alt>,
-        }
-    }
+        },
+    },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

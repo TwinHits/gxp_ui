@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="show" width="66%" @keydown.esc="$emit('close')" @click:outside="$emit('close')">
+    <v-dialog :value="show" width="66%" @keydown.esc="$emit('close')" @click:outside="$emit('close')">
         <v-card>
             <v-card-title>
                 <v-row no-gutters>
@@ -7,13 +7,13 @@
                         {{ label }}
                     </v-col>
                     <v-col :cols="1" align="right">
-                         <IconButton icon="mdi-close" @click="$emit('close')" />
+                        <IconButton icon="mdi-close" @click="$emit('close')" />
                     </v-col>
-                </v-row>                
+                </v-row>
             </v-card-title>
             <slot />
         </v-card>
-  </v-dialog>
+    </v-dialog>
 </template>
 
 <script lang="ts">
@@ -29,17 +29,15 @@ export default Vue.extend({
         label: {
             type: String,
             required: false,
-            default: "",
+            default: '',
         },
         show: {
             type: Boolean,
             required: true,
             default: false,
-        }
-    }  
+        },
+    },
 });
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
