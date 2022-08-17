@@ -18,6 +18,12 @@
             <template v-slot:item.timestamp="{ item }">
                 {{ getFormattedDate(item.timestamp) }}
             </template>
+            <template v-slot:item.raid.optional="{ item }">
+                <template v-if="item.raid">
+                    <v-icon v-if="!item.raid.optional">mdi-asterisk</v-icon>
+                    <v-icon v-if="item.raid.optional">mdi-check</v-icon>
+                </template>
+            </template>
             <template v-slot:item.raidHelperEventId="{ item }">
                 <v-text-field v-if="!item.raid" v-model="item.raidHelperEventId" dense />
                 <template v-if="item.raid">{{ item.raidHelperEventId }}</template>
@@ -80,9 +86,15 @@ export default Vue.extend({
                     value: 'raid.id',
                 },
                 {
+                    text: 'Optional',
+                    value: 'raid.optional',
+                    align: "center"
+                },
+                {
                     text: 'Actions',
                     value: 'actions',
                     sortable: false,
+                    align: "center"
                 },
             ],
         };

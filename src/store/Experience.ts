@@ -19,13 +19,16 @@ export default {
         setExperienceEventIcons(state: any) {
             state.iconsByExperienceEventKey = {
                 'COMPLETE_RAID': 'mdi-check-bold',
-                'BOSS_KILL': 'mdi-grave-stone',
+                'BOSS_KILL': 'skull-scan-outline',
                 'BOSS_KILL_FLASK': 'mdi-flask-empty-outline',
                 'BOSS_KILL_NO_FLASK': 'mdi-flask-empty-off-outline',
                 'BOSS_KILL_FOOD': 'mdi-food-drumstick-outline',
                 'BOSS_KILL_NO_FOOD': 'mdi-food-drumstick-off-outline',
                 'SIGNED_UP_ACCURATELY': 'mdi-calendar-check-outline',
-                'SIGNED_UP_INACCURATELY': 'calendar-remove-outline',
+                'SIGNED_UP_INACCURATELY': 'mdi-calendar-remove-outline',
+                'WEEKLY_DECAY': 'mdi-calendar-week-outline',
+                'TOP_PERFORMANCE': 'mdi-format-align-top',
+                'BOTTOM_PERFORMANCE': 'mdi-format-align-bottom',
             };
         },
     },

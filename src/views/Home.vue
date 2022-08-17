@@ -18,6 +18,9 @@
                 <v-btn @click="showCreateRaider = true">Create Raider</v-btn>
             </v-col>
             <v-col cols="2">
+                <v-btn @click="showExperienceEvents = true">Experience Events</v-btn>
+            </v-col>
+            <v-col cols="2">
                 <v-btn @click="initialize">Initialize</v-btn>
             </v-col>
         </v-row>
@@ -38,16 +41,18 @@
         <LogUploads :show="showRaids" @close="showRaids = false" @refreshRaiders="getRaiders" />
         <CreateRaiderModal :show="showCreateRaider" @close="showCreateRaider = false" @create="createRaider" />
         <AddAltModal v-if="raiderToAltAdd" :show="showAddAlt" :raider="raiderToAltAdd" :raiders="raiders" @close="showAddAlt = false" @refreshRaiders="getRaiders" />
+        <ExperienceEventsModal :show="showExperienceEvents" @close="showExperienceEvents = false" @refreshRaiders="getRaiders" />
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 
+import AddAltModal from '@/views/AddAltModal.vue';
 import CreateRaiderModal from '@/views/CreateRaiderModal.vue';
+import ExperienceEventsModal from '@/views/ExperienceEventsModal.vue';
 import LogUploads from '@/views/LogUploads.vue';
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
-import AddAltModal from '@/views/AddAltModal.vue';
 
 import { Raider } from '@/common/types/raider';
 
@@ -56,14 +61,14 @@ import * as Utils from '@/common/utils/utils';
 import * as RaidersApi from '@/api/raiders.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
 import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
-import { Raid } from '@/common/types/raid';
 
 export default Vue.extend({
     components: {
         AddAltModal,
+        CreateRaiderModal,
+        ExperienceEventsModal,
         PlayerNameplate,
         LogUploads,
-        CreateRaiderModal,
     },
     data() {
         return {
@@ -72,6 +77,7 @@ export default Vue.extend({
             showRaids: false,
             showCreateRaider: false,
             showAddAlt: false,
+            showExperienceEvents: false,
             searchTerm: '' as string,
             raiders: [] as Raider[],
             raiderToAltAdd: undefined as Raider | undefined,

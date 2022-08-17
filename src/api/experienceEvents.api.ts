@@ -16,6 +16,10 @@ export async function getExperienceEvents(): Promise<ExperienceEvent[]> {
     return await Api.getAllPaginated(`${config.gxpApi.baseUrl}/experienceEvents/`) as ExperienceEvent[];
 }
 
+export async function updateExperienceEvent(event: ExperienceEvent) {
+    return await Api.put(`${config.gxpApi.baseUrl}/experienceEvents/${event.id}/`, event) as Promise<ExperienceEvent>;
+}
+
 export async function deleteExpereiceEvent(id: string) {
     await Api.del(`${config.gxpApi.baseUrl}/experienceEvents/${id}`);
 }
