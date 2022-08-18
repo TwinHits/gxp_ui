@@ -20,7 +20,7 @@
         </v-card-subtitle>
         <v-card-text>
             <GuildExperienceBar v-show="!showOptions" :experience="raider.experience" @click="showHistory = true" />
-            <v-list dense disabled v-show="!showOptions" >
+            <v-list dense disabled v-show="!showOptions">
                 <AltListItem v-for="alt in raider.alts" :key="alt.id" :alt="alt" @showHistory="showHistory = true" />
             </v-list>
         </v-card-text>
@@ -94,9 +94,9 @@ export default Vue.extend({
     },
     methods: {
         emitRaiderToAddAlt(raider: Raider) {
-            this.$emit("raiderToAltAdd", raider);
-        }
-    }
+            this.$emit('raiderToAltAdd', raider);
+        },
+    },
 });
 </script>
 

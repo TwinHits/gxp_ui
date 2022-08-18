@@ -57,7 +57,7 @@ export default Vue.extend({
         raiders: {
             required: true,
             type: Array as PropType<Raider[]>,
-        }
+        },
     },
     data() {
         return {
@@ -70,15 +70,15 @@ export default Vue.extend({
         },
         filteredRaiders(): Raider[] {
             const raiderAndAlts = this.raider.alts.concat([this.raider]);
-            return this.raiders.filter((r:Raider) => !raiderAndAlts.includes(r))
-        }
+            return this.raiders.filter((r: Raider) => !raiderAndAlts.includes(r));
+        },
     },
     methods: {
         async createAlt() {
             if (this.alt) {
                 await AltsApi.createAlt(this.alt.id, this.raider.id);
                 this.raider.alts.push(this.alt);
-                this.$emit("refreshRaiders")
+                this.$emit('refreshRaiders');
             }
         },
         async deleteAlt(alt: Alt) {

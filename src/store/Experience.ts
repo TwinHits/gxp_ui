@@ -55,7 +55,7 @@ export default {
 
             // Return highest experience level if there is no next
             if (experience >= state.experienceLevels[0].experience_required) {
-                return state.experienceLevels[0]
+                return state.experienceLevels[0];
             }
 
             for (const [index, level] of state.experienceLevels.entries()) {

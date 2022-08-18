@@ -1,19 +1,18 @@
 <template>
     <v-list-item>
         <v-list-item-content>
-                    <v-list-item-title>
-            <v-row>
-                <v-col cols="2" align="left">
-                    {{ alt.name }}
-                </v-col>
-                <v-col>
-                    <GuildExperienceBar :experience="alt.experience" @click="emitShowHistory" />
-                </v-col>
-            </v-row>
-                    </v-list-item-title>
+            <v-list-item-title>
+                <v-row>
+                    <v-col cols="2" align="left">
+                        {{ alt.name }}
+                    </v-col>
+                    <v-col>
+                        <GuildExperienceBar :experience="alt.experience" @click="emitShowHistory" />
+                    </v-col>
+                </v-row>
+            </v-list-item-title>
         </v-list-item-content>
-        <v-list-item-icon>
-        </v-list-item-icon>
+        <v-list-item-icon> </v-list-item-icon>
     </v-list-item>
 </template>
 
@@ -35,9 +34,9 @@ export default Vue.extend({
     },
     methods: {
         emitShowHistory() {
-            this.$emit("showHistory")
-        }
-    }
+            this.$emit('showHistory');
+        },
+    },
 });
 </script>
 

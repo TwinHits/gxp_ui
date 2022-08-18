@@ -34,14 +34,28 @@
                     v-if="rowIndex * numberOfColumns + columnIndex < filteredRaiders.length"
                     :raider="filteredRaiders[rowIndex * numberOfColumns + columnIndex]"
                     @refreshRaiders="getRaiders"
-                    @raiderToAltAdd="raiderToAltAdd = $event; showAddAlt = true"
+                    @raiderToAltAdd="
+                        raiderToAltAdd = $event;
+                        showAddAlt = true;
+                    "
                 />
             </v-col>
         </v-row>
         <LogUploads :show="showRaids" @close="showRaids = false" @refreshRaiders="getRaiders" />
         <CreateRaiderModal :show="showCreateRaider" @close="showCreateRaider = false" @create="createRaider" />
-        <AddAltModal v-if="raiderToAltAdd" :show="showAddAlt" :raider="raiderToAltAdd" :raiders="raiders" @close="showAddAlt = false" @refreshRaiders="getRaiders" />
-        <ExperienceEventsModal :show="showExperienceEvents" @close="showExperienceEvents = false" @refreshRaiders="getRaiders" />
+        <AddAltModal
+            v-if="raiderToAltAdd"
+            :show="showAddAlt"
+            :raider="raiderToAltAdd"
+            :raiders="raiders"
+            @close="showAddAlt = false"
+            @refreshRaiders="getRaiders"
+        />
+        <ExperienceEventsModal
+            :show="showExperienceEvents"
+            @close="showExperienceEvents = false"
+            @refreshRaiders="getRaiders"
+        />
     </div>
 </template>
 

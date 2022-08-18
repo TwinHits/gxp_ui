@@ -36,7 +36,11 @@
                 <template v-else>
                     <IconButton v-if="!item.raid && item.active" icon="mdi-upload" @click="createRaid(item)" />
                     <IconButton v-if="item.raid" icon="mdi-trash-can-outline" @click="deleteRaid(item)" />
-                    <IconButton v-if="!item.raid && item.active" icon="mdi-archive-outline" @click="setLogActive(item, false)" />
+                    <IconButton
+                        v-if="!item.raid && item.active"
+                        icon="mdi-archive-outline"
+                        @click="setLogActive(item, false)"
+                    />
                     <IconButton v-if="!item.active" icon="mdi-archive-off-outline" @click="setLogActive(item, true)" />
                 </template>
             </template>
@@ -95,19 +99,19 @@ export default Vue.extend({
                 {
                     text: 'Uploaded',
                     value: 'raid',
-                    align: "center"
+                    align: 'center',
                 },
                 {
                     text: 'Optional',
                     value: 'raid.optional',
-                    align: "center"
+                    align: 'center',
                 },
                 {
                     text: 'Actions',
                     value: 'actions',
                     sortable: false,
-                    align: "center"
-               },
+                    align: 'center',
+                },
             ],
         };
     },
@@ -124,9 +128,9 @@ export default Vue.extend({
             log.loading = false; // eslint-disable-line require-atomic-updates
         },
         async setLogActive(log: Log, active: boolean) {
-            log.loading = true; 
+            log.loading = true;
             log.active = active;
-            log = await LogsApi.updateLog(log) 
+            log = await LogsApi.updateLog(log);
             log.loading = false; // eslint-disable-line require-atomic-updates
         },
         deleteRaid(log: Log) {

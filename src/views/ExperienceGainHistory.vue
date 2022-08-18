@@ -4,9 +4,7 @@
             <LoadingCircle v-if="loading" size="50" />
             <div v-else>
                 <v-row>
-                    <v-col>
-                        Experience Multipler: {{ experienceMultipler }}
-                    </v-col>
+                    <v-col> Experience Multipler: {{ experienceMultipler }} </v-col>
                 </v-row>
                 <v-timeline
                     class="experience-history-timeline"
@@ -76,7 +74,7 @@ export default Vue.extend({
     computed: {
         experienceMultipler(): string {
             return this.raider.experienceMultipler.toFixed(2);
-        }
+        },
     },
     methods: {
         getIconForExperienceEvent(experienceEvent: string) {
