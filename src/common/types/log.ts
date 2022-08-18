@@ -5,6 +5,7 @@ export interface Log {
     timestamp: number;
     raidHelperEventId: number;
     zone: string;
+    active: boolean;
     raid?: Raid;
     loading?: boolean;
 }

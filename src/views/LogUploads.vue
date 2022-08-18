@@ -18,6 +18,9 @@
             <template v-slot:item.timestamp="{ item }">
                 {{ getFormattedDate(item.timestamp) }}
             </template>
+            <template v-slot:item.raid="{ item }">
+                <v-icon v-if="item.raid" color="green">mdi-checkbox-marked</v-icon>
+            </template>
             <template v-slot:item.raid.optional="{ item }">
                 <template v-if="item.raid">
                     <v-icon v-if="!item.raid.optional">mdi-asterisk</v-icon>
@@ -30,8 +33,12 @@
             </template>
             <template v-slot:item.actions="{ item }">
                 <LoadingCircle v-if="item.loading" :size="25" />
-                <IconButton v-if="!item.raid && !item.loading" icon="mdi-upload" @click="createRaid(item)" />
-                <IconButton v-if="item.raid && !item.loading" icon="mdi-trash-can-outline" @click="deleteRaid(item)" />
+                <template v-else>
+                    <IconButton v-if="!item.raid && item.active" icon="mdi-upload" @click="createRaid(item)" />
+                    <IconButton v-if="item.raid" icon="mdi-trash-can-outline" @click="deleteRaid(item)" />
+                    <IconButton v-if="!item.raid && item.active" icon="mdi-archive-outline" @click="setLogActive(item, false)" />
+                    <IconButton v-if="!item.active" icon="mdi-archive-off-outline" @click="setLogActive(item, true)" />
+                </template>
             </template>
         </v-data-table>
     </ModalDialog>
@@ -86,8 +93,9 @@ export default Vue.extend({
                     value: 'raidHelperEventId',
                 },
                 {
-                    text: 'Raid Id',
-                    value: 'raid.id',
+                    text: 'Uploaded',
+                    value: 'raid',
+                    align: "center"
                 },
                 {
                     text: 'Optional',
@@ -99,7 +107,7 @@ export default Vue.extend({
                     value: 'actions',
                     sortable: false,
                     align: "center"
-                },
+               },
             ],
         };
     },
@@ -113,6 +121,12 @@ export default Vue.extend({
             await LogsApi.updateLog(log);
             log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId); // eslint-disable-line require-atomic-updates
             this.$emit('refreshRaiders');
+            log.loading = false; // eslint-disable-line require-atomic-updates
+        },
+        async setLogActive(log: Log, active: boolean) {
+            log.loading = true; 
+            log.active = active;
+            log = await LogsApi.updateLog(log) 
             log.loading = false; // eslint-disable-line require-atomic-updates
         },
         deleteRaid(log: Log) {

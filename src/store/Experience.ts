@@ -27,9 +27,9 @@ export default {
                 'SIGNED_UP_ACCURATELY': 'mdi-calendar-check-outline',
                 'SIGNED_UP_INACCURATELY': 'mdi-calendar-remove-outline',
                 'WEEKLY_DECAY': 'mdi-calendar-week-outline',
-                'HIGH_PERFORMANCE': 'mdi-format-align-top',
-                'TOP_PERFORMANCE': 'mdi-format-vertical-align-top',
-                'MID_PERFORMANCE': 'mdi-middleware-outline',
+                'TOP_PERFORMANCE': 'mdi-star-circle-outline',
+                'HIGH_PERFORMANCE': 'mdi-format-vertical-align-top',
+                'MID_PERFORMANCE': 'mdi-format-align-top',
                 'LOW_PERFORMANCE': 'mdi-format-align-bottom',
             };
         },
