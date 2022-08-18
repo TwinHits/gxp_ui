@@ -20,7 +20,7 @@
                         class="experience-history-timeline-item"
                         v-for="gain in gains"
                         :key="gain.id"
-                        :icon="getIconForExperienceEvent(gain.experienceEventId)"
+                        :icon="getIconForExperienceEvent(gain.experienceEvent)"
                         :color="'black'"
                         fill-dot
                     >
@@ -69,8 +69,8 @@ export default Vue.extend({
         };
     },
     methods: {
-        getIconForExperienceEvent(experienceEventId: string) {
-            return this.$store.getters.experienceEventIcon(experienceEventId);
+        getIconForExperienceEvent(experienceEvent: string) {
+            return this.$store.getters.experienceEventIcon(experienceEvent);
         },
     },
     async mounted() {

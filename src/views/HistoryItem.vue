@@ -23,7 +23,7 @@ export default Vue.extend({
     },
     computed: {
         experienceEvent(): ExperienceEvent {
-            return this.$store.getters.experienceEvent(this.experienceGain.experienceEventId);
+            return this.$store.getters.experienceEvent(this.experienceGain.experienceEvent);
         },
         value(): string {
             const value = this.experienceEvent.value;

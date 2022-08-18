@@ -21,7 +21,7 @@
                 <v-btn @click="showExperienceEvents = true">Experience Events</v-btn>
             </v-col>
             <v-col cols="2">
-                <v-btn @click="initialize">Initialize</v-btn>
+                <v-btn @click="dev">DEV</v-btn>
             </v-col>
         </v-row>
         <v-row class="nameplate-row" v-for="(n, rowIndex) in numberOfRows" :key="rowIndex">
@@ -56,7 +56,7 @@ import PlayerNameplate from '@/views/PlayerNameplate.vue';
 
 import { Raider } from '@/common/types/raider';
 
-import * as Utils from '@/common/utils/utils';
+import * as DevUtils from '@/common/utils/devUtils';
 
 import * as RaidersApi from '@/api/raiders.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
@@ -124,8 +124,8 @@ export default Vue.extend({
                 return lhs.experience > rhs.experience ? -1 : 1;
             });
         },
-        async initialize() {
-            Utils.initializeBackend();
+        async dev() {
+            DevUtils.initializeBackend();
         },
         async createRaider(name: string) {
             this.raiders.push(await RaidersApi.createRaider(name));

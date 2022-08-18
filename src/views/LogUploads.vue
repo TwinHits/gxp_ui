@@ -74,6 +74,10 @@ export default Vue.extend({
                     value: 'timestamp',
                 },
                 {
+                    text: 'Raid',
+                    value: 'zone',
+                },
+                {
                     text: 'Warcraft Logs Report Code',
                     value: 'logsCode',
                 },
@@ -121,7 +125,7 @@ export default Vue.extend({
             }
         },
         getFormattedDate(timestamp: number) {
-            return DateTimeUtils.formatDateForDisplay(DateTimeUtils.getDateFromUnixTime(timestamp));
+            return DateTimeUtils.formatDateTimeForDisplay(DateTimeUtils.getDateFromUnixTime(timestamp));
         },
     },
     async mounted() {

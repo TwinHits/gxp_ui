@@ -12,9 +12,10 @@
         </v-card-title>
         <v-card-subtitle>
             <v-row>
-                <v-col cols="8">{{ level.name }}</v-col>
+                <v-col cols="4">{{ level.name }}</v-col>
+                <v-col cols="4">Joined: {{ joinDate }}</v-col>
+                <v-col cols="2">Weeks: {{ raider.totalWeeks }}</v-col>
                 <v-col cols="2">Raids: {{ raider.totalRaids }}</v-col>
-                <v-col cols="2">Weeks: {{ weeksSinceTimestamp }}</v-col>
             </v-row>
         </v-card-subtitle>
         <v-card-text>
@@ -87,8 +88,8 @@ export default Vue.extend({
         level(): ExperienceLevel {
             return this.$store.getters.experienceLevel(this.raider.experience);
         },
-        weeksSinceTimestamp(): number {
-            return DateTimeUtils.getWeeksSinceUnixTime(this.raider.joinTimestamp);
+        joinDate(): string {
+            return DateTimeUtils.formatDateForDisplay(DateTimeUtils.getDateFromUnixTime(this.raider.join_timestamp));
         },
     },
     methods: {

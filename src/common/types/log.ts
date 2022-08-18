@@ -6,5 +6,5 @@ export interface Log {
     raidHelperEventId: number;
     zone: string;
     raid?: Raid;
-    loading?: Boolean;
+    loading?: boolean;
 }

@@ -5,7 +5,7 @@ export default {
     state: () => ({
         experienceLevels: [] as ExperienceLevel[],
         experienceEvents: {} as Record<string, ExperienceEvent>,
-        iconsByExperienceEventKey: {} as Record<string, string>,
+        iconsByExperienceEventId: {} as Record<string, string>,
     }),
     mutations: {
         setExperienceLevels(state: any, experienceLevels: ExperienceLevel[]) {
@@ -17,9 +17,9 @@ export default {
             }
         },
         setExperienceEventIcons(state: any) {
-            state.iconsByExperienceEventKey = {
+            state.iconsByExperienceEventId = {
                 'COMPLETE_RAID': 'mdi-check-bold',
-                'BOSS_KILL': 'skull-scan-outline',
+                'BOSS_KILL': 'mdi-skull-scan-outline',
                 'BOSS_KILL_FLASK': 'mdi-flask-empty-outline',
                 'BOSS_KILL_NO_FLASK': 'mdi-flask-empty-off-outline',
                 'BOSS_KILL_FOOD': 'mdi-food-drumstick-outline',
@@ -27,8 +27,10 @@ export default {
                 'SIGNED_UP_ACCURATELY': 'mdi-calendar-check-outline',
                 'SIGNED_UP_INACCURATELY': 'mdi-calendar-remove-outline',
                 'WEEKLY_DECAY': 'mdi-calendar-week-outline',
-                'TOP_PERFORMANCE': 'mdi-format-align-top',
-                'BOTTOM_PERFORMANCE': 'mdi-format-align-bottom',
+                'HIGH_PERFORMANCE': 'mdi-format-align-top',
+                'TOP_PERFORMANCE': 'mdi-format-vertical-align-top',
+                'MID_PERFORMANCE': 'mdi-middleware-outline',
+                'LOW_PERFORMANCE': 'mdi-format-align-bottom',
             };
         },
     },
@@ -66,7 +68,7 @@ export default {
             return state.experienceEvents[id];
         },
         experienceEventIcon: (state: any) => (id: string) => {
-            return state.iconsByExperienceEventKey[state.experienceEvents[id].key];
+            return state.iconsByExperienceEventId[id];
         },
     },
 };

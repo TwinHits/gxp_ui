@@ -9,6 +9,10 @@ export async function pullLogsFromWarcraftLogs(): Promise<Log[]> {
     return await Api.post(`${config.gxpApi.baseUrl}/logs/pull`) as Log[];
 }
 
+export async function createLog(log: Log): Promise<Log> {
+    return await Api.post(`${config.gxpApi.baseUrl}/logs/`, log) as Log;
+}
+
 export async function getLog(id: string): Promise<Log> {
     return await Api.get(`${config.gxpApi.baseUrl}/logs/${id}`) as Log;
 }
