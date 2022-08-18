@@ -3,6 +3,11 @@
         <v-card-text>
             <LoadingCircle v-if="loading" size="50" />
             <div v-else>
+                <v-row>
+                    <v-col>
+                        Experience Multipler: {{ experienceMultipler }}
+                    </v-col>
+                </v-row>
                 <v-timeline
                     class="experience-history-timeline"
                     v-for="(gains, date) in experienceGainsByDay"
@@ -67,6 +72,11 @@ export default Vue.extend({
             experienceGains: [] as ExperienceGain[],
             experienceGainsByDay: {} as Record<string, ExperienceGain[]>,
         };
+    },
+    computed: {
+        experienceMultipler(): string {
+            return this.raider.experienceMultipler.toFixed(2);
+        }
     },
     methods: {
         getIconForExperienceEvent(experienceEvent: string) {

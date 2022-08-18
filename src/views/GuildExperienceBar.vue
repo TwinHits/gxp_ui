@@ -9,7 +9,7 @@
         buffer-value="100"
         @click="$emit('click')"
     >
-        {{ experience }} / {{ nextLevel.experience_required }}
+        {{ displayedString }}
     </v-progress-linear>
 </template>
 
@@ -25,6 +25,9 @@ export default Vue.extend({
         },
     },
     computed: {
+        displayedString(): string {
+            return `${Math.round(this.experience)} / ${this.nextLevel.experience_required}`;
+        },
         nextLevel(): ExperienceLevel {
             return this.$store.getters.nextExperienceLevel(this.experience);
         },
