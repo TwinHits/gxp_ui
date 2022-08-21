@@ -1,6 +1,5 @@
 <template>
     <ModalDialog label="Raids" :show="show" @close="$emit('close')">
-        <v-btn @click="createRaids">All </v-btn>
         <v-data-table
             :headers="headers"
             :items="logs"
@@ -16,6 +15,16 @@
             }"
             no-data-text="No logs have been pulled from Wacraft Logs yet. Use the Pull button above."
         >
+            <template v-slot:top>
+                <v-row class="top-toolbar" justify="end">
+                    <v-col md="auto" align="center">
+                        <IconButton @click="pullLogs" icon="mdi-download-multiple" />
+                    </v-col>
+                    <v-col md="auto" align="center">
+                        <IconButton @click="createRaids" icon="mdi-upload-multiple" />
+                    </v-col>
+                </v-row>
+            </template>
             <template v-slot:item.timestamp="{ item }">
                 {{ getFormattedDate(item.timestamp) }}
             </template>
@@ -123,11 +132,13 @@ export default Vue.extend({
         },
         async createRaid(log: Log) {
             // This method gives off false positives to es lint, so disabling that rule for those lines
-            log.loading = true;
-            await LogsApi.updateLog(log);
-            log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId); // eslint-disable-line require-atomic-updates
-            this.$emit('refreshRaiders');
-            log.loading = false; // eslint-disable-line require-atomic-updates
+            if (!log.raid && log.active) {
+                log.loading = true;
+                await LogsApi.updateLog(log);
+                log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId); // eslint-disable-line require-atomic-updates
+                this.$emit('refreshRaiders');
+                log.loading = false; // eslint-disable-line require-atomic-updates
+            }
         },
         async createRaids() {
             // This method gives off false positives to es lint, so disabling that rule for those lines
@@ -190,4 +201,8 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.top-toolbar {
+    margin-right: 1vw;
+}
+</style>
