@@ -38,6 +38,10 @@
                         raiderToAltAdd = $event;
                         showAddAlt = true;
                     "
+                    @showAddExperienceModal="
+                        raiderToAddExperience = $event;
+                        showAddExperienceModal = true;
+                    "
                 />
             </v-col>
         </v-row>
@@ -56,6 +60,13 @@
             @close="showExperienceEvents = false"
             @refreshRaiders="getRaiders"
         />
+        <AddExperienceModal
+            v-if="raiderToAddExperience"
+            :show="showAddExperienceModal"
+            :raider="raiderToAddExperience"
+            @close="showAddExperienceModal = false"
+            @refreshRaiders="getRaiders"
+        />
     </div>
 </template>
 
@@ -63,6 +74,7 @@
 import Vue from 'vue';
 
 import AddAltModal from '@/views/AddAltModal.vue';
+import AddExperienceModal from '@/views/AddExperienceModal.vue';
 import CreateRaiderModal from '@/views/CreateRaiderModal.vue';
 import ExperienceEventsModal from '@/views/ExperienceEventsModal.vue';
 import LogUploads from '@/views/LogUploads.vue';
@@ -79,6 +91,7 @@ import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
 export default Vue.extend({
     components: {
         AddAltModal,
+        AddExperienceModal,
         CreateRaiderModal,
         ExperienceEventsModal,
         PlayerNameplate,
@@ -92,9 +105,11 @@ export default Vue.extend({
             showCreateRaider: false,
             showAddAlt: false,
             showExperienceEvents: false,
+            showAddExperienceModal: false,
             searchTerm: '' as string,
             raiders: [] as Raider[],
             raiderToAltAdd: undefined as Raider | undefined,
+            raiderToAddExperience: undefined as Raider | undefined,
         };
     },
     computed: {
@@ -139,7 +154,8 @@ export default Vue.extend({
             });
         },
         async dev() {
-            DevUtils.initializeBackend();
+            //DevUtils.initializeBackend();
+            DevUtils.getOrderedCurrentExperienceFromRaiders(this.raiders)
         },
         async createRaider(name: string) {
             this.raiders.push(await RaidersApi.createRaider(name));

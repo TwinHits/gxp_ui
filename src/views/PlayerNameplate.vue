@@ -12,14 +12,21 @@
         </v-card-title>
         <v-card-subtitle>
             <v-row>
-                <v-col cols="4">{{ level.name }}</v-col>
+                <v-col cols="4">{{ raider.experienceLevel.name }}</v-col>
                 <v-col cols="4">Joined: {{ joinDate }}</v-col>
                 <v-col cols="2">Weeks: {{ raider.totalWeeks }}</v-col>
                 <v-col cols="2">Raids: {{ raider.totalRaids }}</v-col>
             </v-row>
         </v-card-subtitle>
         <v-card-text>
-            <GuildExperienceBar v-show="!showOptions" :experience="raider.experience" @click="showHistory = true" />
+            <v-row align="center">
+                <v-col cols="11" align="left">
+                    <GuildExperienceBar v-show="!showOptions" :experience="raider.experience" @click="showHistory = true" />
+                </v-col>
+                <v-col cols="1" align="center">
+                    <IconButton icon="mdi-plus-circle-outline" @click="emitShowAddExperienceModal(raider)"/>
+                </v-col>
+            </v-row>
             <v-list dense disabled v-show="!showOptions">
                 <AltListItem v-for="alt in raider.alts" :key="alt.id" :alt="alt" @showHistory="showHistory = true" />
             </v-list>
@@ -56,7 +63,6 @@ import IconButton from '@/views/common/IconButton.vue';
 import ExperienceGainHistory from '@/views/ExperienceGainHistory.vue';
 import GuildExperienceBar from '@/views/GuildExperienceBar.vue';
 
-import { ExperienceLevel } from '@/common/types/experienceLevel';
 import { Raider } from '@/common/types/raider';
 
 import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
@@ -85,9 +91,6 @@ export default Vue.extend({
         };
     },
     computed: {
-        level(): ExperienceLevel {
-            return this.$store.getters.experienceLevel(this.raider.experience);
-        },
         joinDate(): string {
             return DateTimeUtils.formatDateForDisplay(DateTimeUtils.getDateFromUnixTime(this.raider.join_timestamp));
         },
@@ -96,6 +99,9 @@ export default Vue.extend({
         emitRaiderToAddAlt(raider: Raider) {
             this.$emit('raiderToAltAdd', raider);
         },
+        emitShowAddExperienceModal(raider: Raider) {
+            this.$emit('showAddExperienceModal', raider);
+        }
     },
 });
 </script>

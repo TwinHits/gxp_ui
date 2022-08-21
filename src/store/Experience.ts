@@ -3,8 +3,9 @@ import { ExperienceLevel } from '@/common/types/experienceLevel';
 
 export default {
     state: () => ({
+        experienceEvents: [] as ExperienceEvent[],
         experienceLevels: [] as ExperienceLevel[],
-        experienceEvents: {} as Record<string, ExperienceEvent>,
+        experienceEventsById: {} as Record<string, ExperienceEvent>,
         iconsByExperienceEventId: {} as Record<string, string>,
     }),
     mutations: {
@@ -12,8 +13,9 @@ export default {
             state.experienceLevels = experienceLevels;
         },
         setExperienceEvents(state: any, experienceEvents: ExperienceEvent[]) {
+            state.experienceEvents = experienceEvents;
             for (const event of experienceEvents) {
-                state.experienceEvents[event.id] = event;
+                state.experienceEventsById[event.id] = event;
             }
         },
         setExperienceEventIcons(state: any) {
@@ -26,7 +28,7 @@ export default {
                 'BOSS_KILL_NO_FOOD': 'mdi-food-drumstick-off-outline',
                 'SIGNED_UP_ACCURATELY': 'mdi-calendar-check-outline',
                 'SIGNED_UP_INACCURATELY': 'mdi-calendar-remove-outline',
-                'WEEKLY_DECAY': 'mdi-calendar-week-outline',
+                'DECAY_PER_BOSS': 'mdi-calendar-week-outline',
                 'TOP_PERFORMANCE': 'mdi-star-circle-outline',
                 'HIGH_PERFORMANCE': 'mdi-format-vertical-align-top',
                 'MID_PERFORMANCE': 'mdi-format-align-top',
@@ -64,8 +66,11 @@ export default {
                 }
             }
         },
+        experienceEvents: (state: any) => {
+            return state.experienceEvents;
+        },
         experienceEvent: (state: any) => (id: string) => {
-            return state.experienceEvents[id];
+            return state.experienceEventsById[id];
         },
         experienceEventIcon: (state: any) => (id: string) => {
             return state.iconsByExperienceEventId[id];
