@@ -131,7 +131,7 @@ export default Vue.extend({
         async createRaids() {
             // This method gives off false positives to es lint, so disabling that rule for those lines
             for (const log of this.logs.reverse()) {
-                if (!log.raid) {
+                if (!log.raid && log.active) {
                     log.loading = true;
                     await LogsApi.updateLog(log);
                     log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId); // eslint-disable-line require-atomic-updates

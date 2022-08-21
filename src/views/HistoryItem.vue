@@ -9,7 +9,6 @@
 import Vue, { PropType } from 'vue';
 
 import { ExperienceGain } from '@/common/types/experienceGain';
-import { ExperienceEvent } from '@/common/types/experienceEvent';
 
 export default Vue.extend({
     props: {
@@ -26,11 +25,8 @@ export default Vue.extend({
         return {};
     },
     computed: {
-        experienceEvent(): ExperienceEvent {
-            return this.$store.getters.experienceEvent(this.experienceGain.experienceEvent);
-        },
         value(): string {
-            const value = this.experienceEvent.value * this.multipler;
+            const value = this.experienceGain.value * this.multipler;
             return value > 0 ? `+${value.toFixed(2)}` : `${value.toFixed(2)}`;
         },
     },

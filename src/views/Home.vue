@@ -154,8 +154,7 @@ export default Vue.extend({
             });
         },
         async dev() {
-            //DevUtils.initializeBackend();
-            DevUtils.getOrderedCurrentExperienceFromRaiders(this.raiders)
+            DevUtils.initializeBackend();
         },
         async createRaider(name: string) {
             this.raiders.push(await RaidersApi.createRaider(name));

@@ -4,4 +4,5 @@ export interface ExperienceGain {
     raid?: string;
     experienceEvent: string;
     timestamp: number;
+    value: number;
 }

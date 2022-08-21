@@ -108,7 +108,7 @@ export function initializeExperience() {
             'id': 'DECAY_PER_BOSS',
             'description': 'Decay for each boss killed.',
             'value': -3,
-            'template': "{name}'s decayed for killing this boss.",
+            'template': "{name}'s experience decayed since the guild killed {encounters_count} bosses.",
         },
         {
             'id': 'TOP_PERFORMANCE',
