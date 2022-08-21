@@ -32,13 +32,14 @@
             <template v-slot:item.actions="{ item }">
                 <LoadingCircle v-if="item.loading" :size="25" />
                 <template v-else>
+                    <IconButton v-if="!item.raid && item.active" icon="mdi-content-save-outline" @click="updateLog(item)" />
                     <IconButton v-if="!item.raid && item.active" icon="mdi-upload" @click="createRaid(item)" />
-                    <IconButton v-if="item.raid" icon="mdi-trash-can-outline" @click="deleteRaid(item)" />
                     <IconButton
                         v-if="!item.raid && item.active"
                         icon="mdi-archive-outline"
                         @click="setLogActive(item, false)"
                     />
+                    <IconButton v-if="item.raid" icon="mdi-trash-can-outline" @click="deleteRaid(item)" />
                     <IconButton v-if="!item.active" icon="mdi-archive-off-outline" @click="setLogActive(item, true)" />
                 </template>
             </template>
@@ -98,17 +99,20 @@ export default Vue.extend({
                     text: 'Uploaded',
                     value: 'raid',
                     align: 'center',
+                    width: '12vh',
                 },
                 {
-                    text: 'Main Raid Day',
+                    text: 'Main Raid',
                     value: 'optional',
                     align: 'center',
+                    width: '12vh',
                 },
                 {
                     text: 'Actions',
                     value: 'actions',
                     sortable: false,
                     align: 'center',
+                    width: '15vh',
                 },
             ],
         };
@@ -136,11 +140,16 @@ export default Vue.extend({
                 }
             }
         },
-        async setLogActive(log: Log, active: boolean) {
+        async updateLog(log: Log) {
             log.loading = true;
-            log.active = active;
-            log = await LogsApi.updateLog(log);
+            const updatedLog = await LogsApi.updateLog(log);
+            const index = this.logs.findIndex((l: Log) => l.logsCode === updatedLog.logsCode);
+            this.logs[index] = updatedLog;
             log.loading = false; // eslint-disable-line require-atomic-updates
+        },
+        async setLogActive(log: Log, active: boolean) {
+            log.active = active;
+            this.updateLog(log);
         },
         deleteRaid(log: Log) {
             if (log.raid) {
