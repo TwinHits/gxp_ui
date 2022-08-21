@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col cols="9">{{ experienceGain.description }}</v-col>
+        <v-col cols="11">{{ experienceGain.description }}</v-col>
         <v-col class="history-item-value" align="left">{{ value }}</v-col>
     </v-row>
 </template>
@@ -17,6 +17,10 @@ export default Vue.extend({
             required: true,
             type: Object as PropType<ExperienceGain>,
         },
+        multipler: {
+            required: true,
+            type: Number,
+        }
     },
     data() {
         return {};
@@ -26,8 +30,8 @@ export default Vue.extend({
             return this.$store.getters.experienceEvent(this.experienceGain.experienceEvent);
         },
         value(): string {
-            const value = this.experienceEvent.value;
-            return value > 0 ? `+${value}` : `${value}`;
+            const value = this.experienceEvent.value * this.multipler;
+            return value > 0 ? `+${value.toFixed(2)}` : `${value.toFixed(2)}`;
         },
     },
 });

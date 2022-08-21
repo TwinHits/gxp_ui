@@ -27,7 +27,14 @@
                         :color="'black'"
                         fill-dot
                     >
-                        <HistoryItem :experienceGain="gain" />
+                        <v-row align="center">
+                            <v-col cols="11">
+                                <HistoryItem :experienceGain="gain" :multipler="raider.experienceMultipler" />
+                            </v-col>
+                            <v-col cols="1">
+                                <IconButton icon="mdi-trash-can-outline" @click="deleteExperienceGain(gain)" />
+                            </v-col>
+                        </v-row>
                     </v-timeline-item>
                 </v-timeline>
             </div>
@@ -38,6 +45,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 
+import IconButton from '@/views/common/IconButton.vue';
 import HistoryItem from '@/views/HistoryItem.vue';
 import LoadingCircle from '@/views/common/LoadingCircle.vue';
 import ModalDialog from '@/views/common/ModalDialog.vue';
@@ -45,11 +53,12 @@ import ModalDialog from '@/views/common/ModalDialog.vue';
 import { ExperienceGain } from '@/common/types/experienceGain';
 import { Raider } from '@/common/types/raider';
 
-import * as ExperiencsGainsApi from '@/api/experienceGains.api';
+import * as ExperienceGainsApi from '@/api/experienceGains.api';
 import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
 
 export default Vue.extend({
     components: {
+        IconButton,
         HistoryItem,
         LoadingCircle,
         ModalDialog,
@@ -80,10 +89,15 @@ export default Vue.extend({
         getIconForExperienceEvent(experienceEvent: string) {
             return this.$store.getters.experienceEventIcon(experienceEvent);
         },
+        deleteExperienceGain(experienceGain: ExperienceGain) {
+            ExperienceGainsApi.deleteExperienceGain(experienceGain.id);
+            this.$emit("refreshRaiders")
+        }
     },
     async mounted() {
         this.loading = true;
-        this.experienceGains = await ExperiencsGainsApi.getExperienceGainsForRaiderId(this.raider.id);
+        this.experienceGains = await ExperienceGainsApi.getExperienceGainsForRaiderId(this.raider.id);
+        this.experienceGains = this.experienceGains.reverse()
         for (const experienceGain of this.experienceGains) {
             const date = DateTimeUtils.getDateFromUnixTime(experienceGain.timestamp);
             const day = date.toLocaleDateString();
