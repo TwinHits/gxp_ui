@@ -4,9 +4,10 @@ import { Raider } from '@/common/types/raider';
 
 import config from '@/../config.json';
 
-export async function createRaider(name: string): Promise<Raider> {
+export async function createRaider(name: string, joinTimestamp?: number): Promise<Raider> {
     return await Api.post(`${config.gxpApi.baseUrl}/raiders/`, {
-        name
+        name,
+        join_timestamp: joinTimestamp
     }) as Raider;
 }
 

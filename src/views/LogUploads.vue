@@ -1,5 +1,6 @@
 <template>
     <ModalDialog label="Raids" :show="show" @close="$emit('close')">
+        <v-btn @click="createRaids">All </v-btn>
         <v-data-table
             :headers="headers"
             :items="logs"
@@ -126,6 +127,17 @@ export default Vue.extend({
             log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId); // eslint-disable-line require-atomic-updates
             this.$emit('refreshRaiders');
             log.loading = false; // eslint-disable-line require-atomic-updates
+        },
+        async createRaids() {
+            // This method gives off false positives to es lint, so disabling that rule for those lines
+            for (const log of this.logs.reverse()) {
+                if (!log.raid) {
+                    log.loading = true;
+                    await LogsApi.updateLog(log);
+                    log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId); // eslint-disable-line require-atomic-updates
+                    log.loading = false; // eslint-disable-line require-atomic-updates
+                }
+            }
         },
         async setLogActive(log: Log, active: boolean) {
             log.loading = true;
