@@ -8,4 +8,5 @@ export interface Log {
     active: boolean;
     raid?: Raid;
     loading?: boolean;
+    optional: boolean;
 }

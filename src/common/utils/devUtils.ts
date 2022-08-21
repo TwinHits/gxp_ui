@@ -15,6 +15,8 @@ import * as Logs from '@/data/gxp_logs.json';
 import * as Raiders_export from '@/data/raiders_export';
 import * as Raiders_final from '@/data/raiders_final';
 
+import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
+
 export function initializeBackend() {
     initializeExperience();
     createLogsFromBackup();
@@ -153,8 +155,17 @@ export async function getAllRaiders() {
 }
 
 export async function getAllLogs() {
-    const raiders = await LogsApi.getLogs();
-    console.log(raiders);
+    const logs = await LogsApi.getLogs();
+    for (const log of logs) {
+        log.optional = ![2,4].includes(DateTimeUtils.getWeekdayFromUnixTime(log.timestamp));
+    }
+    console.log(logs)
+}
+
+export async function updateAllLogs() {
+    for (const [index, log] of Object.entries(Logs)) {
+        LogsApi.updateLog(log);
+    }
 }
 
 

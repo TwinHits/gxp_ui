@@ -22,11 +22,8 @@
             <template v-slot:item.raid="{ item }">
                 <v-icon v-if="item.raid" color="green">mdi-checkbox-marked</v-icon>
             </template>
-            <template v-slot:item.raid.optional="{ item }">
-                <template v-if="item.raid">
-                    <v-icon v-if="!item.raid.optional">mdi-asterisk</v-icon>
-                    <v-icon v-if="item.raid.optional">mdi-check</v-icon>
-                </template>
+            <template v-slot:item.optional="{ item }">
+                <v-icon v-if="!item.optional">mdi-asterisk</v-icon>
             </template>
             <template v-slot:item.raidHelperEventId="{ item }">
                 <v-text-field v-if="!item.raid" v-model="item.raidHelperEventId" dense />
@@ -103,8 +100,8 @@ export default Vue.extend({
                     align: 'center',
                 },
                 {
-                    text: 'Optional',
-                    value: 'raid.optional',
+                    text: 'Main Raid Day',
+                    value: 'optional',
                     align: 'center',
                 },
                 {
