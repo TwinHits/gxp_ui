@@ -42,6 +42,7 @@
                         raiderToAddExperience = $event;
                         showAddExperienceModal = true;
                     "
+                    @updateRaider="updateRaider($event)"
                 />
             </v-col>
         </v-row>
@@ -133,7 +134,7 @@ export default Vue.extend({
     },
     methods: {
         async getRaiders() {
-            this.raiders = await RaidersApi.getRaiders();
+            this.raiders = await RaidersApi.getRaiders(true);
 
             // Don't display alts as nameplates
             const raiderToIdMap = new Map() as Map<string, Raider>;
@@ -153,8 +154,13 @@ export default Vue.extend({
                 return lhs.experience > rhs.experience ? -1 : 1;
             });
         },
+        async updateRaider(raider: Raider) {
+            const updatedRaider = await RaidersApi.updateRaider(raider);
+            const index = this.raiders.findIndex((r: Raider) => r.id === updatedRaider.id);
+            this.raiders[index] = updatedRaider;
+        },
         async dev() {
-            DevUtils.initializeBackend();
+            DevUtils.assembleRaidersInitalState();
         },
         async createRaider(name: string) {
             this.raiders.push(await RaidersApi.createRaider(name));

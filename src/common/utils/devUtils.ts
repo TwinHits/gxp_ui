@@ -185,6 +185,7 @@ export function assembleRaidersInitalState() {
             const raider = {
                 name: raider_export.name,
                 join_timestamp: raider_export.join_timestamp,
+                active: raider_export.active,
             }
             raider.alts = raider_export.alts.map((a) => a.name)
             raider.aliases = raider_export.aliases.map((a) => a.name)

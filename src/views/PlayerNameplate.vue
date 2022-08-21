@@ -39,7 +39,7 @@
                             <v-card-actions class="pt-4">
                                 <v-btn @click="emitRaiderToAddAlt(raider)" outlined color="black">Alts</v-btn>
                                 <v-btn @click="showAliases = true" outlined color="black">A.K.A</v-btn>
-                                <v-switch v-model="isActive" label="Active" color="black"></v-switch>
+                                <v-switch v-model="raider.active" label="Active" color="black" @change="emitUpdateRaider(raider)"></v-switch>
                             </v-card-actions>
                         </v-col>
                         <v-col :cols="1">
@@ -101,6 +101,9 @@ export default Vue.extend({
         },
         emitShowAddExperienceModal(raider: Raider) {
             this.$emit('showAddExperienceModal', raider);
+        },
+        emitUpdateRaider(raider: Raider) {
+            this.$emit('updateRaider', raider);
         }
     },
 });
