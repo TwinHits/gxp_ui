@@ -34,6 +34,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 
+import IconButton from '@/views/common/IconButton.vue';
 import ModalDialog from '@/views/common/ModalDialog.vue';
 
 import { Alt } from '@/common/types/alt';
@@ -43,6 +44,7 @@ import * as AltsApi from '@/api/alts.api';
 
 export default Vue.extend({
     components: {
+        IconButton,
         ModalDialog,
     },
     props: {
@@ -82,13 +84,11 @@ export default Vue.extend({
             }
         },
         async deleteAlt(alt: Alt) {
-            AltsApi.deleteAlt(alt.id);
-            /*
+            await AltsApi.deleteAlt(alt.id);
             this.raider.alts.splice(
-                this.raider.alts.findIndex(((a: Alt) => a.id === alt.id),
+                this.raider.alts.findIndex(((a: Raider) => a.id === alt.id),
                 1,
-            );
-            */
+            ));
         },
     },
 });

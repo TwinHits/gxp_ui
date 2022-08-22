@@ -23,6 +23,9 @@
                     <v-col md="auto" align="center">
                         <IconButton @click="createRaids" icon="mdi-upload-multiple" />
                     </v-col>
+                    <v-col md="auto" align="center">
+                        <IconButton @click="deleteRaids" icon="mdi-delete-sweep-outline" />
+                    </v-col>
                 </v-row>
             </template>
             <template v-slot:item.timestamp="{ item }">
@@ -161,6 +164,13 @@ export default Vue.extend({
         async setLogActive(log: Log, active: boolean) {
             log.active = active;
             this.updateLog(log);
+        },
+        async deleteRaids() {
+            for (const log of this.logs) {
+                if (log.raid) {
+                    await RaidsApi.deleteRaid(log.raid.id);
+                }
+            }
         },
         deleteRaid(log: Log) {
             if (log.raid) {

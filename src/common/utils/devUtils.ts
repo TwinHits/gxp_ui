@@ -231,7 +231,7 @@ export function getOrderedCurrentExperienceFromRaiders(raiders: Raider[]) {
     const toPrint = {} as Record<string, number>;
     raiders.sort((rhs, lhs) => rhs.experience > lhs.experience ? -1 : 1)
     for (const raider of raiders)  {  
-        if (raider.totalRaids > 0) {
+        if (raider.totalRaids > 0 && raider.experience > 0) {
             toPrint[raider.name] = raider.experience;
         }
     }

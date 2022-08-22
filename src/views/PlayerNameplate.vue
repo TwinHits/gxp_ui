@@ -40,6 +40,14 @@
                                 <v-btn @click="emitRaiderToAddAlt(raider)" outlined color="black">Alts</v-btn>
                                 <v-btn @click="showAliases = true" outlined color="black">A.K.A</v-btn>
                                 <v-switch v-model="raider.active" label="Active" color="black" @change="emitUpdateRaider(raider)"></v-switch>
+                                <v-row>
+                                    <v-col>
+                                        <v-text-field v-model="rename" />
+                                    </v-col>
+                                    <v-col>
+                                        <v-btn @click="renameRaider">Rename Raider</v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-card-actions>
                         </v-col>
                         <v-col :cols="1">
@@ -66,6 +74,7 @@ import GuildExperienceBar from '@/views/GuildExperienceBar.vue';
 import { Raider } from '@/common/types/raider';
 
 import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
+import * as RaidersApi from '@/api/raiders.api';
 
 export default Vue.extend({
     components: {
@@ -88,6 +97,7 @@ export default Vue.extend({
             showAliases: false as boolean,
             altId: '' as string,
             isActive: true as boolean,
+            rename: '' as string,
         };
     },
     computed: {
@@ -96,6 +106,11 @@ export default Vue.extend({
         },
     },
     methods: {
+        async renameRaider() {
+            const raider = this.raider;
+            raider.name = this.rename;
+            await RaidersApi.updateRaider(raider);
+        },
         emitRaiderToAddAlt(raider: Raider) {
             this.$emit('raiderToAltAdd', raider);
         },
