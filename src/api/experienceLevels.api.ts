@@ -4,8 +4,12 @@ import { ExperienceLevel } from '@/common/types/experienceLevel';
 
 import config from '@/../config.json';
 
-export async function createExperienceLevel(event: ExperienceLevel): Promise<ExperienceLevel> {
-    return await Api.post(`${config.gxpApi.baseUrl}/experienceLevels/`, event) as ExperienceLevel;
+export async function createExperienceLevel(level: ExperienceLevel): Promise<ExperienceLevel> {
+    return await Api.post(`${config.gxpApi.baseUrl}/experienceLevels/`, level) as ExperienceLevel;
+}
+
+export async function updateExperienceLevel(level: ExperienceLevel): Promise<ExperienceLevel> {
+    return await Api.put(`${config.gxpApi.baseUrl}/experienceLevels/${level.id}/`, level) as ExperienceLevel;
 }
 
 export async function getExperienceLevel(id: string): Promise<ExperienceLevel> {

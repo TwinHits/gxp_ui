@@ -21,6 +21,9 @@
                 <v-btn @click="showExperienceEvents = true">Experience Events</v-btn>
             </v-col>
             <v-col cols="2">
+                <v-btn @click="showExperienceLevels = true">Experience Levels</v-btn>
+            </v-col>
+            <v-col cols="2">
                 <v-btn @click="dev">DEV</v-btn>
             </v-col>
         </v-row>
@@ -61,6 +64,11 @@
             @close="showExperienceEvents = false"
             @refreshRaiders="getRaiders"
         />
+        <ExperienceLevelsModal
+            :show="showExperienceLevels"
+            @close="showExperienceLevels = false"
+            @refreshRaiders="getRaiders"
+        />
         <AddExperienceModal
             v-if="raiderToAddExperience"
             :show="showAddExperienceModal"
@@ -78,6 +86,7 @@ import AddAltModal from '@/views/AddAltModal.vue';
 import AddExperienceModal from '@/views/AddExperienceModal.vue';
 import CreateRaiderModal from '@/views/CreateRaiderModal.vue';
 import ExperienceEventsModal from '@/views/ExperienceEventsModal.vue';
+import ExperienceLevelsModal from '@/views/ExperienceLevelsModal.vue';
 import LogUploads from '@/views/LogUploads.vue';
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
 
@@ -95,6 +104,7 @@ export default Vue.extend({
         AddExperienceModal,
         CreateRaiderModal,
         ExperienceEventsModal,
+        ExperienceLevelsModal,
         PlayerNameplate,
         LogUploads,
     },
@@ -106,6 +116,7 @@ export default Vue.extend({
             showCreateRaider: false,
             showAddAlt: false,
             showExperienceEvents: false,
+            showExperienceLevels: false,
             showAddExperienceModal: false,
             searchTerm: '' as string,
             raiders: [] as Raider[],
@@ -160,7 +171,7 @@ export default Vue.extend({
             this.raiders[index] = updatedRaider;
         },
         async dev() {
-            DevUtils.assembleRaidersInitalState();
+            DevUtils.getOrderedCurrentExperienceFromRaiders(this.raiders);
         },
         async createRaider(name: string) {
             this.raiders.push(await RaidersApi.createRaider(name));
