@@ -37,10 +37,10 @@ import Vue, { PropType } from 'vue';
 import IconButton from '@/views/common/IconButton.vue';
 import ModalDialog from '@/views/common/ModalDialog.vue';
 
-import { Alt } from '@/common/types/alt';
 import { Raider } from '@/common/types/raider';
 
-import * as AltsApi from '@/api/alts.api';
+import * as RaidersApi from '@/api/raiders.api'
+
 
 export default Vue.extend({
     components: {
@@ -78,13 +78,15 @@ export default Vue.extend({
     methods: {
         async createAlt() {
             if (this.alt) {
-                await AltsApi.createAlt(this.alt.id, this.raider.id);
+                this.alt.main = this.raider.id
+                await RaidersApi.updateRaider(this.alt);
                 this.raider.alts.push(this.alt);
                 this.$emit('refreshRaiders');
             }
         },
-        async deleteAlt(alt: Alt) {
-            await AltsApi.deleteAlt(alt.id);
+        async deleteAlt(alt: Raider) {
+            alt.main = undefined;
+            await RaidersApi.updateRaider(alt);
             this.raider.alts.splice(
                 this.raider.alts.findIndex(((a: Raider) => a.id === alt.id),
                 1,

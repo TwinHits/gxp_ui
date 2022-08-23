@@ -154,9 +154,12 @@ export default Vue.extend({
             }
 
             for (let raider of this.raiders) {
+                const alts = [] as Raider[];
                 for (let alt of raider.alts) {
-                    raiderToIdMap.delete(alt.id);
+                    alts.push(raiderToIdMap.get(alt));
+                    raiderToIdMap.delete(alt);
                 }
+                raider.alts = alts
             }
             this.raiders = Array.from(raiderToIdMap.values());
 

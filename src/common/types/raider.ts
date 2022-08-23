@@ -8,6 +8,7 @@ export interface Raider {
     totalWeeks: number;
     experienceMultipler: number;
     join_timestamp: number;
-    alts: Raider[];
+    alts: Raider[] | string[];
     aliases: Alias[];
+    main: string | undefined;
 }

@@ -1,6 +1,5 @@
 import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
-import * as AltsApi from '@/api/alts.api';
 import * as AliasesApi from '@/api/aliases.api';
 import * as RaidersApi from '@/api/raiders.api';
 import * as RaidsApi from '@/api/raids.api';

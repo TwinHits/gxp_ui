@@ -95,7 +95,6 @@ export default Vue.extend({
             showOptions: false as boolean,
             showHistory: false as boolean,
             showAliases: false as boolean,
-            altId: '' as string,
             isActive: true as boolean,
             rename: '' as string,
         };
