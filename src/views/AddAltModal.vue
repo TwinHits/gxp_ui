@@ -82,6 +82,7 @@ export default Vue.extend({
                 this.alt.main = this.raider.id
                 await RaidersApi.updateRaider(this.alt);
                 this.raider.alts.push(this.alt);
+                this.alt = undefined;
             }
         },
         async deleteAlt(alt: Raider) {

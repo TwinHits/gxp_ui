@@ -1,7 +1,7 @@
 <template>
-    <ModalDialog label="Aliases" :show="show" @close="$emit('close')">
+    <ModalDialog label="Aliases" :show="show" :width="'33%'" @close="$emit('close')">
         <v-card-text>
-            <v-list dense>
+            <v-list class="aliases-list" dense>
                 <AliasListItem
                     v-for="alias in raider.aliases"
                     :key="alias.id"
@@ -9,8 +9,14 @@
                     @deleteAlias="deleteAlias"
                 />
             </v-list>
-            <v-text-field v-model="name" dense outlined label="Alias" />
-            <v-btn @click="createAlias">Add Alias</v-btn>
+            <v-row class="aliases-list-actions">
+                <v-col :cols="10"> 
+                    <v-text-field v-model="name" dense outlined label="Alias" />
+                </v-col>
+                <v-col :cols="2" align="center">
+                    <v-btn @click="createAlias">Add Alias</v-btn>
+                </v-col>
+            </v-row>
         </v-card-text>
     </ModalDialog>
 </template>
@@ -62,4 +68,12 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.aliases-list {
+    margin: 0vh 1vw;
+}
+
+.aliases-list-actions {
+    margin: 0vh 2vw 0vh 0vw;
+}
+</style>
