@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" width="66%" @keydown.esc="$emit('close')" @click:outside="$emit('close')">
+    <v-dialog :value="show" :width="width" @keydown.esc="$emit('close')" @click:outside="$emit('close')">
         <v-card>
             <v-card-title>
                 <v-row no-gutters>
@@ -36,6 +36,11 @@ export default Vue.extend({
             required: true,
             default: false,
         },
+        width: {
+            type: String,
+            required: false,
+            default: "66%"
+        }
     },
 });
 </script>

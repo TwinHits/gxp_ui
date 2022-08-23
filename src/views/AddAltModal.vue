@@ -1,7 +1,7 @@
 <template>
-    <ModalDialog :label="label" :show="show" @close="$emit('close')">
+    <ModalDialog :label="label" :show="show" :width="'33%'" @close="$emit('close')">
         <v-card-text>
-            <v-list dense>
+            <v-list class="alt-list" dense>
                 <v-list-item v-for="alt in raider.alts" :key="alt.id">
                     <v-list-item-content>
                         <v-list-item-title>{{ alt.name }}</v-list-item-title>
@@ -11,7 +11,7 @@
                     </v-list-item-icon>
                 </v-list-item>
             </v-list>
-            <v-row>
+            <v-row class="alt-list-actions">
                 <v-col :cols="10">
                     <v-autocomplete
                         v-model="alt"
@@ -72,6 +72,7 @@ export default Vue.extend({
         },
         filteredRaiders(): Raider[] {
             const raiderAndAlts = this.raider.alts.concat([this.raider]);
+            console.log(raiderAndAlts)
             return this.raiders.filter((r: Raider) => !raiderAndAlts.includes(r));
         },
     },
@@ -81,7 +82,6 @@ export default Vue.extend({
                 this.alt.main = this.raider.id
                 await RaidersApi.updateRaider(this.alt);
                 this.raider.alts.push(this.alt);
-                this.$emit('refreshRaiders');
             }
         },
         async deleteAlt(alt: Raider) {
@@ -96,4 +96,12 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.alt-list {
+    margin: 0vh 1vw;
+}
+
+.alt-list-actions {
+    margin: 0vh 1vw;
+}
+</style>
