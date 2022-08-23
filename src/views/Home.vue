@@ -46,6 +46,10 @@
                         showAddExperienceModal = true;
                     "
                     @updateRaider="updateRaider($event)"
+                    @showAliasAdd="
+                        raiderToAddAlias = $event;
+                        showAddAliasModal = true;
+                    "
                 />
             </v-col>
         </v-row>
@@ -76,6 +80,12 @@
             @close="showAddExperienceModal = false"
             @refreshRaiders="getRaiders"
         />
+        <AddAliasModal 
+            v-if="showAddAliasModal" 
+            :show="showAddAliasModal" 
+            :raider="raiderToAddAlias" 
+            @close="showAddAliasModal = false" 
+        />
     </div>
 </template>
 
@@ -83,6 +93,7 @@
 import Vue from 'vue';
 
 import AddAltModal from '@/views/AddAltModal.vue';
+import AddAliasModal from '@/views/AddAliasModal.vue';
 import AddExperienceModal from '@/views/AddExperienceModal.vue';
 import CreateRaiderModal from '@/views/CreateRaiderModal.vue';
 import ExperienceEventsModal from '@/views/ExperienceEventsModal.vue';
@@ -101,6 +112,7 @@ import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
 export default Vue.extend({
     components: {
         AddAltModal,
+        AddAliasModal,
         AddExperienceModal,
         CreateRaiderModal,
         ExperienceEventsModal,
@@ -118,10 +130,12 @@ export default Vue.extend({
             showExperienceEvents: false,
             showExperienceLevels: false,
             showAddExperienceModal: false,
+            showAddAliasModal: false,
             searchTerm: '' as string,
             raiders: [] as Raider[],
             raiderToAltAdd: undefined as Raider | undefined,
             raiderToAddExperience: undefined as Raider | undefined,
+            raiderToAddAlias: undefined as Raider | undefined,
         };
     },
     computed: {

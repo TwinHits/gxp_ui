@@ -3,10 +3,43 @@
         <v-card-title>
             <v-row no-gutters>
                 <v-col :cols="11">
-                    {{ raider.name }}
+                    <v-row v-if="!showRenameRaiderTextField">
+                        <v-col :cols="5">
+                            {{ raider.name }}
+                        </v-col>
+                    </v-row>
+                    <v-row v-else>
+                        <v-col :cols="5">
+                            <v-text-field v-model="rename" hide-details dense outlined :label="raider.name" ></v-text-field>
+                        </v-col>
+                        <v-col md="auto">
+                            <IconButton icon="mdi-content-save-outline" @click="renameRaider(raider, rename)" />
+                        </v-col>
+                        <v-col md="auto">
+                            <IconButton icon="mdi-close" @click="showRenameRaiderTextField = false" />
+                        </v-col>
+                    </v-row>
                 </v-col>
                 <v-col :cols="1">
-                    <IconButton icon="mdi-dots-vertical" @click="showOptions = true" />
+                    <v-menu offset-y transition="slide-y-transition" bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                            <IconButton icon="mdi-dots-vertical" :bind="attrs" :on="on" />
+                        </template>
+                        <v-list>
+                            <v-list-item link @click="emitRaiderToAddAlt(raider)">
+                                <v-list-item-title>Alts</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item link @click="emitRaiderToAddAlias(raider)">
+                                <v-list-item-title>A.K.A.</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item link @click="setActive(raider, !raider.active)">
+                                <v-list-item-title>{{ activeLabel }}</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item link @click="showRenameRaiderTextField = true">
+                                <v-list-item-title>Rename</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
                 </v-col>
             </v-row>
         </v-card-title>
@@ -21,51 +54,23 @@
         <v-card-text>
             <v-row align="center">
                 <v-col cols="11" align="left">
-                    <GuildExperienceBar v-show="!showOptions" :experience="raider.experience" @click="showHistory = true" />
+                    <GuildExperienceBar :experience="raider.experience" @click="showHistory = true" />
                 </v-col>
                 <v-col cols="1" align="center">
                     <IconButton icon="mdi-plus-circle-outline" @click="emitShowAddExperienceModal(raider)"/>
                 </v-col>
             </v-row>
-            <v-list dense disabled v-show="!showOptions">
+            <v-list dense disabled>
                 <AltListItem v-for="alt in raider.alts" :key="alt.id" :alt="alt" @showHistory="showHistory = true" />
             </v-list>
         </v-card-text>
-        <v-expand-transition>
-            <v-card v-if="showOptions" class="transition-fast-in-fast-out player-nameplate-options-card">
-                <v-card-title>
-                    <v-row no-gutters>
-                        <v-col :cols="11">
-                            <v-card-actions class="pt-4">
-                                <v-btn @click="emitRaiderToAddAlt(raider)" outlined color="black">Alts</v-btn>
-                                <v-btn @click="showAliases = true" outlined color="black">A.K.A</v-btn>
-                                <v-switch v-model="raider.active" label="Active" color="black" @change="emitUpdateRaider(raider)"></v-switch>
-                                <v-row>
-                                    <v-col>
-                                        <v-text-field v-model="rename" />
-                                    </v-col>
-                                    <v-col>
-                                        <v-btn @click="renameRaider">Rename Raider</v-btn>
-                                    </v-col>
-                                </v-row>
-                            </v-card-actions>
-                        </v-col>
-                        <v-col :cols="1">
-                            <IconButton icon="mdi-close" @click="showOptions = false" />
-                        </v-col>
-                    </v-row>
-                </v-card-title>
-            </v-card>
-        </v-expand-transition>
         <ExperienceGainHistory v-if="showHistory" :show="showHistory" :raider="raider" @close="showHistory = false" />
-        <AddAliasModal v-if="showAliases" :show="showAliases" :raider="raider" @close="showAliases = false" />
     </v-card>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 
-import AddAliasModal from '@/views/AddAliasModal.vue';
 import AltListItem from '@/views/AltListItem.vue';
 import IconButton from '@/views/common/IconButton.vue';
 import ExperienceGainHistory from '@/views/ExperienceGainHistory.vue';
@@ -74,11 +79,9 @@ import GuildExperienceBar from '@/views/GuildExperienceBar.vue';
 import { Raider } from '@/common/types/raider';
 
 import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
-import * as RaidersApi from '@/api/raiders.api';
 
 export default Vue.extend({
     components: {
-        AddAliasModal,
         AltListItem,
         ExperienceGainHistory,
         IconButton,
@@ -92,23 +95,31 @@ export default Vue.extend({
     },
     data() {
         return {
-            showOptions: false as boolean,
             showHistory: false as boolean,
-            showAliases: false as boolean,
-            isActive: true as boolean,
             rename: '' as string,
+            showRenameRaiderTextField: false,
         };
     },
     computed: {
         joinDate(): string {
             return DateTimeUtils.formatDateForDisplay(DateTimeUtils.getDateFromUnixTime(this.raider.join_timestamp));
         },
+        activeLabel(): string {
+            if (this.raider.active) {
+                return "Set Inactive";
+            } else {
+                return "Set Active";
+            }
+        }
     },
     methods: {
-        async renameRaider() {
-            const raider = this.raider;
-            raider.name = this.rename;
-            await RaidersApi.updateRaider(raider);
+        setActive(raider: Raider, active: boolean) {
+            raider.active = active;
+            this.$emit('updateRaider', raider)
+        },
+        renameRaider(raider: Raider, rename: string) {
+            raider.name = rename;
+            this.$emit('updateRaider', raider);
         },
         emitRaiderToAddAlt(raider: Raider) {
             this.$emit('raiderToAltAdd', raider);
@@ -116,8 +127,8 @@ export default Vue.extend({
         emitShowAddExperienceModal(raider: Raider) {
             this.$emit('showAddExperienceModal', raider);
         },
-        emitUpdateRaider(raider: Raider) {
-            this.$emit('updateRaider', raider);
+        emitRaiderToAddAlias(raider: Raider) {
+            this.$emit('showAliasAdd', raider);
         }
     },
 });

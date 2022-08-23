@@ -1,5 +1,5 @@
 <template>
-    <v-btn icon @click="$emit('click')">
+    <v-btn icon @click="$emit('click')" v-on="on" v-bind="bind" :disabled="disabled">
         <v-icon>
             {{ icon }}
         </v-icon>
@@ -15,6 +15,17 @@ export default Vue.extend({
             type: String,
             required: true,
         },
+        on: {
+            required: false,
+        },
+        bind: {
+            required: false,
+        },
+        disabled: {
+            type: Boolean,
+            required: false,
+            default: false,
+        }
     },
 });
 </script>

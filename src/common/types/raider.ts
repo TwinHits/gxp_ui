@@ -11,4 +11,5 @@ export interface Raider {
     alts: Raider[];
     aliases: Alias[];
     main: string | undefined;
+    active: boolean;
 }
