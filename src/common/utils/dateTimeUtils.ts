@@ -11,7 +11,7 @@ export function formatDateTimeForDisplay(date: Date): string {
 }
 
 export function formatDateForDisplay(date: Date): string {
-    return date.toDateString();
+    return date.toLocaleDateString();
 }
 
 export function getWeekdayFromUnixTime(unixTime: number): number {

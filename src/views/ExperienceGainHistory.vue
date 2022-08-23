@@ -1,11 +1,11 @@
 <template>
-    <ModalDialog label="Experience History" :show="show" @close="$emit('close')">
+    <ModalDialog :label="label" :show="show" :width="'60%'" @close="$emit('close')">
         <v-card-text>
             <LoadingCircle v-if="loading" size="50" />
             <div v-else>
-                <v-row>
-                    <v-col> Experience Multipler: {{ experienceMultipler }} </v-col>
-                </v-row>
+                <v-card-subtitle class="experience-multipler">
+                    Experience Multipler: {{ experienceMultipler }}
+                </v-card-subtitle>
                 <v-timeline
                     class="experience-history-timeline"
                     v-for="(gains, date) in experienceGainsByDay"
@@ -19,7 +19,7 @@
                         </v-col>
                     </v-row>
                     <v-timeline-item
-                        :style="{ 'align-items': 'center' }"
+                        :style="{ 'align-items': 'center', 'padding': '0', 'margin': '0' }"
                         class="experience-history-timeline-item"
                         v-for="gain in gains"
                         :key="gain.id"
@@ -31,7 +31,7 @@
                             <v-col cols="11">
                                 <HistoryItem :experienceGain="gain" :multipler="raider.experienceMultipler" />
                             </v-col>
-                            <v-col cols="1">
+                            <v-col cols="1" align="right">
                                 <IconButton icon="mdi-trash-can-outline" @click="deleteExperienceGain(gain)" />
                             </v-col>
                         </v-row>
@@ -77,13 +77,27 @@ export default Vue.extend({
         return {
             loading: false,
             experienceGains: [] as ExperienceGain[],
-            experienceGainsByDay: {} as Record<string, ExperienceGain[]>,
         };
     },
     computed: {
         experienceMultipler(): string {
             return this.raider.experienceMultipler.toFixed(2);
         },
+        experienceGainsByDay(): Record<string, ExperienceGain[]> {
+            const experienceGainsByDay = {} as Record<string, ExperienceGain[]>,;
+            for (const experienceGain of this.experienceGains) {
+                const date = DateTimeUtils.getDateFromUnixTime(experienceGain.timestamp);
+                const day = DateTimeUtils.formatDateForDisplay(date);
+                if (!experienceGainsByDay[day]) {
+                    experienceGainsByDay[day] = [];
+                }
+                experienceGainsByDay[day].push(experienceGain);
+            }
+            return experienceGainsByDay;
+        },
+        label(): string {
+            return `${this.raider.name} Experience History`;
+        }
     },
     methods: {
         getIconForExperienceEvent(experienceEvent: string) {
@@ -91,32 +105,31 @@ export default Vue.extend({
         },
         deleteExperienceGain(experienceGain: ExperienceGain) {
             ExperienceGainsApi.deleteExperienceGain(experienceGain.id);
-            this.$emit("refreshRaiders")
-        }
+            this.experienceGains.splice(this.experienceGains.findIndex((g: ExperienceGain) => g.id === experienceGain.id), 1);
+        },
     },
     async mounted() {
         this.loading = true;
         this.experienceGains = await ExperienceGainsApi.getExperienceGainsForRaiderId(this.raider.id);
         this.experienceGains = this.experienceGains.reverse()
-        for (const experienceGain of this.experienceGains) {
-            const date = DateTimeUtils.getDateFromUnixTime(experienceGain.timestamp);
-            const day = date.toLocaleDateString();
-            if (!this.experienceGainsByDay[day]) {
-                this.experienceGainsByDay[day] = [];
-            }
-            this.experienceGainsByDay[day].push(experienceGain);
-        }
         this.loading = false;
     },
 });
 </script>
 
 <style scoped lang="scss">
+.experience-multipler {
+    font-weight: bold;
+}
+
 .experience-history-timeline {
-    margin-left: 3vw;
+    margin-left: 2vw;
+    margin-right: 1vw;
 }
 
 .experience-history-timeline-date {
     font-weight: bold;
+    font-size: 1.1em;
 }
+
 </style>
