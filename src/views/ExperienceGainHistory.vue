@@ -1,7 +1,11 @@
 <template>
     <ModalDialog :label="label" :show="show" :width="'60%'" @close="$emit('close')">
         <v-card-text>
-            <LoadingCircle v-if="loading" size="50" />
+            <v-row justify="center" v-if="loading">
+                <v-col md="auto">
+                    <LoadingCircle size="75" class="loading-circle" />
+                </v-col>
+            </v-row>
             <div v-else>
                 <v-card-subtitle class="experience-multipler">
                     Experience Multipler: {{ experienceMultipler }}
@@ -118,6 +122,11 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.loading-circle {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+
 .experience-multipler {
     font-weight: bold;
 }
