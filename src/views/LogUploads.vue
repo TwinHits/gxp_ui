@@ -46,11 +46,7 @@
                 <template v-else>
                     <IconButton v-if="!item.raid && item.active" icon="mdi-content-save-outline" @click="updateLog(item)" />
                     <IconButton v-if="!item.raid && item.active" icon="mdi-upload" @click="createRaid(item)" />
-                    <IconButton
-                        v-if="!item.raid && item.active"
-                        icon="mdi-archive-outline"
-                        @click="setLogActive(item, false)"
-                    />
+                    <IconButton v-if="!item.raid && item.active" icon="mdi-archive-outline" @click="setLogActive(item, false)" />
                     <IconButton v-if="item.raid" icon="mdi-trash-can-outline" @click="deleteRaid(item)" />
                     <IconButton v-if="!item.active" icon="mdi-archive-off-outline" @click="setLogActive(item, true)" />
                 </template>

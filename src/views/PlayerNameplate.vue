@@ -10,7 +10,7 @@
                     </v-row>
                     <v-row v-else>
                         <v-col :cols="5">
-                            <v-text-field v-model="rename" hide-details dense outlined :label="raider.name" ></v-text-field>
+                            <v-text-field v-model="rename" hide-details dense outlined :label="raider.name"></v-text-field>
                         </v-col>
                         <v-col md="auto">
                             <IconButton icon="mdi-content-save-outline" @click="renameRaider(raider, rename)" />
@@ -57,7 +57,7 @@
                     <GuildExperienceBar :experience="raider.experience" @click="showHistory = true" />
                 </v-col>
                 <v-col cols="1" align="center">
-                    <IconButton icon="mdi-plus-circle-outline" @click="emitShowAddExperienceModal(raider)"/>
+                    <IconButton icon="mdi-plus-circle-outline" @click="emitShowAddExperienceModal(raider)" />
                 </v-col>
             </v-row>
             <v-list dense disabled>
@@ -106,16 +106,16 @@ export default Vue.extend({
         },
         activeLabel(): string {
             if (this.raider.active) {
-                return "Set Inactive";
+                return 'Set Inactive';
             } else {
-                return "Set Active";
+                return 'Set Active';
             }
-        }
+        },
     },
     methods: {
         setActive(raider: Raider, active: boolean) {
             raider.active = active;
-            this.$emit('updateRaider', raider)
+            this.$emit('updateRaider', raider);
         },
         renameRaider(raider: Raider, rename: string) {
             raider.name = rename;
@@ -129,7 +129,7 @@ export default Vue.extend({
         },
         emitRaiderToAddAlias(raider: Raider) {
             this.$emit('showAliasAdd', raider);
-        }
+        },
     },
 });
 </script>

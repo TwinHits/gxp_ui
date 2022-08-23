@@ -156,9 +156,9 @@ export async function getAllRaiders() {
 export async function getAllLogs() {
     const logs = await LogsApi.getLogs();
     for (const log of logs) {
-        log.optional = ![2,4].includes(DateTimeUtils.getWeekdayFromUnixTime(log.timestamp));
+        log.optional = ![2, 4].includes(DateTimeUtils.getWeekdayFromUnixTime(log.timestamp));
     }
-    console.log(logs)
+    console.log(logs);
 }
 
 export async function updateAllLogs() {
@@ -167,15 +167,14 @@ export async function updateAllLogs() {
     }
 }
 
-
 export function assembleRaidersInitalState() {
     const raiders = [] as any[];
     const raiders_export_map = {} as Record<string, any>;
     for (const [index, raider_export] of Object.entries(Raiders_export)) {
         try {
-            raiders_export_map[raider_export.name] = raider_export
-        } catch(err) {
-            console.log(err)
+            raiders_export_map[raider_export.name] = raider_export;
+        } catch (err) {
+            console.log(err);
         }
     }
 
@@ -185,24 +184,23 @@ export function assembleRaidersInitalState() {
                 name: raider_export.name,
                 join_timestamp: raider_export.join_timestamp,
                 active: raider_export.active,
-            }
-            raider.alts = raider_export.alts.map((a) => a.name)
-            raider.aliases = raider_export.aliases.map((a) => a.name)
-            raiders.push(raider)
-        } catch(err) {
-            console.log(err)
+            };
+            raider.alts = raider_export.alts.map((a) => a.name);
+            raider.aliases = raider_export.aliases.map((a) => a.name);
+            raiders.push(raider);
+        } catch (err) {
+            console.log(err);
         }
     }
-    console.log(raiders)
+    console.log(raiders);
 }
 
-
 export async function createRaidersFromBackup() {
-    const name_to_raider_obj = {}
+    const name_to_raider_obj = {};
     for (const [index, raider] of Object.entries(Raiders_final)) {
         if (raider && Object.keys(raider).length > 0 && !Array.isArray(raider)) {
-            const raider_obj =  await RaidersApi.createRaider(raider.name, raider.join_timestamp)
-            name_to_raider_obj[raider_obj.name] = raider_obj
+            const raider_obj = await RaidersApi.createRaider(raider.name, raider.join_timestamp);
+            name_to_raider_obj[raider_obj.name] = raider_obj;
         }
     }
 
@@ -218,8 +216,8 @@ export async function createRaidersFromBackup() {
                         const alt_raider_obj = name_to_raider_obj[alt];
                         await AltsApi.createAlt(alt_raider_obj.id, raider_obj.id);
                     }
-                } catch(e) {
-                    console.log(e)
+                } catch (e) {
+                    console.log(e);
                 }
             }
         }
@@ -228,11 +226,11 @@ export async function createRaidersFromBackup() {
 
 export function getOrderedCurrentExperienceFromRaiders(raiders: Raider[]) {
     const toPrint = {} as Record<string, number>;
-    raiders.sort((rhs, lhs) => rhs.experience > lhs.experience ? -1 : 1)
-    for (const raider of raiders)  {  
+    raiders.sort((rhs, lhs) => (rhs.experience > lhs.experience ? -1 : 1));
+    for (const raider of raiders) {
         if (raider.totalRaids > 0 && raider.experience > 0) {
             toPrint[raider.name] = raider.experience;
         }
     }
-    console.log(toPrint)
+    console.log(toPrint);
 }

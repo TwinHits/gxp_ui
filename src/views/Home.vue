@@ -3,12 +3,7 @@
         <v-row>
             <v-col>
                 <v-toolbar>
-                    <v-text-field
-                        v-model="searchTerm"
-                        prepend-icon="mdi-magnify"
-                        single-line
-                        label="Search"
-                    ></v-text-field>
+                    <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
                 </v-toolbar>
             </v-col>
             <v-col cols="2">
@@ -28,11 +23,7 @@
             </v-col>
         </v-row>
         <v-row class="nameplate-row" v-for="(n, rowIndex) in numberOfRows" :key="rowIndex">
-            <v-col
-                class="player-nameplate-col"
-                v-for="(n, columnIndex) in numberOfColumns"
-                :key="rowIndex * numberOfColumns + columnIndex"
-            >
+            <v-col class="player-nameplate-col" v-for="(n, columnIndex) in numberOfColumns" :key="rowIndex * numberOfColumns + columnIndex">
                 <PlayerNameplate
                     v-if="rowIndex * numberOfColumns + columnIndex < filteredRaiders.length"
                     :raider="filteredRaiders[rowIndex * numberOfColumns + columnIndex]"
@@ -63,16 +54,8 @@
             @close="showAddAlt = false"
             @refreshRaiders="getRaiders"
         />
-        <ExperienceEventsModal
-            :show="showExperienceEvents"
-            @close="showExperienceEvents = false"
-            @refreshRaiders="getRaiders"
-        />
-        <ExperienceLevelsModal
-            :show="showExperienceLevels"
-            @close="showExperienceLevels = false"
-            @refreshRaiders="getRaiders"
-        />
+        <ExperienceEventsModal :show="showExperienceEvents" @close="showExperienceEvents = false" @refreshRaiders="getRaiders" />
+        <ExperienceLevelsModal :show="showExperienceLevels" @close="showExperienceLevels = false" @refreshRaiders="getRaiders" />
         <AddExperienceModal
             v-if="raiderToAddExperience"
             :show="showAddExperienceModal"
@@ -80,12 +63,7 @@
             @close="showAddExperienceModal = false"
             @refreshRaiders="getRaiders"
         />
-        <AddAliasModal 
-            v-if="showAddAliasModal" 
-            :show="showAddAliasModal" 
-            :raider="raiderToAddAlias" 
-            @close="showAddAliasModal = false" 
-        />
+        <AddAliasModal v-if="showAddAliasModal" :show="showAddAliasModal" :raider="raiderToAddAlias" @close="showAddAliasModal = false" />
     </div>
 </template>
 
@@ -147,14 +125,10 @@ export default Vue.extend({
             }
         },
         numberOfRows(): number {
-            return this.filteredRaiders.length / this.columns
-                ? Math.ceil(this.filteredRaiders.length / this.columns)
-                : 0; // Don't divide by zero
+            return this.filteredRaiders.length / this.columns ? Math.ceil(this.filteredRaiders.length / this.columns) : 0; // Don't divide by zero
         },
         numberOfColumns(): number {
-            return this.filteredRaiders.length / this.numberOfRows
-                ? Math.ceil(this.filteredRaiders.length / this.numberOfRows)
-                : 0; // Don't divide by zero
+            return this.filteredRaiders.length / this.numberOfRows ? Math.ceil(this.filteredRaiders.length / this.numberOfRows) : 0; // Don't divide by zero
         },
     },
     methods: {
@@ -173,7 +147,7 @@ export default Vue.extend({
                     alts.push(raiderToIdMap.get(alt));
                     raiderToIdMap.delete(alt);
                 }
-                raider.alts = alts
+                raider.alts = alts;
             }
             this.raiders = Array.from(raiderToIdMap.values());
 

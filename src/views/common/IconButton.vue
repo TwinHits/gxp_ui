@@ -25,7 +25,7 @@ export default Vue.extend({
             type: Boolean,
             required: false,
             default: false,
-        }
+        },
     },
 });
 </script>

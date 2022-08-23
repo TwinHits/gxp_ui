@@ -19,7 +19,7 @@ export default Vue.extend({
         multipler: {
             required: true,
             type: Number,
-        }
+        },
     },
     data() {
         return {};

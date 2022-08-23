@@ -7,16 +7,8 @@
                 </v-col>
             </v-row>
             <div v-else>
-                <v-card-subtitle class="experience-multipler">
-                    Experience Multipler: {{ experienceMultipler }}
-                </v-card-subtitle>
-                <v-timeline
-                    class="experience-history-timeline"
-                    v-for="(gains, date) in experienceGainsByDay"
-                    :key="date"
-                    align-top
-                    dense
-                >
+                <v-card-subtitle class="experience-multipler"> Experience Multipler: {{ experienceMultipler }} </v-card-subtitle>
+                <v-timeline class="experience-history-timeline" v-for="(gains, date) in experienceGainsByDay" :key="date" align-top dense>
                     <v-row>
                         <v-col class="experience-history-timeline-date" align="center">
                             {{ date }}
@@ -88,7 +80,7 @@ export default Vue.extend({
             return this.raider.experienceMultipler.toFixed(2);
         },
         experienceGainsByDay(): Record<string, ExperienceGain[]> {
-            const experienceGainsByDay = {} as Record<string, ExperienceGain[]>,;
+            const experienceGainsByDay = {} as Record<string, ExperienceGain[]>;
             for (const experienceGain of this.experienceGains) {
                 const date = DateTimeUtils.getDateFromUnixTime(experienceGain.timestamp);
                 const day = DateTimeUtils.formatDateForDisplay(date);
@@ -101,7 +93,7 @@ export default Vue.extend({
         },
         label(): string {
             return `${this.raider.name} Experience History`;
-        }
+        },
     },
     methods: {
         getIconForExperienceEvent(experienceEvent: string) {
@@ -109,13 +101,16 @@ export default Vue.extend({
         },
         deleteExperienceGain(experienceGain: ExperienceGain) {
             ExperienceGainsApi.deleteExperienceGain(experienceGain.id);
-            this.experienceGains.splice(this.experienceGains.findIndex((g: ExperienceGain) => g.id === experienceGain.id), 1);
+            this.experienceGains.splice(
+                this.experienceGains.findIndex((g: ExperienceGain) => g.id === experienceGain.id),
+                1,
+            );
         },
     },
     async mounted() {
         this.loading = true;
         this.experienceGains = await ExperienceGainsApi.getExperienceGainsForRaiderId(this.raider.id);
-        this.experienceGains = this.experienceGains.reverse()
+        this.experienceGains = this.experienceGains.reverse();
         this.loading = false;
     },
 });
@@ -140,5 +135,4 @@ export default Vue.extend({
     font-weight: bold;
     font-size: 1.1em;
 }
-
 </style>

@@ -1,7 +1,5 @@
 <template>
-    <v-alert class="error-alert" v-if="error" v-model="show" color="red" dismissible elevation="6" type="error">{{
-        message
-    }}</v-alert>
+    <v-alert class="error-alert" v-if="error" v-model="show" color="red" dismissible elevation="6" type="error">{{ message }}</v-alert>
 </template>
 
 <script lang="ts">

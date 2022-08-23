@@ -39,8 +39,7 @@ import ModalDialog from '@/views/common/ModalDialog.vue';
 
 import { Raider } from '@/common/types/raider';
 
-import * as RaidersApi from '@/api/raiders.api'
-
+import * as RaidersApi from '@/api/raiders.api';
 
 export default Vue.extend({
     components: {
@@ -72,14 +71,14 @@ export default Vue.extend({
         },
         filteredRaiders(): Raider[] {
             const raiderAndAlts = this.raider.alts.concat([this.raider]);
-            console.log(raiderAndAlts)
+            console.log(raiderAndAlts);
             return this.raiders.filter((r: Raider) => !raiderAndAlts.includes(r));
         },
     },
     methods: {
         async createAlt() {
             if (this.alt) {
-                this.alt.main = this.raider.id
+                this.alt.main = this.raider.id;
                 await RaidersApi.updateRaider(this.alt);
                 this.raider.alts.push(this.alt);
                 this.alt = undefined;
@@ -88,10 +87,7 @@ export default Vue.extend({
         async deleteAlt(alt: Raider) {
             alt.main = undefined;
             await RaidersApi.updateRaider(alt);
-            this.raider.alts.splice(
-                this.raider.alts.findIndex(((a: Raider) => a.id === alt.id),
-                1,
-            ));
+            this.raider.alts.splice(this.raider.alts.findIndex((a: Raider) => a.id === alt.id, 1));
         },
     },
 });

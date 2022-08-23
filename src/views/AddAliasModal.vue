@@ -2,15 +2,10 @@
     <ModalDialog label="Aliases" :show="show" :width="'33%'" @close="$emit('close')">
         <v-card-text>
             <v-list class="aliases-list" dense>
-                <AliasListItem
-                    v-for="alias in raider.aliases"
-                    :key="alias.id"
-                    :alias="alias"
-                    @deleteAlias="deleteAlias"
-                />
+                <AliasListItem v-for="alias in raider.aliases" :key="alias.id" :alias="alias" @deleteAlias="deleteAlias" />
             </v-list>
             <v-row class="aliases-list-actions">
-                <v-col :cols="10"> 
+                <v-col :cols="10">
                     <v-text-field v-model="name" dense outlined label="Alias" />
                 </v-col>
                 <v-col :cols="2" align="center">

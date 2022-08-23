@@ -14,7 +14,7 @@
                     ></v-autocomplete>
                 </v-col>
                 <v-col cols="2">
-                    <v-text-field v-model="customGainValue" dense type="number" outlined label="Value"/>
+                    <v-text-field v-model="customGainValue" dense type="number" outlined label="Value" />
                 </v-col>
                 <v-col cols="1">
                     <IconButton icon="mdi-plus-circle-outline" :disabled="!experienceEvent" @click="createExperience" />
@@ -64,7 +64,7 @@ export default Vue.extend({
             } else {
                 this.customGainValue = 0;
             }
-        }
+        },
     },
     computed: {
         label(): string {
@@ -72,7 +72,7 @@ export default Vue.extend({
         },
         experienceEvents(): ExperienceEvent[] {
             return this.$store.getters.experienceEvents;
-        }
+        },
     },
     methods: {
         createExperience() {
@@ -89,9 +89,10 @@ export default Vue.extend({
                 ExperienceGainsApi.createExperienceGain(experienceGain);
                 this.$emit('close');
             }
-        }
+        },
     },
 });
 </script>
 
-<style scoped lang="scss"></style>Event
+<style scoped lang="scss"></style>
+Event

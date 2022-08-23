@@ -29,7 +29,7 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
     function (response) {
         if (response.data?.errors) {
-            throw new Error(response.data.errors[0].message)
+            throw new Error(response.data.errors[0].message);
         }
         return response;
     },
@@ -69,7 +69,7 @@ export async function post(url: string, body?: any): Promise<any> {
 }
 
 export async function get(url: string, queryParams?: any): Promise<any> {
-    const response = await axios.get(url, { params: queryParams});
+    const response = await axios.get(url, { params: queryParams });
     return response.data;
 }
 
@@ -94,7 +94,7 @@ export async function getAllPaginated(url: string, queryParams?: any, headers?: 
     let nextUrl = response.next;
     while (nextUrl) {
         response = await get(nextUrl);
-        total = total.concat(response.results)
+        total = total.concat(response.results);
         nextUrl = response.next;
     }
 

@@ -39,8 +39,8 @@ export default Vue.extend({
         width: {
             type: String,
             required: false,
-            default: "66%"
-        }
+            default: '66%',
+        },
     },
 });
 </script>

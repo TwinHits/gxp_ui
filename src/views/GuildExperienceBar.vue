@@ -1,14 +1,5 @@
 <template>
-    <v-progress-linear
-        :value="percent"
-        rounded
-        striped
-        prominent
-        color="blue"
-        height="20"
-        buffer-value="100"
-        @click="$emit('click')"
-    >
+    <v-progress-linear :value="percent" rounded striped prominent color="blue" height="20" buffer-value="100" @click="$emit('click')">
         {{ displayedString }}
     </v-progress-linear>
 </template>
