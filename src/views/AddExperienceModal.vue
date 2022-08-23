@@ -1,20 +1,23 @@
 <template>
-    <ModalDialog :label="label" :show="show" @close="$emit('close')">
+    <ModalDialog :label="label" :show="show" width="50%" @close="$emit('close')">
         <v-card-text>
             <v-row>
-                <v-col cols="10">
-            <v-autocomplete
-                v-model="experienceEvent"
-                :items="experienceEvents"
-                item-text="description"
-                return-object
-                label="Find Experience Event"
-                clearable
-                dense
-            ></v-autocomplete>
+                <v-col cols="9">
+                    <v-autocomplete
+                        v-model="experienceEvent"
+                        :items="experienceEvents"
+                        item-text="description"
+                        return-object
+                        label="Experience Event"
+                        clearable
+                        dense
+                    ></v-autocomplete>
                 </v-col>
                 <v-col cols="2">
-                    <v-btn :disabled="!experienceEvent" @click="createExperience">Add Experience</v-btn>
+                    <v-text-field v-model="customGainValue" dense type="number" outlined label="Value"/>
+                </v-col>
+                <v-col cols="1">
+                    <IconButton icon="mdi-plus-circle-outline" :disabled="!experienceEvent" @click="createExperience" />
                 </v-col>
             </v-row>
         </v-card-text>
@@ -24,6 +27,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 
+import IconButton from '@/views/common/IconButton.vue';
 import ModalDialog from '@/views/common/ModalDialog.vue';
 
 import { Raider } from '@/common/types/raider';
@@ -34,6 +38,7 @@ import * as ExperienceGainsApi from '@/api/experienceGains.api';
 
 export default Vue.extend({
     components: {
+        IconButton,
         ModalDialog,
     },
     props: {
@@ -49,7 +54,17 @@ export default Vue.extend({
     data() {
         return {
             experienceEvent: undefined as ExperienceEvent | undefined,
+            customGainValue: 0 as number,
         };
+    },
+    watch: {
+        experienceEvent(newValue: ExperienceEvent) {
+            if (newValue) {
+                this.customGainValue = newValue.value;
+            } else {
+                this.customGainValue = 0;
+            }
+        }
     },
     computed: {
         label(): string {
@@ -62,10 +77,16 @@ export default Vue.extend({
     methods: {
         createExperience() {
             if (this.experienceEvent) {
-                ExperienceGainsApi.createExperienceGain({
+                const experienceGain = {
                     raider: this.raider.id,
                     experienceEvent: this.experienceEvent.id,
-                } as ExperienceGain)
+                } as ExperienceGain;
+
+                if (this.customGainValue != this.experienceEvent.value) {
+                    experienceGain.value = this.customGainValue;
+                }
+
+                ExperienceGainsApi.createExperienceGain(experienceGain);
                 this.$emit('close');
             }
         }
