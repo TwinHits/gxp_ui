@@ -83,7 +83,7 @@ export async function del(url: string) {
     return response.data;
 }
 
-export async function put(url: string, body: any): any {
+export async function put(url: string, body?: any): any {
     const response = await axiosClient.put(url, body);
     return response.data;
 }

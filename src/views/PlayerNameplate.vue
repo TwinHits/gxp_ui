@@ -26,6 +26,9 @@
                             <IconButton icon="mdi-dots-vertical" :bind="attrs" :on="on" />
                         </template>
                         <v-list>
+                            <v-list-item link @click="recalculateExperience(raider)">
+                                <v-list-item-title>Recalculate Experience</v-list-item-title>
+                            </v-list-item>
                             <v-list-item link @click="emitRaiderToAddAlt(raider)">
                                 <v-list-item-title>Alts</v-list-item-title>
                             </v-list-item>
@@ -44,14 +47,6 @@
             </v-row>
         </v-card-title>
         <v-card-subtitle>
-            <v-row>
-                <v-col cols="4">{{ raider.experienceLevel.name }}</v-col>
-                <v-col cols="4">Joined: {{ joinDate }}</v-col>
-                <v-col cols="2">Weeks: {{ raider.totalWeeks }}</v-col>
-                <v-col cols="2">Raids: {{ raider.totalRaids }}</v-col>
-            </v-row>
-        </v-card-subtitle>
-        <v-card-text>
             <v-row align="center">
                 <v-col cols="11" align="left">
                     <GuildExperienceBar :experience="raider.experience" @click="showHistory = true" />
@@ -60,10 +55,13 @@
                     <IconButton icon="mdi-plus-circle-outline" @click="emitShowAddExperienceModal(raider)" />
                 </v-col>
             </v-row>
-            <v-list dense disabled>
-                <AltListItem v-for="alt in raider.alts" :key="alt.id" :alt="alt" @showHistory="showHistory = true" />
-            </v-list>
-        </v-card-text>
+            <v-row>
+                <v-col cols="4">{{ raider.experienceLevel.name }}</v-col>
+                <v-col cols="4">Joined: {{ joinDate }}</v-col>
+                <v-col cols="2">Weeks: {{ raider.totalWeeks }}</v-col>
+                <v-col cols="2">Raids: {{ raider.totalRaids }}</v-col>
+            </v-row>
+        </v-card-subtitle>
         <ExperienceGainHistory v-if="showHistory" :show="showHistory" :raider="raider" @close="showHistory = false" />
     </v-card>
 </template>
@@ -71,7 +69,6 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 
-import AltListItem from '@/views/AltListItem.vue';
 import IconButton from '@/views/common/IconButton.vue';
 import ExperienceGainHistory from '@/views/ExperienceGainHistory.vue';
 import GuildExperienceBar from '@/views/GuildExperienceBar.vue';
@@ -82,7 +79,6 @@ import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
 
 export default Vue.extend({
     components: {
-        AltListItem,
         ExperienceGainHistory,
         IconButton,
         GuildExperienceBar,
@@ -113,6 +109,9 @@ export default Vue.extend({
         },
     },
     methods: {
+        recalculateExperience(raider: Raider) {
+            this.$emit('recalculateExperienceForRaider', raider);
+        },
         setActive(raider: Raider, active: boolean) {
             raider.active = active;
             this.$emit('updateRaider', raider);

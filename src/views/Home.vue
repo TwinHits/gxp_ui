@@ -1,24 +1,28 @@
 <template>
     <div class="containing-div">
         <v-row>
-            <v-col>
+            <v-col cols="4">
                 <v-toolbar>
                     <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
                 </v-toolbar>
             </v-col>
-            <v-col cols="2">
+            <v-col cols="1">
                 <v-btn @click="showRaids = true">Raids</v-btn>
             </v-col>
             <v-col cols="2">
                 <v-btn @click="showCreateRaider = true">Create Raider</v-btn>
             </v-col>
             <v-col cols="2">
-                <v-btn @click="showExperienceEvents = true">Experience Events</v-btn>
+                <v-btn @click="showExperienceEvents = true">Events</v-btn>
             </v-col>
-            <v-col cols="2">
-                <v-btn @click="showExperienceLevels = true">Experience Levels</v-btn>
+            <v-col cols="1">
+                <v-btn @click="showExperienceLevels = true">Levels</v-btn>
             </v-col>
-            <v-col cols="2">
+            <v-col cols="1">
+                <v-btn v-if="!recalculating" @click="recalculateExperience(raider)">Recalculate Experience</v-btn>
+                <LoadingCircle v-else :size="25" />
+            </v-col>
+            <v-col cols="1">
                 <v-btn @click="dev">DEV</v-btn>
             </v-col>
         </v-row>
@@ -41,6 +45,7 @@
                         raiderToAddAlias = $event;
                         showAddAliasModal = true;
                     "
+                    @recalculateExperienceForRaider="recalculateExperience($event)"
                 />
             </v-col>
         </v-row>
@@ -76,6 +81,7 @@ import AddExperienceModal from '@/views/AddExperienceModal.vue';
 import CreateRaiderModal from '@/views/CreateRaiderModal.vue';
 import ExperienceEventsModal from '@/views/ExperienceEventsModal.vue';
 import ExperienceLevelsModal from '@/views/ExperienceLevelsModal.vue';
+import LoadingCircle from '@/views/common/LoadingCircle.vue';
 import LogUploads from '@/views/LogUploads.vue';
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
 
@@ -97,6 +103,7 @@ export default Vue.extend({
         ExperienceLevelsModal,
         PlayerNameplate,
         LogUploads,
+        LoadingCircle
     },
     data() {
         return {
@@ -114,6 +121,7 @@ export default Vue.extend({
             raiderToAltAdd: undefined as Raider | undefined,
             raiderToAddExperience: undefined as Raider | undefined,
             raiderToAddAlias: undefined as Raider | undefined,
+            recalculating: false as boolean,
         };
     },
     computed: {
@@ -167,6 +175,13 @@ export default Vue.extend({
         async createRaider(name: string) {
             this.raiders.push(await RaidersApi.createRaider(name));
         },
+        async recalculateExperience(raider?: Raider) {
+            console.log(raider)
+            this.recalculating = true;
+            await RaidersApi.recalculateExperience(raider);
+            await this.getRaiders();
+            this.recalculating = false;
+        }
     },
     async mounted() {
         const events = await ExperienceEventsApi.getExperienceEvents();

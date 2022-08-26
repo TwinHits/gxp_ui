@@ -27,3 +27,11 @@ export async function getRaiders(active?: boolean): Promise<Raider[]> {
 export async function deleteRaider(id: string) {
     await Api.del(`${config.gxpApi.baseUrl}/raiders/${id}/`);
 }
+
+export async function recalculateExperience(raider?: Raider) {
+    if (raider) {
+        await Api.put(`${config.gxpApi.baseUrl}/raiders/${raider.id}/calculate_experience/`);
+    } else {
+        await Api.put(`${config.gxpApi.baseUrl}/raiders/calculate_experience/`);
+    }
+}

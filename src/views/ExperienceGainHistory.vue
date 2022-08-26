@@ -48,8 +48,10 @@ import ModalDialog from '@/views/common/ModalDialog.vue';
 
 import { ExperienceGain } from '@/common/types/experienceGain';
 import { Raider } from '@/common/types/raider';
+import { Raid } from '@/common/types/raid';
 
 import * as ExperienceGainsApi from '@/api/experienceGains.api';
+import * as RaidsApi from '@/api/raids.api';
 import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
 
 export default Vue.extend({
@@ -73,6 +75,7 @@ export default Vue.extend({
         return {
             loading: false,
             experienceGains: [] as ExperienceGain[],
+            raids: {} as Record<string, Raid>,
         };
     },
     computed: {
@@ -82,12 +85,15 @@ export default Vue.extend({
         experienceGainsByDay(): Record<string, ExperienceGain[]> {
             const experienceGainsByDay = {} as Record<string, ExperienceGain[]>;
             for (const experienceGain of this.experienceGains) {
-                const date = DateTimeUtils.getDateFromUnixTime(experienceGain.timestamp);
-                const day = DateTimeUtils.formatDateForDisplay(date);
-                if (!experienceGainsByDay[day]) {
-                    experienceGainsByDay[day] = [];
+                const raid = this.raids[experienceGain.raid as string];
+                if (!raid.optional) {
+                    const date = DateTimeUtils.getDateFromUnixTime(experienceGain.timestamp);
+                    const day = DateTimeUtils.formatDateForDisplay(date);
+                    if (!experienceGainsByDay[day]) {
+                        experienceGainsByDay[day] = [];
+                    }
+                    experienceGainsByDay[day].push(experienceGain);
                 }
-                experienceGainsByDay[day].push(experienceGain);
             }
             return experienceGainsByDay;
         },
@@ -111,6 +117,8 @@ export default Vue.extend({
         this.loading = true;
         this.experienceGains = await ExperienceGainsApi.getExperienceGainsForRaiderId(this.raider.id);
         this.experienceGains = this.experienceGains.reverse();
+        const raids = await RaidsApi.getRaids();
+        raids.map((r: Raid) => this.raids[r.id] = r)
         this.loading = false;
     },
 });
