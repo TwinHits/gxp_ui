@@ -21,7 +21,7 @@
                     </v-row>
                 </v-col>
                 <v-col :cols="1">
-                    <v-menu offset-y transition="slide-y-transition" bottom>
+                    <v-menu v-if="isLoggedIn" offset-y transition="slide-y-transition" bottom>
                         <template v-slot:activator="{ on, attrs }">
                             <IconButton icon="mdi-dots-vertical" :bind="attrs" :on="on" />
                         </template>
@@ -52,7 +52,7 @@
                     <GuildExperienceBar :experience="raider.experience" @click="showHistory = true" />
                 </v-col>
                 <v-col cols="1" align="center">
-                    <IconButton icon="mdi-plus-circle-outline" @click="emitShowAddExperienceModal(raider)" />
+                    <IconButton v-if="isLoggedIn" icon="mdi-plus-circle-outline" @click="emitShowAddExperienceModal(raider)" />
                 </v-col>
             </v-row>
             <v-row>
@@ -129,6 +129,9 @@ export default Vue.extend({
         emitRaiderToAddAlias(raider: Raider) {
             this.$emit('showAliasAdd', raider);
         },
+        loggedIn(): boolean {
+            return this.$store.getters.isLoggedIn;
+        }
     },
 });
 </script>

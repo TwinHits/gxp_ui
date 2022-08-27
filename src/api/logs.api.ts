@@ -5,7 +5,7 @@ import { Log } from '@/common/types/log';
 import config from '@/../config.json';
 
 export async function pullLogsFromWarcraftLogs(): Promise<Log[]> {
-    return await Api.post(`${config.gxpApi.baseUrl}/logs/pull/`);
+    return await Api.put(`${config.gxpApi.baseUrl}/logs/pull/`);
 }
 
 export async function createLog(log: Log): Promise<Log> {

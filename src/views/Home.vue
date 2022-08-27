@@ -7,23 +7,26 @@
                 </v-toolbar>
             </v-col>
             <v-col cols="1">
-                <v-btn @click="showRaids = true">Raids</v-btn>
-            </v-col>
-            <v-col cols="2">
-                <v-btn @click="showCreateRaider = true">Create Raider</v-btn>
-            </v-col>
-            <v-col cols="2">
-                <v-btn @click="showExperienceEvents = true">Events</v-btn>
+                <v-btn v-if="isLoggedIn" @click="showRaids = true">Raids</v-btn>
             </v-col>
             <v-col cols="1">
-                <v-btn @click="showExperienceLevels = true">Levels</v-btn>
+                <v-btn v-if="isLoggedIn" @click="showCreateRaider = true">Create Raider</v-btn>
             </v-col>
             <v-col cols="1">
-                <v-btn v-if="!recalculating" @click="recalculateExperience(raider)">Recalculate Experience</v-btn>
-                <LoadingCircle v-else :size="25" />
+                <v-btn v-if="isLoggedIn" @click="showExperienceEvents = true">Events</v-btn>
             </v-col>
             <v-col cols="1">
-                <v-btn @click="dev">DEV</v-btn>
+                <v-btn v-if="isLoggedIn" @click="showExperienceLevels = true">Levels</v-btn>
+            </v-col>
+            <v-col cols="1">
+                <v-btn v-if="isLoggedIn && !recalculating" @click="recalculateExperience(raider)">Recalculate Experience</v-btn>
+                <LoadingCircle v-if="isLoggedIn && recalculating" :size="25" />
+            </v-col>
+            <v-col cols="1">
+                <v-btn  v-if="isLoggedIn" @click="dev">DEV</v-btn>
+            </v-col>
+            <v-col cols="1">
+                <v-btn @click="showAdminLoginModal = true">Admin</v-btn>
             </v-col>
         </v-row>
         <v-row class="nameplate-row" v-for="(n, rowIndex) in numberOfRows" :key="rowIndex">
@@ -69,6 +72,7 @@
             @refreshRaiders="getRaiders"
         />
         <AddAliasModal v-if="showAddAliasModal" :show="showAddAliasModal" :raider="raiderToAddAlias" @close="showAddAliasModal = false" />
+        <AdminLoginModal v-if="showAdminLoginModal" :show="showAdminLoginModal" @close="showAdminLoginModal = false" />
     </div>
 </template>
 
@@ -78,6 +82,7 @@ import Vue from 'vue';
 import AddAltModal from '@/views/AddAltModal.vue';
 import AddAliasModal from '@/views/AddAliasModal.vue';
 import AddExperienceModal from '@/views/AddExperienceModal.vue';
+import AdminLoginModal from '@/views/AdminLoginModal.vue';
 import CreateRaiderModal from '@/views/CreateRaiderModal.vue';
 import ExperienceEventsModal from '@/views/ExperienceEventsModal.vue';
 import ExperienceLevelsModal from '@/views/ExperienceLevelsModal.vue';
@@ -98,6 +103,7 @@ export default Vue.extend({
         AddAltModal,
         AddAliasModal,
         AddExperienceModal,
+        AdminLoginModal,
         CreateRaiderModal,
         ExperienceEventsModal,
         ExperienceLevelsModal,
@@ -116,6 +122,7 @@ export default Vue.extend({
             showExperienceLevels: false,
             showAddExperienceModal: false,
             showAddAliasModal: false,
+            showAdminLoginModal: false,
             searchTerm: '' as string,
             raiders: [] as Raider[],
             raiderToAltAdd: undefined as Raider | undefined,
@@ -138,6 +145,9 @@ export default Vue.extend({
         numberOfColumns(): number {
             return this.filteredRaiders.length / this.numberOfRows ? Math.ceil(this.filteredRaiders.length / this.numberOfRows) : 0; // Don't divide by zero
         },
+        loggedIn(): boolean {
+            return this.$store.getters.isLoggedIn
+        }
     },
     methods: {
         async getRaiders() {

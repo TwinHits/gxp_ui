@@ -1,15 +1,36 @@
 export default {
     state: () => ({
-        auth: undefined as any | undefined,
+        accessToken: undefined as string | undefined,
+        refreshToken: undefined as string | undefined,
+        accessTokenExpiration: undefined as number | undefined,
     }),
     mutations: {
-        setAuth(state: any, auth: any) {
-            state.auth = auth;
+        setAccessToken(state: any, accessToken: any) {
+            state.accessToken = accessToken;
         },
+        setRefreshToken(state: any, refreshToken: any) {
+            state.refreshToken = refreshToken;
+        },
+        setAccessTokenExpiration(state:any, expiration: any) {
+            state.accessTokenExpiration = expiration * 1000;
+        }
     },
     getters: {
-        auth: (state: any) => {
-            return state.auth;
+        accessToken: (state: any) => {
+            return state.accessToken;
         },
+        refreshToken: (state: any) => {
+            return state.refreshToken;
+        },
+        isAccessTokenExpired: (state: any) => {
+            if (state.accessTokenExpiration) {
+                return state.accessTokenExpiration < new Date().valueOf();
+            } else {
+                return false;
+            }
+        },
+        isLoggedIn: (state: any) => {
+            return state.accessToken != undefined;
+        }
     },
 };

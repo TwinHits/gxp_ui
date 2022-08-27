@@ -134,9 +134,9 @@ export default Vue.extend({
             if (!log.raid && log.active) {
                 log.loading = true;
                 await LogsApi.updateLog(log);
-                log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId); // eslint-disable-line require-atomic-updates
+                log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId); 
                 this.$emit('refreshRaiders');
-                log.loading = false; // eslint-disable-line require-atomic-updates
+                log.loading = false;
             }
         },
         async createRaids() {
@@ -145,8 +145,8 @@ export default Vue.extend({
                 if (!log.raid && log.active) {
                     log.loading = true;
                     await LogsApi.updateLog(log);
-                    log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId); // eslint-disable-line require-atomic-updates
-                    log.loading = false; // eslint-disable-line require-atomic-updates
+                    log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId);
+                    log.loading = false; 
                 }
             }
         },
@@ -155,7 +155,7 @@ export default Vue.extend({
             const updatedLog = await LogsApi.updateLog(log);
             const index = this.logs.findIndex((l: Log) => l.logsCode === updatedLog.logsCode);
             this.logs[index] = updatedLog;
-            log.loading = false; // eslint-disable-line require-atomic-updates
+            log.loading = false; 
         },
         async setLogActive(log: Log, active: boolean) {
             log.active = active;

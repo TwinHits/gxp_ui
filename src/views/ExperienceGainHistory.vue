@@ -28,7 +28,7 @@
                                 <HistoryItem :experienceGain="gain" :multipler="raider.experienceMultipler" />
                             </v-col>
                             <v-col cols="1" align="right">
-                                <IconButton icon="mdi-trash-can-outline" @click="deleteExperienceGain(gain)" />
+                                <IconButton v-if="isLoggedIn" icon="mdi-trash-can-outline" @click="deleteExperienceGain(gain)" />
                             </v-col>
                         </v-row>
                     </v-timeline-item>
@@ -100,6 +100,9 @@ export default Vue.extend({
         label(): string {
             return `${this.raider.name} Experience History`;
         },
+        isLoggedIn(): boolean {
+            return this.$store.getters.isLoggedIn;
+        }
     },
     methods: {
         getIconForExperienceEvent(experienceEvent: string) {
