@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { GXP_UIStack } from '../lib/GXP_UIStack';
+import { GXPUIStack } from '../lib/GXPUIStack';
 
 const app = new cdk.App();
-new GXP_UIStack(app, 'GXP_UIStack', {
+new GXPUIStack(app, 'GXPUIStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
