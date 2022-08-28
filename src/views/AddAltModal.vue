@@ -71,7 +71,6 @@ export default Vue.extend({
         },
         filteredRaiders(): Raider[] {
             const raiderAndAlts = this.raider.alts.concat([this.raider]);
-            console.log(raiderAndAlts);
             return this.raiders.filter((r: Raider) => !raiderAndAlts.includes(r));
         },
     },
@@ -80,14 +79,14 @@ export default Vue.extend({
             if (this.alt) {
                 this.alt.main = this.raider.id;
                 await RaidersApi.updateRaider(this.alt);
-                this.raider.alts.push(this.alt);
+                this.raider.alts.push(this.alt as any);
                 this.alt = undefined;
             }
         },
         async deleteAlt(alt: Raider) {
             alt.main = undefined;
             await RaidersApi.updateRaider(alt);
-            this.raider.alts.splice(this.raider.alts.findIndex((a: Raider) => a.id === alt.id, 1));
+            this.raider.alts.splice(this.raider.alts.findIndex((a: any) => a.id === alt.id, 1));
         },
     },
 });

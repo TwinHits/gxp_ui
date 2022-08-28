@@ -1,3 +1,7 @@
+/** 
+ * 
+ * Poorly maintained quick and dirty scripts.
+ * 
 import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
 import * as AliasesApi from '@/api/aliases.api';
@@ -214,7 +218,6 @@ export async function createRaidersFromBackup() {
                     }
                     for (const alt of raider.alts) {
                         const alt_raider_obj = name_to_raider_obj[alt];
-                        await AltsApi.createAlt(alt_raider_obj.id, raider_obj.id);
                     }
                 } catch (e) {
                     console.log(e);
@@ -234,3 +237,4 @@ export function getOrderedCurrentExperienceFromRaiders(raiders: Raider[]) {
     }
     console.log(toPrint);
 }
+**/

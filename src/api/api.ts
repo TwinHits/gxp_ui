@@ -27,8 +27,8 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
     function (response) {
         if (response.data?.errors) {
-            let message = "";
-            response.data.errors.map((e: Error) => message += e.message);
+            let message = '';
+            response.data.errors.map((e: Error) => (message += e.message));
             throw new Error(message);
         }
         return response;
@@ -58,7 +58,7 @@ export async function del(url: string) {
     return response.data;
 }
 
-export async function put(url: string, body?: any): any {
+export async function put(url: string, body?: any): Promise<any> {
     const response = await axios.put(url, body);
     return response.data;
 }

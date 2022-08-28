@@ -1,6 +1,6 @@
 import * as Api from '@/api/api';
 
-import { Alias } from '@/common/types/Alias';
+import { Alias } from '@/common/types/alias';
 
 import config from '@/../config.json';
 

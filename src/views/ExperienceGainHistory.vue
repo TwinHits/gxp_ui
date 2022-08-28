@@ -13,15 +13,9 @@
                         <v-col class="experience-history-timeline-date" align="center">
                             {{ formatTimestamp(raid.timestamp) }}
                         </v-col>
-                        <v-col align="center">
-                           Optional: {{ raid.optional }}
-                        </v-col>
-                        <v-col align="center">
-                           Zone: {{ raid.log.zone }}
-                        </v-col>
-                        <v-col align="center">
-                           Experience: {{ calculateExperienceSoFar(raidId) }}
-                        </v-col>
+                        <v-col align="center"> Optional: {{ raid.optional }} </v-col>
+                        <v-col align="center"> Zone: {{ raid.log.zone }} </v-col>
+                        <v-col align="center"> Experience: {{ calculateExperienceSoFar(raidId) }} </v-col>
                     </v-row>
                     <v-timeline-item
                         :style="{ 'align-items': 'center', 'padding': '0', 'margin': '0' }"
@@ -96,7 +90,7 @@ export default Vue.extend({
         },
         isLoggedIn(): boolean {
             return this.$store.getters.isLoggedIn;
-        }
+        },
     },
     methods: {
         formatTimestamp(timestamp: number) {
@@ -109,20 +103,20 @@ export default Vue.extend({
             let experience = 0;
             for (const [raidId, gains] of Object.entries(this.experienceGainsByRaidId).reverse()) {
                 for (const gain of gains) {
-                    let new_experience = experience + (gain.value * this.raider.experienceMultipler)
+                    let new_experience = experience + gain.value * this.raider.experienceMultipler;
                     if (new_experience < 0) {
-                        experience = 0
+                        experience = 0;
                     } else if (new_experience > 500) {
-                        experience = 500
+                        experience = 500;
                     } else {
-                        experience = new_experience
+                        experience = new_experience;
                     }
                 }
-                if (raidId === raidIdSoFar ) {
+                if (raidId === raidIdSoFar) {
                     break;
                 }
             }
-            return experience
+            return experience;
         },
         deleteExperienceGain(experienceGain: ExperienceGain) {
             ExperienceGainsApi.deleteExperienceGain(experienceGain.id);
@@ -138,7 +132,7 @@ export default Vue.extend({
         this.loading = true;
 
         const raids = await RaidsApi.getRaids();
-        raids.map((r: Raid) => this.raidsByRaidId[r.id] = r);
+        raids.map((r: Raid) => (this.raidsByRaidId[r.id] = r));
 
         const gainsWithNoRaid = [] as ExperienceGain[];
         const experienceGains = await (await ExperienceGainsApi.getExperienceGainsForRaiderId(this.raider.id)).reverse();

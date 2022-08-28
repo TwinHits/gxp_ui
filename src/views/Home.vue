@@ -23,9 +23,6 @@
                 <LoadingCircle v-if="isLoggedIn && recalculating" :size="25" />
             </v-col>
             <v-col cols="1">
-                <v-btn  v-if="isLoggedIn" @click="dev">DEV</v-btn>
-            </v-col>
-            <v-col cols="1">
                 <v-btn @click="showAdminLoginModal = true">Admin</v-btn>
             </v-col>
         </v-row>
@@ -92,8 +89,6 @@ import PlayerNameplate from '@/views/PlayerNameplate.vue';
 
 import { Raider } from '@/common/types/raider';
 
-import * as DevUtils from '@/common/utils/devUtils';
-
 import * as RaidersApi from '@/api/raiders.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
 import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
@@ -109,7 +104,7 @@ export default Vue.extend({
         ExperienceLevelsModal,
         PlayerNameplate,
         LogUploads,
-        LoadingCircle
+        LoadingCircle,
     },
     data() {
         return {
@@ -146,28 +141,31 @@ export default Vue.extend({
             return this.filteredRaiders.length / this.numberOfRows ? Math.ceil(this.filteredRaiders.length / this.numberOfRows) : 0; // Don't divide by zero
         },
         isLoggedIn(): boolean {
-            return this.$store.getters.isLoggedIn
-        }
+            return this.$store.getters.isLoggedIn;
+        },
     },
     methods: {
         async getRaiders() {
             this.raiders = await RaidersApi.getRaiders(true);
 
             // Don't display alts as nameplates
-            const raiderToIdMap = new Map() as Map<string, Raider>;
+            const idToRaiderMap = new Map() as Map<string, Raider>;
             for (let raider of this.raiders) {
-                raiderToIdMap.set(raider.id, raider);
+                idToRaiderMap.set(raider.id, raider);
             }
 
             for (let raider of this.raiders) {
                 const alts = [] as Raider[];
                 for (let alt of raider.alts) {
-                    alts.push(raiderToIdMap.get(alt));
-                    raiderToIdMap.delete(alt);
+                    const raider = idToRaiderMap.get((alt as unknown) as string);
+                    if (raider) {
+                        alts.push(raider);
+                        idToRaiderMap.delete((alt as unknown) as string);
+                    }
                 }
                 raider.alts = alts;
             }
-            this.raiders = Array.from(raiderToIdMap.values());
+            this.raiders = Array.from(idToRaiderMap.values());
 
             // Sort by experience
             this.raiders.sort((lhs: Raider, rhs: Raider) => {
@@ -179,19 +177,16 @@ export default Vue.extend({
             const index = this.raiders.findIndex((r: Raider) => r.id === updatedRaider.id);
             this.raiders[index] = updatedRaider;
         },
-        async dev() {
-            DevUtils.getOrderedCurrentExperienceFromRaiders(this.raiders);
-        },
         async createRaider(name: string) {
             this.raiders.push(await RaidersApi.createRaider(name));
         },
         async recalculateExperience(raider?: Raider) {
-            console.log(raider)
+            console.log(raider);
             this.recalculating = true;
             await RaidersApi.recalculateExperience(raider);
             await this.getRaiders();
             this.recalculating = false;
-        }
+        },
     },
     async mounted() {
         const events = await ExperienceEventsApi.getExperienceEvents();

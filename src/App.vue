@@ -15,14 +15,10 @@ import ErrorBanner from '@/views/common/ErrorBanner.vue';
 
 export default Vue.extend({
     components: {
-        ErrorBanner
+        ErrorBanner,
     },
-    methods: {
-
-    },
-    computed: {
-
-    },
+    methods: {},
+    computed: {},
 });
 </script>
 
@@ -41,5 +37,4 @@ export default Vue.extend({
     padding-top: 0;
     padding-bottom: 0;
 }
-
 </style>

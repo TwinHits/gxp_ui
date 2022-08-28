@@ -131,7 +131,7 @@ export default Vue.extend({
         },
         isLoggedIn(): boolean {
             return this.$store.getters.isLoggedIn;
-        }
+        },
     },
 });
 </script>

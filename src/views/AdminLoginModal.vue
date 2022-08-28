@@ -35,13 +35,13 @@ export default Vue.extend({
     },
     methods: {
         login() {
-            console.log('there')
+            console.log('there');
             if (this.username && this.password) {
-            console.log('there again')
+                console.log('there again');
                 const response = AuthApi.login(this.username, this.password);
             }
-        }
-    }
+        },
+    },
 });
 </script>
 

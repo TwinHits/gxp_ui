@@ -6,9 +6,8 @@ import * as Api from '@/api/api';
 
 import config from '@/../config.json';
 
-
 export async function login(username: string, password: string) {
-    const response =  await Api.post(`${config.gxpApi.baseUrl}/api/token/`, {
+    const response = await Api.post(`${config.gxpApi.baseUrl}/api/token/`, {
         username,
         password,
     });
@@ -19,10 +18,8 @@ export async function login(username: string, password: string) {
     store.commit('setAccessTokenExpiration', decoded.exp);
 }
 
-
-
 export async function refreshAccessToken() {
-    const response =  await Api.post(`${config.gxpApi.baseUrl}/api/token/refresh/`, {
+    const response = await Api.post(`${config.gxpApi.baseUrl}/api/token/refresh/`, {
         refresh: store.getters.refreshToken,
     });
     store.commit('setAccessToken', response.access);

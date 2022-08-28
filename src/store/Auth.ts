@@ -11,9 +11,9 @@ export default {
         setRefreshToken(state: any, refreshToken: any) {
             state.refreshToken = refreshToken;
         },
-        setAccessTokenExpiration(state:any, expiration: any) {
+        setAccessTokenExpiration(state: any, expiration: any) {
             state.accessTokenExpiration = expiration * 1000;
-        }
+        },
     },
     getters: {
         accessToken: (state: any) => {
@@ -31,6 +31,6 @@ export default {
         },
         isLoggedIn: (state: any) => {
             return state.accessToken != undefined;
-        }
+        },
     },
 };
