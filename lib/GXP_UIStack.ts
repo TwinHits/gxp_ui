@@ -6,13 +6,13 @@ export class GXP_UI extends Stack {
         super(scope, id, props);
 
         const comWebsiteBucket = new s3.Bucket(this, 'GXP_UIComBucket', {
-            bucketName: "DOMAIN_NAME.com",
+            bucketName: "guildxp.com",
             publicReadAccess: true,
-            websiteRedirect: { hostName: 'www.DOMAIN_NAME.com' },
+            websiteRedirect: { hostName: 'www.guildxp.com' },
         });
         
         const wwwWebsiteBucket = new s3.Bucket(this, 'wwwGXP_UIComBucket', {
-            bucketName: "www.DOMAIN_NAME.com",
+            bucketName: "www.guildxp.com",
             websiteIndexDocument: 'index.html',
             publicReadAccess: true,
         });

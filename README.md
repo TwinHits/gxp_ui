@@ -1,5 +1,6 @@
 # Guild eXPerience UI
-
+This is a Vue.js 2 frontend conencting to the GXP api backend.
+Deployment is managed by AWS CDK v2.
 
 ## Project setup
 
