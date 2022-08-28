@@ -129,7 +129,7 @@ export default Vue.extend({
         emitRaiderToAddAlias(raider: Raider) {
             this.$emit('showAliasAdd', raider);
         },
-        loggedIn(): boolean {
+        isLoggedIn(): boolean {
             return this.$store.getters.isLoggedIn;
         }
     },

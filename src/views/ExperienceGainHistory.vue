@@ -7,17 +7,26 @@
                 </v-col>
             </v-row>
             <div v-else>
-                <v-card-subtitle class="experience-multipler"> Experience Multipler: {{ experienceMultipler }} </v-card-subtitle>
-                <v-timeline class="experience-history-timeline" v-for="(gains, date) in experienceGainsByDay" :key="date" align-top dense>
+                <v-card-subtitle class="experience-multipler"> Experience Multipler: {{ experienceMultiplerLabel }} </v-card-subtitle>
+                <v-timeline class="experience-history-timeline" v-for="(raid, raidId) in raidsByRaidId" :key="raidId" align-top dense>
                     <v-row>
                         <v-col class="experience-history-timeline-date" align="center">
-                            {{ date }}
+                            {{ formatTimestamp(raid.timestamp) }}
+                        </v-col>
+                        <v-col align="center">
+                           Optional: {{ raid.optional }}
+                        </v-col>
+                        <v-col align="center">
+                           Zone: {{ raid.log.zone }}
+                        </v-col>
+                        <v-col align="center">
+                           Experience: {{ calculateExperienceSoFar(raidId) }}
                         </v-col>
                     </v-row>
                     <v-timeline-item
                         :style="{ 'align-items': 'center', 'padding': '0', 'margin': '0' }"
                         class="experience-history-timeline-item"
-                        v-for="gain in gains"
+                        v-for="gain in experienceGainsByRaidId[raidId]"
                         :key="gain.id"
                         :icon="getIconForExperienceEvent(gain.experienceEvent)"
                         :color="'black'"
@@ -74,28 +83,13 @@ export default Vue.extend({
     data() {
         return {
             loading: false,
-            experienceGains: [] as ExperienceGain[],
-            raids: {} as Record<string, Raid>,
+            raidsByRaidId: {} as Record<string, Raid>,
+            experienceGainsByRaidId: {} as Record<string, ExperienceGain[]>,
         };
     },
     computed: {
-        experienceMultipler(): string {
+        experienceMultiplerLabel(): string {
             return this.raider.experienceMultipler.toFixed(2);
-        },
-        experienceGainsByDay(): Record<string, ExperienceGain[]> {
-            const experienceGainsByDay = {} as Record<string, ExperienceGain[]>;
-            for (const experienceGain of this.experienceGains) {
-                const raid = this.raids[experienceGain.raid as string];
-                if (!raid.optional) {
-                    const date = DateTimeUtils.getDateFromUnixTime(experienceGain.timestamp);
-                    const day = DateTimeUtils.formatDateForDisplay(date);
-                    if (!experienceGainsByDay[day]) {
-                        experienceGainsByDay[day] = [];
-                    }
-                    experienceGainsByDay[day].push(experienceGain);
-                }
-            }
-            return experienceGainsByDay;
         },
         label(): string {
             return `${this.raider.name} Experience History`;
@@ -105,23 +99,60 @@ export default Vue.extend({
         }
     },
     methods: {
+        formatTimestamp(timestamp: number) {
+            return DateTimeUtils.formatDateForDisplay(DateTimeUtils.getDateFromUnixTime(timestamp));
+        },
         getIconForExperienceEvent(experienceEvent: string) {
             return this.$store.getters.experienceEventIcon(experienceEvent);
         },
+        calculateExperienceSoFar(raidIdSoFar: string) {
+            let experience = 0;
+            for (const [raidId, gains] of Object.entries(this.experienceGainsByRaidId).reverse()) {
+                for (const gain of gains) {
+                    let new_experience = experience + (gain.value * this.raider.experienceMultipler)
+                    if (new_experience < 0) {
+                        experience = 0
+                    } else if (new_experience > 500) {
+                        experience = 500
+                    } else {
+                        experience = new_experience
+                    }
+                }
+                if (raidId === raidIdSoFar ) {
+                    break;
+                }
+            }
+            return experience
+        },
         deleteExperienceGain(experienceGain: ExperienceGain) {
             ExperienceGainsApi.deleteExperienceGain(experienceGain.id);
+            /*
             this.experienceGains.splice(
                 this.experienceGains.findIndex((g: ExperienceGain) => g.id === experienceGain.id),
                 1,
             );
+            */
         },
     },
     async mounted() {
         this.loading = true;
-        this.experienceGains = await ExperienceGainsApi.getExperienceGainsForRaiderId(this.raider.id);
-        this.experienceGains = this.experienceGains.reverse();
+
         const raids = await RaidsApi.getRaids();
-        raids.map((r: Raid) => this.raids[r.id] = r)
+        raids.map((r: Raid) => this.raidsByRaidId[r.id] = r);
+
+        const gainsWithNoRaid = [] as ExperienceGain[];
+        const experienceGains = await (await ExperienceGainsApi.getExperienceGainsForRaiderId(this.raider.id)).reverse();
+        for (const gain of experienceGains) {
+            if (gain.raid) {
+                if (!this.experienceGainsByRaidId[gain.raid]) {
+                    this.experienceGainsByRaidId[gain.raid] = [];
+                }
+                this.experienceGainsByRaidId[gain.raid].push(gain);
+            } else {
+                gainsWithNoRaid.push(gain);
+            }
+        }
+
         this.loading = false;
     },
 });

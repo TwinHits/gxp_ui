@@ -21,7 +21,7 @@ export async function getRaider(id: string): Promise<Raider> {
 
 export async function getRaiders(active?: boolean): Promise<Raider[]> {
     const queryParams = { active: active };
-    return await Api.getAllPaginated(`${config.gxpApi.baseUrl}/raiders/`, queryParams);
+    return await Api.getAllPaginated(`${config.gxpApi.baseUrl}/raiders`, queryParams);
 }
 
 export async function deleteRaider(id: string) {

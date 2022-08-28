@@ -145,7 +145,7 @@ export default Vue.extend({
         numberOfColumns(): number {
             return this.filteredRaiders.length / this.numberOfRows ? Math.ceil(this.filteredRaiders.length / this.numberOfRows) : 0; // Don't divide by zero
         },
-        loggedIn(): boolean {
+        isLoggedIn(): boolean {
             return this.$store.getters.isLoggedIn
         }
     },
