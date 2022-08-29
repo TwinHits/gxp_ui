@@ -107,6 +107,9 @@ export default Vue.extend({
                 return 'Set Active';
             }
         },
+        isLoggedIn(): boolean {
+            return this.$store.getters.isLoggedIn;
+        },
     },
     methods: {
         recalculateExperience(raider: Raider) {
@@ -128,9 +131,6 @@ export default Vue.extend({
         },
         emitRaiderToAddAlias(raider: Raider) {
             this.$emit('showAliasAdd', raider);
-        },
-        isLoggedIn(): boolean {
-            return this.$store.getters.isLoggedIn;
         },
     },
 });
