@@ -173,15 +173,18 @@ export async function updateAllLogs() {
 
 export async function createRaidersAliasAltsRenamesBackup() {
     const raiders = await RaidersApi.getRaiders();
-    const backups = [] as Partial<Raider>[];
+    const backups = [] as Raider[];
     for (const raider of raiders) {
         const backup = {
             name: raider.name,
             join_timestamp: raider.join_timestamp,
-            main: raider.main,
             active: raider.active,
             aliases: raider.aliases,
             renames: raider.renames,
+        }
+        if (raider.main) {
+            const main = await RaidersApi.getRaider(raider.main);
+            backup.main = main.name;
         }
         backups.push(backup);
     }
