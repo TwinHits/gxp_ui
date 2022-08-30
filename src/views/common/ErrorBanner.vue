@@ -1,5 +1,5 @@
 <template>
-    <v-alert class="error-alert" v-if="error" v-model="show" color="red" dismissible elevation="6" type="error">{{ message }}</v-alert>
+    <v-alert class="error-alert" v-if="error" v-model="show" color="red" dismissible elevation="6" type="error">{{ error }}</v-alert>
 </template>
 
 <script lang="ts">
@@ -12,11 +12,8 @@ export default Vue.extend({
         };
     },
     computed: {
-        error(): Error | undefined {
+        error(): string | undefined {
             return this.$store.getters.error;
-        },
-        message(): string | undefined {
-            return this.error?.message;
         },
     },
     watch: {

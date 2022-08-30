@@ -26,14 +26,11 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     function (response) {
-        if (response.data?.errors) {
-            let message = '';
-            response.data.errors.map((e: Error) => (message += e.message));
-            throw new Error(message);
-        }
         return response;
     },
     function (error) {
+        let message = error.response?.data?.detail;
+        store.commit("setError", message)
         return Promise.reject(error);
     },
 );

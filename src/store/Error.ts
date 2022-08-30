@@ -1,9 +1,9 @@
 export default {
     state: () => ({
-        error: undefined as Error | undefined,
+        error: undefined as string | undefined,
     }),
     mutations: {
-        setError(state: any, error: Error) {
+        setError(state: any, error: string) {
             state.error = error;
         },
     },

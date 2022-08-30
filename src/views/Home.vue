@@ -93,7 +93,6 @@ import * as RaidersApi from '@/api/raiders.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
 import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
 
-import * as DevUtils from '@/common/utils/devUtils';
 
 export default Vue.extend({
     components: {
@@ -199,7 +198,6 @@ export default Vue.extend({
         this.$store.commit('setExperienceLevels', levels);
 
         await this.getRaiders();
-        DevUtils.createRaidersAliasAltsRenamesBackup();
     },
 });
 </script>
