@@ -1,6 +1,6 @@
 <template>
     <div class="containing-div">
-        <v-row>
+        <v-row align="center">
             <v-col cols="4">
                 <v-toolbar>
                     <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
@@ -9,7 +9,7 @@
             <v-col cols="1">
                 <v-btn v-if="isLoggedIn" @click="showRaids = true">Raids</v-btn>
             </v-col>
-            <v-col cols="1">
+            <v-col cols="2">
                 <v-btn v-if="isLoggedIn" @click="showCreateRaider = true">Create Raider</v-btn>
             </v-col>
             <v-col cols="1">
@@ -18,11 +18,11 @@
             <v-col cols="1">
                 <v-btn v-if="isLoggedIn" @click="showExperienceLevels = true">Levels</v-btn>
             </v-col>
-            <v-col cols="1">
+            <v-col cols="2">
                 <v-btn v-if="isLoggedIn && !recalculating" @click="recalculateExperience(raider)">Recalculate Experience</v-btn>
                 <LoadingCircle v-if="isLoggedIn && recalculating" :size="25" />
             </v-col>
-            <v-col cols="1">
+            <v-col cols="1" align="right">
                 <v-btn @click="showAdminLoginModal = true">Admin</v-btn>
             </v-col>
         </v-row>
@@ -92,6 +92,8 @@ import { Raider } from '@/common/types/raider';
 import * as RaidersApi from '@/api/raiders.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
 import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
+
+import * as DevUtils from '@/common/utils/devUtils';
 
 export default Vue.extend({
     components: {
@@ -197,6 +199,7 @@ export default Vue.extend({
         this.$store.commit('setExperienceLevels', levels);
 
         await this.getRaiders();
+        DevUtils.createRaidersAliasAltsRenamesBackup();
     },
 });
 </script>

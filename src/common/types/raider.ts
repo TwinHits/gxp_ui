@@ -1,4 +1,5 @@
 import { Alias } from '@/common/types/alias';
+import { Rename } from '@/common/types/rename';
 
 export interface Raider {
     id: string;
@@ -10,6 +11,7 @@ export interface Raider {
     join_timestamp: number;
     alts: Raider[];
     aliases: Alias[];
+    renames: Rename[];
     main: string | undefined;
     active: boolean;
 }

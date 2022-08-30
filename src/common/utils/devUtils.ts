@@ -171,6 +171,24 @@ export async function updateAllLogs() {
     }
 }
 
+export async function createRaidersAliasAltsRenamesBackup() {
+    const raiders = await RaidersApi.getRaiders();
+    const backups = [] as Partial<Raider>[];
+    for (const raider of raiders) {
+        const backup = {
+            name: raider.name,
+            join_timestamp: raider.join_timestamp,
+            main: raider.main,
+            active: raider.active,
+            aliases: raider.aliases,
+            renames: raider.renames,
+        }
+        backups.push(backup);
+    }
+    console.log(backups);
+}
+
+
 export function assembleRaidersInitalState() {
     const raiders = [] as any[];
     const raiders_export_map = {} as Record<string, any>;
