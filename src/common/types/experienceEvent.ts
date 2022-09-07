@@ -3,4 +3,5 @@ export interface ExperienceEvent {
     description: string;
     template: string;
     value: number;
+    multiplied: boolean;
 }
