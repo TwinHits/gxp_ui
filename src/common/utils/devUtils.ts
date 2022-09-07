@@ -139,6 +139,12 @@ export function initializeExperience() {
             'value': -1,
             'template': '{name} was a low performer for {encounter}.',
         },
+        {
+            'id': 'PREV_EXPAC_RAID',
+            'description': 'Attended a raid in a previous expansion.',
+            'value': 1,
+            'template': '{name} attended a {zone} raid in a previous expansion.',
+        },
     ] as ExperienceEvent[];
 
     for (const experienceEvent of events) {
@@ -190,6 +196,21 @@ export async function createRaidersAliasAltsRenamesBackup() {
     }
     console.log(backups);
 }
+
+export async function getStartingExpForRaiders() {
+    const raiders = await RaidersApi.getRaiders();
+    const experiences = [] as any[];
+    for (const raider of raiders) {
+        const experience = {
+            name: raider.name,
+            totalRaids: raider.totalRaids,
+            multipler: raider.experienceMultipler,
+        }
+        experiences.push(experience);
+    }
+    console.log(experiences);
+}
+
 
 
 export function assembleRaidersInitalState() {

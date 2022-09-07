@@ -7,7 +7,7 @@ axios.interceptors.request.use(
     async function (request: AxiosRequestConfig) {
         if (!request.url?.includes('/api/token') && store.getters.accessToken) {
             let accessToken = store.getters.accessToken;
-            if (store.getters.isAccessTokenExpired) {
+            if (store.getters.accessTokenExpiration && store.getters.accessTokenExpiration > new Date().valueOf()) {
                 accessToken = await AuthApi.refreshAccessToken();
             }
 
@@ -29,7 +29,8 @@ axios.interceptors.response.use(
         return response;
     },
     function (error) {
-        let message = error.response?.data?.detail;
+        console.log(error);
+        const message = error.response?.data?.detail;
         store.commit("setError", message)
         return Promise.reject(error);
     },

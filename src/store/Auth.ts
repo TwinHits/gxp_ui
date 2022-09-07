@@ -13,6 +13,7 @@ export default {
         },
         setAccessTokenExpiration(state: any, expiration: any) {
             state.accessTokenExpiration = expiration * 1000;
+            console.log(state.accessTokenExpiration)
         },
     },
     getters: {
@@ -22,12 +23,8 @@ export default {
         refreshToken: (state: any) => {
             return state.refreshToken;
         },
-        isAccessTokenExpired: (state: any) => {
-            if (state.accessTokenExpiration) {
-                return state.accessTokenExpiration < new Date().valueOf();
-            } else {
-                return false;
-            }
+        accessTokenExpiration: (state: any) => {
+            return state.accessTokenExpiration;
         },
         isLoggedIn: (state: any) => {
             return state.accessToken != undefined;
