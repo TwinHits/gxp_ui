@@ -33,6 +33,7 @@ export default {
                 'HIGH_PERFORMANCE': 'mdi-format-vertical-align-top',
                 'MID_PERFORMANCE': 'mdi-format-align-top',
                 'LOW_PERFORMANCE': 'mdi-format-align-bottom',
+                'PREV_EXPAC_RAID': 'mdi-history',
             };
         },
     },
