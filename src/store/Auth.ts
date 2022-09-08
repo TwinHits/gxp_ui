@@ -13,7 +13,7 @@ export default {
         },
         setAccessTokenExpiration(state: any, expiration: any) {
             state.accessTokenExpiration = expiration * 1000;
-            console.log(state.accessTokenExpiration)
+            console.log(state.accessTokenExpiration);
         },
     },
     getters: {

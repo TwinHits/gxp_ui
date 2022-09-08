@@ -93,7 +93,6 @@ import * as RaidersApi from '@/api/raiders.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
 import * as ExperienceLevelsApi from '@/api/experienceLevels.api';
 
-
 export default Vue.extend({
     components: {
         AddAltModal,

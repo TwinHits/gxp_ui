@@ -27,7 +27,7 @@ export default Vue.extend({
     computed: {
         value(): string {
             let value = this.experienceGain.value;
-            if (!this.experienceGain.experienceEvent || this.experienceGain.experienceEvent?.multipled) {
+            if (!this.experienceGain.experienceEvent || this.experienceGain.experienceEvent?.multiplied) {
                 value = this.experienceGain.value * this.multipler;
             }
             return value > 0 ? `+${value.toFixed(2)}` : `${value.toFixed(2)}`;

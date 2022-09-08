@@ -31,7 +31,7 @@ axios.interceptors.response.use(
     function (error) {
         console.log(error);
         const message = error.response?.data?.detail;
-        store.commit("setError", message)
+        store.commit('setError', message);
         return Promise.reject(error);
     },
 );

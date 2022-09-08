@@ -10,32 +10,32 @@
                 <v-card-subtitle class="experience-multipler"> Experience Multipler: {{ experienceMultiplerLabel }} </v-card-subtitle>
                 <v-timeline class="experience-history-timeline" v-for="(raid, raidId) in raidsByRaidId" :key="raidId" align-top dense>
                     <template v-if="!raid.optional">
-                    <v-row>
-                        <v-col class="experience-history-timeline-date" align="center">
-                            {{ formatTimestamp(raid.timestamp) }}
-                        </v-col>
-                        <v-col align="center"> Optional: {{ raid.optional }} </v-col>
-                        <v-col align="center"> Zone: {{ raid.log.zone }} </v-col>
-                        <v-col align="center"> Experience: {{ calculateExperienceSoFar(raidId) }} </v-col>
-                    </v-row>
-                    <v-timeline-item
-                        :style="{ 'align-items': 'center', 'padding': '0', 'margin': '0' }"
-                        class="experience-history-timeline-item"
-                        v-for="gain in experienceGainsByRaidId[raidId]"
-                        :key="gain.id"
-                        :icon="getIconForExperienceEvent(gain.experienceEvent)"
-                        :color="'black'"
-                        fill-dot
-                    >
-                        <v-row align="center">
-                            <v-col cols="11">
-                                <HistoryItem :experienceGain="gain" :multipler="raider.experienceMultipler" />
+                        <v-row>
+                            <v-col class="experience-history-timeline-date" align="center">
+                                {{ formatTimestamp(raid.timestamp) }}
                             </v-col>
-                            <v-col cols="1" align="right">
-                                <IconButton v-if="isLoggedIn" icon="mdi-trash-can-outline" @click="deleteExperienceGain(gain)" />
-                            </v-col>
+                            <v-col align="center"> Optional: {{ raid.optional }} </v-col>
+                            <v-col align="center"> Zone: {{ raid.log.zone }} </v-col>
+                            <v-col align="center"> Experience: {{ calculateExperienceSoFar(raidId) }} </v-col>
                         </v-row>
-                    </v-timeline-item>
+                        <v-timeline-item
+                            :style="{ 'align-items': 'center', 'padding': '0', 'margin': '0' }"
+                            class="experience-history-timeline-item"
+                            v-for="gain in experienceGainsByRaidId[raidId]"
+                            :key="gain.id"
+                            :icon="getIconForExperienceEvent(gain.experienceEvent)"
+                            :color="'black'"
+                            fill-dot
+                        >
+                            <v-row align="center">
+                                <v-col cols="11">
+                                    <HistoryItem :experienceGain="gain" :multipler="raider.experienceMultipler" />
+                                </v-col>
+                                <v-col cols="1" align="right">
+                                    <IconButton v-if="isLoggedIn" icon="mdi-trash-can-outline" @click="deleteExperienceGain(gain)" />
+                                </v-col>
+                            </v-row>
+                        </v-timeline-item>
                     </template>
                 </v-timeline>
             </div>
@@ -111,7 +111,7 @@ export default Vue.extend({
                         if (!gain.experienceEvent || gain.experienceEvent.multiplied) {
                             new_experience = experience + gain.value * this.raider.experienceMultipler;
                         } else {
-                            new_experience = experience + gain.value
+                            new_experience = experience + gain.value;
                         }
 
                         if (new_experience < 0) {

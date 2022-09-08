@@ -2,7 +2,7 @@ export interface ExperienceGain {
     id: string;
     raider: string;
     raid?: string;
-    experienceEvent: string;
+    experienceEvent: any;
     timestamp: number;
     value: number;
 }

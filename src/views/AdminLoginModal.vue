@@ -37,7 +37,7 @@ export default Vue.extend({
         login() {
             if (this.username && this.password) {
                 const response = AuthApi.login(this.username, this.password);
-                this.$emit("close")
+                this.$emit('close');
             }
         },
     },
