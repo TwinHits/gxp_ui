@@ -1,33 +1,36 @@
 export default {
     state: () => ({
-        accessToken: undefined as string | undefined,
-        refreshToken: undefined as string | undefined,
-        accessTokenExpiration: undefined as number | undefined,
+        isLoggedIn: false,
     }),
     mutations: {
         setAccessToken(state: any, accessToken: any) {
-            state.accessToken = accessToken;
+            localStorage.setItem('accessToken', accessToken)
+            state.isloggedIn = !!localStorage.getItem('accessToken');
         },
         setRefreshToken(state: any, refreshToken: any) {
-            state.refreshToken = refreshToken;
+            localStorage.setItem('refreshToken', refreshToken)
         },
-        setAccessTokenExpiration(state: any, expiration: any) {
-            state.accessTokenExpiration = expiration * 1000;
-            console.log(state.accessTokenExpiration);
+        setAccessTokenExpiration(state: any, expiration: number) {
+            localStorage.setItem('accessTokenExpiration', String(expiration * 1000));
         },
     },
     getters: {
         accessToken: (state: any) => {
-            return state.accessToken;
+            return localStorage.getItem('accessToken');
         },
         refreshToken: (state: any) => {
-            return state.refreshToken;
+            return localStorage.getItem('refreshToken');
         },
         accessTokenExpiration: (state: any) => {
-            return state.accessTokenExpiration;
+            const expiration = localStorage.getItem('accessTokenExpiration');
+            if (expiration) {
+                return parseInt(expiration);
+            } else {
+                return expiration;
+            }
         },
         isLoggedIn: (state: any) => {
-            return state.accessToken != undefined;
+            return state.isLoggedIn || localStorage.getItem('accessToken');
         },
     },
 };
