@@ -13,9 +13,7 @@ export async function login(username: string, password: string) {
     });
     store.commit('setAccessToken', response.access);
     store.commit('setRefreshToken', response.refresh);
-
-    const decoded = jwtDecode(response.access) as Record<string, string>;
-    store.commit('setAccessTokenExpiration', decoded.exp);
+    decodeExpirationDate(response);
 }
 
 export async function refreshAccessToken() {
@@ -23,5 +21,11 @@ export async function refreshAccessToken() {
         refresh: store.getters.refreshToken,
     });
     store.commit('setAccessToken', response.access);
+    decodeExpirationDate(response);
     return response.access;
+}
+
+function decodeExpirationDate(response: any) {
+    const decoded = jwtDecode(response.access) as Record<string, string>;
+    store.commit('setAccessTokenExpiration', decoded.exp);
 }

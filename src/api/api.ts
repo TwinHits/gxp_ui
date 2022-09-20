@@ -7,7 +7,7 @@ axios.interceptors.request.use(
     async function (request: AxiosRequestConfig) {
         if (!request.url?.includes('/api/token') && store.getters.accessToken) {
             let accessToken = store.getters.accessToken;
-            if (store.getters.accessTokenExpiration && store.getters.accessTokenExpiration > new Date().valueOf()) {
+            if (store.getters.accessTokenExpiration && store.getters.accessTokenExpiration < new Date().valueOf()) {
                 accessToken = await AuthApi.refreshAccessToken();
             }
 

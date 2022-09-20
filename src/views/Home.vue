@@ -181,7 +181,6 @@ export default Vue.extend({
             this.raiders.push(await RaidersApi.createRaider(name));
         },
         async recalculateExperience(raider?: Raider) {
-            console.log(raider);
             this.recalculating = true;
             await RaidersApi.recalculateExperience(raider);
             await this.getRaiders();
