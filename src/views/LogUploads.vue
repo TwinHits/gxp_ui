@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import Vue from 'vue';
 
 import LoadingCircle from '@/views/common/LoadingCircle.vue';
 import ModalDialog from '@/views/common/ModalDialog.vue';
@@ -126,9 +126,9 @@ export default Vue.extend({
                     width: '15vh',
                 },
             ],
-        pullLogsLoading: false,
-        createRaidsLoading: false,
-        deleteRaidsLoading: false,
+            pullLogsLoading: false,
+            createRaidsLoading: false,
+            deleteRaidsLoading: false,
         };
     },
     methods: {

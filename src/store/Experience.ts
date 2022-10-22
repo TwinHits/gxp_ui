@@ -1,12 +1,15 @@
 import { ExperienceEvent } from '@/common/types/experienceEvent';
 import { ExperienceLevel } from '@/common/types/experienceLevel';
 
+import * as Colors from '@/common/constants/colors';
+
 export default {
     state: () => ({
         experienceEvents: [] as ExperienceEvent[],
         experienceLevels: [] as ExperienceLevel[],
         experienceEventsById: {} as Record<string, ExperienceEvent>,
         iconsByExperienceEventId: {} as Record<string, string>,
+        colorsByExperienceEventId: {} as Record<string, string>,
     }),
     mutations: {
         setExperienceLevels(state: any, experienceLevels: ExperienceLevel[]) {
@@ -34,6 +37,24 @@ export default {
                 'MID_PERFORMANCE': 'mdi-format-align-top',
                 'LOW_PERFORMANCE': 'mdi-format-align-bottom',
                 'PREV_EXPAC_RAID': 'mdi-history',
+            };
+        },
+        setExperienceEventColors(state: any) {
+            state.colorsByExperienceEventId = {
+                'COMPLETE_RAID': Colors.PURPLE,
+                'BOSS_KILL': Colors.PURPLE,
+                'BOSS_KILL_FLASK': Colors.BLUE,
+                'BOSS_KILL_NO_FLASK': Colors.GREY,
+                'BOSS_KILL_FOOD': Colors.BLUE,
+                'BOSS_KILL_NO_FOOD': Colors.GREY,
+                'SIGNED_UP_ACCURATELY': Colors.PURPLE,
+                'SIGNED_UP_INACCURATELY': Colors.GREY,
+                'DECAY_PER_BOSS': Colors.BLUE,
+                'TOP_PERFORMANCE': Colors.ORANGE,
+                'HIGH_PERFORMANCE': Colors.BLUE,
+                'MID_PERFORMANCE': Colors.YELLOW,
+                'LOW_PERFORMANCE': Colors.GREY,
+                'PREV_EXPAC_RAID': Colors.PURPLE,
             };
         },
     },
@@ -69,6 +90,9 @@ export default {
         },
         experienceEventIcon: (state: any) => (id: string) => {
             return state.iconsByExperienceEventId[id];
+        },
+        experienceEventColor: (state: any) => (id: string) => {
+            return state.colorsByExperienceEventId[id];
         },
     },
 };

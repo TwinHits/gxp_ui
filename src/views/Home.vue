@@ -204,6 +204,7 @@ export default Vue.extend({
         const events = await ExperienceEventsApi.getExperienceEvents();
         this.$store.commit('setExperienceEvents', events);
         this.$store.commit('setExperienceEventIcons');
+        this.$store.commit('setExperienceEventColors');
 
         const levels = await ExperienceLevelsApi.getExperienceLevels();
         this.$store.commit('setExperienceLevels', levels);

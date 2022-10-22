@@ -52,7 +52,12 @@
                     <GuildExperienceBar :experience="raider.experience" @click="showHistory = true" />
                 </v-col>
                 <v-col cols="1" align="center">
-                    <IconButton v-if="isLoggedIn" icon="mdi-plus-circle-outline" @click="emitShowAddExperienceModal(raider)" :disabled="!raider.active" />
+                    <IconButton
+                        v-if="isLoggedIn"
+                        icon="mdi-plus-circle-outline"
+                        @click="emitShowAddExperienceModal(raider)"
+                        :disabled="!raider.active"
+                    />
                 </v-col>
             </v-row>
             <v-row>

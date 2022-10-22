@@ -24,7 +24,7 @@
                             v-for="gain in experienceGainsByRaidId[raidId]"
                             :key="gain.id"
                             :icon="getIconForExperienceEvent(gain.experienceEvent)"
-                            :color="'black'"
+                            :color="getColorForExperienceEvent(gain.experienceEvent)"
                             fill-dot
                         >
                             <v-row align="center">
@@ -100,6 +100,9 @@ export default Vue.extend({
         },
         getIconForExperienceEvent(experienceEvent: string) {
             return this.$store.getters.experienceEventIcon(experienceEvent);
+        },
+        getColorForExperienceEvent(experienceEvent: string) {
+            return this.$store.getters.experienceEventColor(experienceEvent);
         },
         calculateExperienceSoFar(raidIdSoFar: string) {
             let experience = 0;
