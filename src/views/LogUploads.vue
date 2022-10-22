@@ -18,13 +18,16 @@
             <template v-slot:top>
                 <v-row class="top-toolbar" justify="end">
                     <v-col md="auto" align="center">
-                        <IconButton @click="pullLogs" icon="mdi-download-multiple" />
+                        <IconButton v-if="!pullLogsLoading" @click="pullLogs" icon="mdi-download-multiple" />
+                        <LoadingCircle v-else :size="25" />
                     </v-col>
                     <v-col md="auto" align="center">
-                        <IconButton @click="createRaids" icon="mdi-upload-multiple" />
+                        <IconButton v-if="!createRaidsLoading" @click="createRaids" icon="mdi-upload-multiple" />
+                        <LoadingCircle v-else :size="25" />
                     </v-col>
                     <v-col md="auto" align="center">
-                        <IconButton @click="deleteRaids" icon="mdi-delete-sweep-outline" />
+                        <IconButton v-if="!deleteRaidsLoading" @click="deleteRaids" icon="mdi-delete-sweep-outline" />
+                        <LoadingCircle v-else :size="25" />
                     </v-col>
                 </v-row>
             </template>
@@ -123,14 +126,18 @@ export default Vue.extend({
                     width: '15vh',
                 },
             ],
+        pullLogsLoading: false,
+        createRaidsLoading: false,
+        deleteRaidsLoading: false,
         };
     },
     methods: {
-        async pullLogs(): Promise<Log[]> {
-            return await LogsApi.pullLogsFromWarcraftLogs();
+        async pullLogs() {
+            this.pullLogsLoading = true;
+            await LogsApi.pullLogsFromWarcraftLogs();
+            this.pullLogsLoading = false;
         },
         async createRaid(log: Log) {
-            // This method gives off false positives to es lint, so disabling that rule for those lines
             if (!log.raid && log.active) {
                 log.loading = true;
                 await LogsApi.updateLog(log);
@@ -140,7 +147,7 @@ export default Vue.extend({
             }
         },
         async createRaids() {
-            // This method gives off false positives to es lint, so disabling that rule for those lines
+            this.createRaidsLoading = true;
             for (const log of this.logs.reverse()) {
                 if (!log.raid && log.active) {
                     log.loading = true;
@@ -149,6 +156,7 @@ export default Vue.extend({
                     log.loading = false;
                 }
             }
+            this.createRaidsLoading = false;
         },
         async updateLog(log: Log) {
             log.loading = true;
@@ -162,11 +170,13 @@ export default Vue.extend({
             this.updateLog(log);
         },
         async deleteRaids() {
+            this.deleteRaidsLoading = true;
             for (const log of this.logs) {
                 if (log.raid) {
                     await RaidsApi.deleteRaid(log.raid.id);
                 }
             }
+            this.deleteRaidsLoading = false;
         },
         deleteRaid(log: Log) {
             if (log.raid) {
