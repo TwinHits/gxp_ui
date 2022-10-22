@@ -28,10 +28,15 @@ export async function deleteRaider(id: string) {
     await Api.del(`${config.gxpApi.baseUrl}/raiders/${id}/`);
 }
 
-export async function recalculateExperience(raider?: Raider) {
+export async function recalculateExperience(raider?: Raider, active?: boolean | undefined) {
+    const body = {} as Record<string, any>;
+    if (active !== undefined) {
+        body['active'] = active;
+    }
+
     if (raider) {
-        await Api.put(`${config.gxpApi.baseUrl}/raiders/${raider.id}/calculate_experience/`);
+        await Api.put(`${config.gxpApi.baseUrl}/raiders/${raider.id}/calculate_experience/`, body);
     } else {
-        await Api.put(`${config.gxpApi.baseUrl}/raiders/calculate_experience/`);
+        await Api.put(`${config.gxpApi.baseUrl}/raiders/calculate_experience/`, body);
     }
 }

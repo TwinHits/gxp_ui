@@ -191,7 +191,8 @@ export default Vue.extend({
         },
         async recalculateExperience(raider?: Raider) {
             this.recalculating = true;
-            await RaidersApi.recalculateExperience(raider);
+            const recalculate_only_active_raiders = !this.includeInactiveRaiders ? true : undefined;
+            await RaidersApi.recalculateExperience(raider, recalculate_only_active_raiders);
             await this.getRaiders();
             this.recalculating = false;
         },
