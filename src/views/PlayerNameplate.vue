@@ -41,6 +41,9 @@
                             <v-list-item link @click="showRenameRaiderTextField = true">
                                 <v-list-item-title>Rename</v-list-item-title>
                             </v-list-item>
+                            <v-list-item link @click="showJoinDatePicker = true">
+                                <v-list-item-title>Set Join Date</v-list-item-title>
+                            </v-list-item>
                         </v-list>
                     </v-menu>
                 </v-col>
@@ -68,14 +71,16 @@
             </v-row>
         </v-card-subtitle>
         <ExperienceGainHistory v-if="showHistory" :show="showHistory" :raider="raider" @close="showHistory = false" />
+        <DatePickerModal :show="showJoinDatePicker" label="Select Join Date" :timestamp="raider.join_timestamp" @change="setJoinTimeStamp(raider, $event)" @close="showJoinDatePicker = false" />
     </v-card>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 
-import IconButton from '@/views/common/IconButton.vue';
+import DatePickerModal from '@/views/DatePickerModal.vue';
 import ExperienceGainHistory from '@/views/ExperienceGainHistory.vue';
+import IconButton from '@/views/common/IconButton.vue';
 import GuildExperienceBar from '@/views/GuildExperienceBar.vue';
 
 import { Raider } from '@/common/types/raider';
@@ -84,6 +89,7 @@ import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
 
 export default Vue.extend({
     components: {
+        DatePickerModal,
         ExperienceGainHistory,
         IconButton,
         GuildExperienceBar,
@@ -99,6 +105,7 @@ export default Vue.extend({
             showHistory: false as boolean,
             rename: '' as string,
             showRenameRaiderTextField: false,
+            showJoinDatePicker: false,
         };
     },
     computed: {
@@ -129,6 +136,10 @@ export default Vue.extend({
         },
         renameRaider(raider: Raider, rename: string) {
             raider.name = rename;
+            this.$emit('updateRaider', raider);
+        },
+        setJoinTimeStamp(raider: Raider, joinTimestampDate: Date) {
+            raider.join_timestamp = DateTimeUtils.getUnixTimeFromDate(joinTimestampDate);
             this.$emit('updateRaider', raider);
         },
         emitRaiderToAddAlt(raider: Raider) {
