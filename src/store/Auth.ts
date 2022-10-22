@@ -12,7 +12,7 @@ export default {
         setAccessToken(state: any, accessToken: any) {
             const expiration = AuthUtils.decodeExpirationDateFromJWT(accessToken);
 
-            localStorage.setItem('accessToken', accessToken)
+            localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('accessTokenExpiration', String(expiration * 1000));
 
             state.accessToken = localStorage.getItem('accessToken');
@@ -22,7 +22,7 @@ export default {
         setRefreshToken(state: any, refreshToken: any) {
             const expiration = AuthUtils.decodeExpirationDateFromJWT(refreshToken);
 
-            localStorage.setItem('refreshToken', refreshToken)
+            localStorage.setItem('refreshToken', refreshToken);
             localStorage.setItem('refreshTokenExpiration', String(expiration * 1000));
 
             state.refreshToken = localStorage.getItem('refreshToken');
@@ -40,7 +40,7 @@ export default {
             state.accessToken = localStorage.getItem('accessToken');
             state.accessTokenExpiration = localStorage.getItem('accessTokenExpiration');
             state.isLoggedIn = false;
-        }
+        },
     },
     getters: {
         accessToken: (state: any) => {

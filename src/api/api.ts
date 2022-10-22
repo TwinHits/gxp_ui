@@ -3,11 +3,10 @@ import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 import store from '@/store/index';
 
 import * as AuthApi from '@/api/auth.api';
-import * as AuthUtils from '@/common/utils/authUtils'
+import * as AuthUtils from '@/common/utils/authUtils';
 
 axios.interceptors.request.use(
     async function (request: AxiosRequestConfig) {
-        console.log(store.getters.isLoggedIn)
         if (!request.url?.includes('/api/token') && store.getters.isLoggedIn) {
             if (AuthUtils.isAccessTokenExpired()) {
                 if (!AuthUtils.isRefreshTokenExpired()) {

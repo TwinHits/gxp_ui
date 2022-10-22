@@ -188,7 +188,7 @@ export default Vue.extend({
             this.recalculating = false;
         },
         logout() {
-            this.$store.commit("logout");
+            this.$store.commit('logout');
         },
     },
     async mounted() {
