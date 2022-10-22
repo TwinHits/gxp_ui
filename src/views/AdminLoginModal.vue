@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import Vue from 'vue';
 
 import ModalDialog from '@/views/common/ModalDialog.vue';
 
@@ -36,7 +36,7 @@ export default Vue.extend({
     methods: {
         login() {
             if (this.username && this.password) {
-                const response = AuthApi.login(this.username, this.password);
+                AuthApi.login(this.username, this.password);
                 this.$emit('close');
             }
         },
