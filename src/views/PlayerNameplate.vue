@@ -4,7 +4,7 @@
             <v-row no-gutters>
                 <v-col :cols="11">
                     <v-row v-if="!showRenameRaiderTextField">
-                        <v-col :cols="5">
+                        <v-col :cols="5" :class="activeClass">
                             {{ raider.name }}
                         </v-col>
                     </v-row>
@@ -52,7 +52,7 @@
                     <GuildExperienceBar :experience="raider.experience" @click="showHistory = true" />
                 </v-col>
                 <v-col cols="1" align="center">
-                    <IconButton v-if="isLoggedIn" icon="mdi-plus-circle-outline" @click="emitShowAddExperienceModal(raider)" />
+                    <IconButton v-if="isLoggedIn" icon="mdi-plus-circle-outline" @click="emitShowAddExperienceModal(raider)" :disabled="!raider.active" />
                 </v-col>
             </v-row>
             <v-row>
@@ -110,6 +110,9 @@ export default Vue.extend({
         isLoggedIn(): boolean {
             return this.$store.getters.isLoggedIn;
         },
+        activeClass(): string {
+            return this.raider.active ? 'player-nameplate-active' : 'player-nameplate-inactive';
+        },
     },
     methods: {
         recalculateExperience(raider: Raider) {
@@ -143,5 +146,13 @@ export default Vue.extend({
     position: absolute;
     width: 100%;
     height: 100%;
+}
+
+.player-nameplate-subtitle-label {
+    font-weight: 600;
+}
+
+.player-nameplate-inactive {
+    color: rgba(0, 0, 0, 0.6);
 }
 </style>

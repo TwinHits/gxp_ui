@@ -9,14 +9,17 @@
             <v-col cols="1">
                 <v-btn v-if="isLoggedIn" @click="showRaids = true">Raids</v-btn>
             </v-col>
-            <v-col cols="2">
-                <v-btn v-if="isLoggedIn" @click="showCreateRaider = true">Create Raider</v-btn>
-            </v-col>
             <v-col cols="1">
                 <v-btn v-if="isLoggedIn" @click="showExperienceEvents = true">Events</v-btn>
             </v-col>
             <v-col cols="1">
                 <v-btn v-if="isLoggedIn" @click="showExperienceLevels = true">Levels</v-btn>
+            </v-col>
+            <v-col cols="1">
+                <v-switch v-if="isLoggedIn" v-model="includeInactiveRaiders" label="Include Inactive" @change="getRaiders" />
+            </v-col>
+            <v-col cols="2">
+                <v-btn v-if="isLoggedIn" @click="showCreateRaider = true">Create Raider</v-btn>
             </v-col>
             <v-col cols="2">
                 <v-btn v-if="isLoggedIn && !recalculating" @click="recalculateExperience(raider)">Recalculate Experience</v-btn>
@@ -125,6 +128,7 @@ export default Vue.extend({
             raiderToAddExperience: undefined as Raider | undefined,
             raiderToAddAlias: undefined as Raider | undefined,
             recalculating: false as boolean,
+            includeInactiveRaiders: false,
         };
     },
     computed: {
@@ -147,7 +151,11 @@ export default Vue.extend({
     },
     methods: {
         async getRaiders() {
-            this.raiders = await RaidersApi.getRaiders(true);
+            if (this.includeInactiveRaiders) {
+                this.raiders = await RaidersApi.getRaiders();
+            } else {
+                this.raiders = await RaidersApi.getRaiders(true);
+            }
 
             // Don't display alts as nameplates
             const idToRaiderMap = new Map() as Map<string, Raider>;
