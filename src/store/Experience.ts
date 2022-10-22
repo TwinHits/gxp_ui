@@ -52,7 +52,7 @@ export default {
                 'DECAY_PER_BOSS': Colors.BLUE,
                 'TOP_PERFORMANCE': Colors.ORANGE,
                 'HIGH_PERFORMANCE': Colors.BLUE,
-                'MID_PERFORMANCE': Colors.YELLOW,
+                'MID_PERFORMANCE': Colors.GREEN,
                 'LOW_PERFORMANCE': Colors.GREY,
                 'PREV_EXPAC_RAID': Colors.PURPLE,
             };
