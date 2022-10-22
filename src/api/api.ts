@@ -1,20 +1,26 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 
 import store from '@/store/index';
+
 import * as AuthApi from '@/api/auth.api';
+import * as AuthUtils from '@/common/utils/authUtils'
 
 axios.interceptors.request.use(
     async function (request: AxiosRequestConfig) {
-        if (!request.url?.includes('/api/token') && store.getters.accessToken) {
-            let accessToken = store.getters.accessToken;
-            if (store.getters.accessTokenExpiration && store.getters.accessTokenExpiration < new Date().valueOf()) {
-                accessToken = await AuthApi.refreshAccessToken();
+        console.log(store.getters.isLoggedIn)
+        if (!request.url?.includes('/api/token') && store.getters.isLoggedIn) {
+            if (AuthUtils.isAccessTokenExpired()) {
+                if (!AuthUtils.isRefreshTokenExpired()) {
+                    await AuthApi.refreshAccessToken();
+                } else {
+                    store.commit('logout');
+                }
             }
 
             if (!request.headers) {
                 request.headers = {};
             }
-            request.headers['Authorization'] = `Bearer ${accessToken}`;
+            request.headers['Authorization'] = `Bearer ${store.getters.accessToken}`;
             request.headers['Content-Type'] = 'application/json';
         }
         return request;

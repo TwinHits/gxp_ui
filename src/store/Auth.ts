@@ -1,36 +1,70 @@
+import * as AuthUtils from '@/common/utils/authUtils';
+
 export default {
     state: () => ({
-        isLoggedIn: false,
+        isLoggedIn: !!localStorage.getItem('refreshTokenExpiration'),
+        accessToken: localStorage.getItem('accessToken'),
+        accessTokenExpiration: localStorage.getItem('accessTokenExpiration'),
+        refreshToken: localStorage.getItem('refreshToken'),
+        refreshTokenExpiration: localStorage.getItem('refreshTokenExpiration'),
     }),
     mutations: {
         setAccessToken(state: any, accessToken: any) {
+            const expiration = AuthUtils.decodeExpirationDateFromJWT(accessToken);
+
             localStorage.setItem('accessToken', accessToken)
-            state.isloggedIn = !!localStorage.getItem('accessToken');
+            localStorage.setItem('accessTokenExpiration', String(expiration * 1000));
+
+            state.accessToken = localStorage.getItem('accessToken');
+            state.accessTokenExpiration = localStorage.getItem('accessTokenExpiration');
+            state.isLoggedIn = true;
         },
         setRefreshToken(state: any, refreshToken: any) {
+            const expiration = AuthUtils.decodeExpirationDateFromJWT(refreshToken);
+
             localStorage.setItem('refreshToken', refreshToken)
+            localStorage.setItem('refreshTokenExpiration', String(expiration * 1000));
+
+            state.refreshToken = localStorage.getItem('refreshToken');
+            state.refreshTokenExpiration = localStorage.getItem('refreshTokenExpiration');
+            state.isLoggedIn = true;
         },
-        setAccessTokenExpiration(state: any, expiration: number) {
-            localStorage.setItem('accessTokenExpiration', String(expiration * 1000));
-        },
+        logout(state: any) {
+            localStorage.setItem('accessToken', '');
+            localStorage.setItem('refreshToken', '');
+            localStorage.setItem('accessTokenExpiration', '');
+            localStorage.setItem('refreshTokenExpiration', '');
+
+            state.refreshToken = localStorage.getItem('refreshToken');
+            state.refreshTokenExpiration = localStorage.getItem('refreshTokenExpiration');
+            state.accessToken = localStorage.getItem('accessToken');
+            state.accessTokenExpiration = localStorage.getItem('accessTokenExpiration');
+            state.isLoggedIn = false;
+        }
     },
     getters: {
         accessToken: (state: any) => {
-            return localStorage.getItem('accessToken');
+            return state.accessToken;
         },
         refreshToken: (state: any) => {
-            return localStorage.getItem('refreshToken');
+            return state.refreshToken;
         },
         accessTokenExpiration: (state: any) => {
-            const expiration = localStorage.getItem('accessTokenExpiration');
-            if (expiration) {
-                return parseInt(expiration);
+            if (state.accessTokenExpiration) {
+                return parseInt(state.accessTokenExpiration);
             } else {
-                return expiration;
+                return 0;
+            }
+        },
+        refreshTokenExpiration: (state: any) => {
+            if (state.refreshTokenExpiration) {
+                return parseInt(state.refreshTokenExpiration);
+            } else {
+                return 0;
             }
         },
         isLoggedIn: (state: any) => {
-            return state.isLoggedIn || localStorage.getItem('accessToken');
+            return state.isLoggedIn;
         },
     },
 };

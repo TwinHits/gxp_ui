@@ -2,7 +2,7 @@
     <ModalDialog label="Admin Login" :show="show" :width="'33%'" @close="$emit('close')">
         <v-card-text>
             <v-text-field v-model="username" dense outlined label="Username" />
-            <v-text-field v-model="password" dense outlined label="Password" />
+            <v-text-field v-model="password" dense outlined label="Password" type="password" />
         </v-card-text>
         <v-card-actions>
             <v-btn @click="login">Log In</v-btn>

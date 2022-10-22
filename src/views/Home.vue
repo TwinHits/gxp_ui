@@ -23,7 +23,8 @@
                 <LoadingCircle v-if="isLoggedIn && recalculating" :size="25" />
             </v-col>
             <v-col cols="1" align="right">
-                <v-btn @click="showAdminLoginModal = true">Admin</v-btn>
+                <v-btn v-if="!isLoggedIn" @click="showAdminLoginModal = true">Admin</v-btn>
+                <v-btn v-if="isLoggedIn" @click="logout">Logout</v-btn>
             </v-col>
         </v-row>
         <v-row class="nameplate-row" v-for="(n, rowIndex) in numberOfRows" :key="rowIndex">
@@ -185,6 +186,9 @@ export default Vue.extend({
             await RaidersApi.recalculateExperience(raider);
             await this.getRaiders();
             this.recalculating = false;
+        },
+        logout() {
+            this.$store.commit("logout");
         },
     },
     async mounted() {
