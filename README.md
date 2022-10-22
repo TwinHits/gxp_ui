@@ -3,24 +3,22 @@ This is a Vue.js 2 frontend conencting to the GXP api backend.
 Deployment is managed by AWS CDK v2.
 
 ## Project setup
-
 This project requires node v16.13.2.
 
-```
-npm install
-```
+1. Install Node and NPM
+2. `npm install`
+3. Copy `config.json_example`, rename to `config.json`, and replace `REPLACE_ME` values.
 
 ### Compiles and hot-reloads for development
-```
-npm run serve
-```
+1. `npm run start`
 
 ### Lints and fixes files
 ```
 npm run format
 ```
 
-### Deploy to AWS
+### Deploy to AWS using AWS CDK
+Mine is currently set up to work in WSL.
 ```
 npm run deploy
 ```
