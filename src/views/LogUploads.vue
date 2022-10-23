@@ -176,12 +176,13 @@ export default Vue.extend({
                     await RaidsApi.deleteRaid(log.raid.id);
                 }
             }
+            this.$emit('refreshRaiders');
             this.deleteRaidsLoading = false;
         },
-        deleteRaid(log: Log) {
+        async deleteRaid(log: Log) {
             if (log.raid) {
                 log.loading = true;
-                RaidsApi.deleteRaid(log.raid.id);
+                await RaidsApi.deleteRaid(log.raid.id);
                 log.raid = undefined;
                 this.$emit('refreshRaiders');
                 log.loading = false;

@@ -8,20 +8,21 @@
             </v-row>
             <div v-else>
                 <v-card-subtitle class="experience-multipler"> Experience Multipler: {{ experienceMultiplerLabel }} </v-card-subtitle>
-                <v-timeline class="experience-history-timeline" v-for="(raid, raidId) in raidsByRaidId" :key="raidId" align-top dense>
-                    <template v-if="!raid.optional">
+                <v-timeline class="experience-history-timeline" v-for="(gains, raidId) in experienceGainsByRaidId" :key="raidId" align-top dense>
+                    <template v-if="!raidsByRaidId[raidId].optional">
+                        <v-divider />
                         <v-row>
                             <v-col class="experience-history-timeline-date" align="center">
-                                {{ formatTimestamp(raid.timestamp) }}
+                                {{ formatTimestamp(raidsByRaidId[raidId].timestamp) }}
                             </v-col>
-                            <v-col align="center"> Optional: {{ raid.optional }} </v-col>
-                            <v-col align="center"> Zone: {{ raid.log.zone }} </v-col>
+                            <v-col align="center"> Zone: {{ raidsByRaidId[raidId].log.zone }} </v-col>
                             <v-col align="center"> Experience: {{ calculateExperienceSoFar(raidId) }} </v-col>
                         </v-row>
+                        <v-divider />
                         <v-timeline-item
                             :style="{ 'align-items': 'center', 'padding': '0', 'margin': '0' }"
                             class="experience-history-timeline-item"
-                            v-for="gain in experienceGainsByRaidId[raidId]"
+                            v-for="gain in gains"
                             :key="gain.id"
                             :icon="getIconForExperienceEvent(gain.experienceEvent)"
                             :color="getColorForExperienceEvent(gain.experienceEvent)"
@@ -109,21 +110,7 @@ export default Vue.extend({
             for (const [raidId, gains] of Object.entries(this.experienceGainsByRaidId).reverse()) {
                 if (!this.raidsByRaidId[raidId].optional) {
                     for (const gain of gains) {
-                        let new_experience = 0;
-
-                        if (!gain.experienceEvent || gain.experienceEvent.multiplied) {
-                            new_experience = experience + gain.value * this.raider.experienceMultipler;
-                        } else {
-                            new_experience = experience + gain.value;
-                        }
-
-                        if (new_experience < 0) {
-                            experience = 0;
-                        } else if (new_experience > 500) {
-                            experience = 500;
-                        } else {
-                            experience = new_experience;
-                        }
+                        experience += gain.value;
                     }
                 }
                 if (raidId === raidIdSoFar) {
@@ -148,13 +135,15 @@ export default Vue.extend({
         const raids = await RaidsApi.getRaids();
         raids.map((r: Raid) => {
             this.raidsByRaidId[r.id] = r;
-            this.experienceGainsByRaidId[r.id] = [];
         });
 
         const gainsWithNoRaid = [] as ExperienceGain[];
         const experienceGains = await (await ExperienceGainsApi.getExperienceGainsForRaiderId(this.raider.id)).reverse();
         for (const gain of experienceGains) {
             if (gain.raid) {
+                if (!this.experienceGainsByRaidId[gain.raid]) {
+                    this.experienceGainsByRaidId[gain.raid] = []
+                }
                 this.experienceGainsByRaidId[gain.raid].push(gain);
             } else {
                 gainsWithNoRaid.push(gain);
@@ -183,6 +172,6 @@ export default Vue.extend({
 
 .experience-history-timeline-date {
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 1.2em;
 }
 </style>
