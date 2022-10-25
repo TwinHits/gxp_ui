@@ -52,7 +52,11 @@
         <v-card-subtitle>
             <v-row align="center">
                 <v-col cols="11" align="left">
-                    <GuildExperienceBar :experience="raider.experience" :experienceLevel="raider.experienceLevel" @click="showHistory = true" />
+                    <GuildExperienceBar
+                        :experience="raider.experience"
+                        :experienceLevel="raider.experienceLevel"
+                        @click="showHistory = true"
+                    />
                 </v-col>
                 <v-col cols="1" align="center">
                     <IconButton
@@ -71,7 +75,13 @@
             </v-row>
         </v-card-subtitle>
         <ExperienceGainHistory v-if="showHistory" :show="showHistory" :raider="raider" @close="showHistory = false" />
-        <DatePickerModal :show="showJoinDatePicker" label="Select Join Date" :timestamp="raider.join_timestamp" @change="setJoinTimeStamp(raider, $event)" @close="showJoinDatePicker = false" />
+        <DatePickerModal
+            :show="showJoinDatePicker"
+            label="Select Join Date"
+            :timestamp="raider.join_timestamp"
+            @change="setJoinTimeStamp(raider, $event)"
+            @close="showJoinDatePicker = false"
+        />
     </v-card>
 </template>
 

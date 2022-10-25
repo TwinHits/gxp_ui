@@ -29,17 +29,17 @@ export default Vue.extend({
         timestamp: {
             required: false,
             type: Number,
-        }
+        },
     },
     data() {
         return {
-            pickerDate: "",
+            pickerDate: '',
         };
     },
     watch: {
         timestamp(newValue) {
             this.pickerDate = this.getDatePickerFriendlyDate(newValue);
-        }
+        },
     },
     methods: {
         getDatePickerFriendlyDate(timestamp: number): string {
@@ -48,13 +48,12 @@ export default Vue.extend({
         },
         getTimestampFromDateString(dateString: string): number {
             return DateTimeUtils.getUnixTimeFromDate(new Date(dateString));
-        }
+        },
     },
     mounted() {
         this.pickerDate = this.getDatePickerFriendlyDate(this.timestamp);
-    }
+    },
 });
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

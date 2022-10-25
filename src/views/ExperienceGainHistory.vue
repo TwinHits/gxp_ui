@@ -8,7 +8,13 @@
             </v-row>
             <div v-else>
                 <v-card-subtitle class="experience-multipler"> Experience Multipler: {{ experienceMultiplerLabel }} </v-card-subtitle>
-                <v-timeline class="experience-history-timeline" v-for="(gains, raidId) in experienceGainsByRaidId" :key="raidId" align-top dense>
+                <v-timeline
+                    class="experience-history-timeline"
+                    v-for="(gains, raidId) in experienceGainsByRaidId"
+                    :key="raidId"
+                    align-top
+                    dense
+                >
                     <template v-if="!raidsByRaidId[raidId].optional">
                         <v-divider />
                         <v-row>
@@ -142,7 +148,7 @@ export default Vue.extend({
         for (const gain of experienceGains) {
             if (gain.raid) {
                 if (!this.experienceGainsByRaidId[gain.raid]) {
-                    this.experienceGainsByRaidId[gain.raid] = []
+                    this.experienceGainsByRaidId[gain.raid] = [];
                 }
                 this.experienceGainsByRaidId[gain.raid].push(gain);
             } else {

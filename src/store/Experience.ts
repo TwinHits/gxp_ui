@@ -60,11 +60,11 @@ export default {
         },
         setExperienceLevelColors(state: any) {
             state.colorsByExperienceLevelId = {
-                "dad41d51-410a-4d46-b564-9bb12f1461d4": Colors.ORANGE,
-                "06ae3d66-7145-4aaf-b44e-22ea23b6071f": Colors.PURPLE,
-                "b9a60e46-6c8f-4c2c-b00c-4d4a7480e499": Colors.PURPLE,
-                "8505187f-ae2e-4548-931a-8f13448cc2dc": Colors.BLUE,
-                "47edaf8c-dd92-485f-b55a-396b755f6893": Colors.GREY,
+                'dad41d51-410a-4d46-b564-9bb12f1461d4': Colors.ORANGE,
+                '06ae3d66-7145-4aaf-b44e-22ea23b6071f': Colors.PURPLE,
+                'b9a60e46-6c8f-4c2c-b00c-4d4a7480e499': Colors.PURPLE,
+                '8505187f-ae2e-4548-931a-8f13448cc2dc': Colors.BLUE,
+                '47edaf8c-dd92-485f-b55a-396b755f6893': Colors.GREY,
             };
         },
     },

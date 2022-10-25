@@ -30,7 +30,7 @@
                             <v-btn v-if="!isLoggedIn" @click="showAdminLoginModal = true">Admin</v-btn>
                             <v-btn v-if="isLoggedIn" @click="logout">Logout</v-btn>
                         </v-col>
-                    </v-row> 
+                    </v-row>
                 </v-toolbar>
             </v-col>
         </v-row>

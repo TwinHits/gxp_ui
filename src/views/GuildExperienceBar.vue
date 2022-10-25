@@ -17,7 +17,7 @@ export default Vue.extend({
         experienceLevel: {
             type: Object as PropType<ExperienceLevel>,
             required: true,
-        }
+        },
     },
     computed: {
         displayedString(): string {
@@ -29,9 +29,9 @@ export default Vue.extend({
         percent(): number {
             return (this.experience / this.nextLevel.experience_required) * 100;
         },
-        color(): string { 
-            return this.$store.getters.experienceLevelColor(this.experienceLevel.id)
-        }
+        color(): string {
+            return this.$store.getters.experienceLevelColor(this.experienceLevel.id);
+        },
     },
 });
 </script>
