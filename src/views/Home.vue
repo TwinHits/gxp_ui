@@ -1,33 +1,37 @@
 <template>
     <div class="containing-div">
-        <v-row align="center">
-            <v-col cols="4">
+        <v-row>
+            <v-col cols="12">
                 <v-toolbar>
-                    <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
+                    <v-row align="center">
+                        <v-col cols="5">
+                            <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
+                        </v-col>
+                        <v-col cols="1">
+                            <v-btn v-if="isLoggedIn" @click="showRaids = true">Raids</v-btn>
+                        </v-col>
+                        <v-col cols="1">
+                            <v-btn v-if="isLoggedIn" @click="showExperienceEvents = true">Events</v-btn>
+                        </v-col>
+                        <v-col cols="1">
+                            <v-btn v-if="isLoggedIn" @click="showExperienceLevels = true">Levels</v-btn>
+                        </v-col>
+                        <v-col cols="1">
+                            <v-switch v-if="isLoggedIn" v-model="includeInactiveRaiders" label="Include Inactive" @change="getRaiders" />
+                        </v-col>
+                        <v-col cols="1">
+                            <v-btn v-if="isLoggedIn" @click="showCreateRaider = true">Create Raider</v-btn>
+                        </v-col>
+                        <v-col cols="1">
+                            <v-btn v-if="isLoggedIn && !recalculating" @click="recalculateExperience(raider)">Refresh</v-btn>
+                            <LoadingCircle v-if="isLoggedIn && recalculating" :size="25" />
+                        </v-col>
+                        <v-col cols="1" align="right">
+                            <v-btn v-if="!isLoggedIn" @click="showAdminLoginModal = true">Admin</v-btn>
+                            <v-btn v-if="isLoggedIn" @click="logout">Logout</v-btn>
+                        </v-col>
+                    </v-row> 
                 </v-toolbar>
-            </v-col>
-            <v-col cols="1">
-                <v-btn v-if="isLoggedIn" @click="showRaids = true">Raids</v-btn>
-            </v-col>
-            <v-col cols="1">
-                <v-btn v-if="isLoggedIn" @click="showExperienceEvents = true">Events</v-btn>
-            </v-col>
-            <v-col cols="1">
-                <v-btn v-if="isLoggedIn" @click="showExperienceLevels = true">Levels</v-btn>
-            </v-col>
-            <v-col cols="1">
-                <v-switch v-if="isLoggedIn" v-model="includeInactiveRaiders" label="Include Inactive" @change="getRaiders" />
-            </v-col>
-            <v-col cols="2">
-                <v-btn v-if="isLoggedIn" @click="showCreateRaider = true">Create Raider</v-btn>
-            </v-col>
-            <v-col cols="2">
-                <v-btn v-if="isLoggedIn && !recalculating" @click="recalculateExperience(raider)">Recalculate Experience</v-btn>
-                <LoadingCircle v-if="isLoggedIn && recalculating" :size="25" />
-            </v-col>
-            <v-col cols="1" align="right">
-                <v-btn v-if="!isLoggedIn" @click="showAdminLoginModal = true">Admin</v-btn>
-                <v-btn v-if="isLoggedIn" @click="logout">Logout</v-btn>
             </v-col>
         </v-row>
         <v-row class="nameplate-row" v-for="(n, rowIndex) in numberOfRows" :key="rowIndex">
@@ -208,6 +212,7 @@ export default Vue.extend({
 
         const levels = await ExperienceLevelsApi.getExperienceLevels();
         this.$store.commit('setExperienceLevels', levels);
+        this.$store.commit('setExperienceLevelColors');
 
         await this.getRaiders();
     },
