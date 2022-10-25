@@ -1,5 +1,5 @@
 <template>
-    <v-card class="player-nameplate-card" elevation="10" outlined>
+    <v-card class="player-nameplate-card" elevation="6" outlined>
         <v-card-title>
             <v-row no-gutters>
                 <v-col :cols="11">
@@ -52,7 +52,7 @@
         <v-card-subtitle>
             <v-row align="center">
                 <v-col cols="11" align="left">
-                    <GuildExperienceBar :experience="raider.experience" @click="showHistory = true" />
+                    <GuildExperienceBar :experience="raider.experience" :experienceLevel="raider.experienceLevel" @click="showHistory = true" />
                 </v-col>
                 <v-col cols="1" align="center">
                     <IconButton

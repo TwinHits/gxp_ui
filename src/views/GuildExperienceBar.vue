@@ -1,12 +1,12 @@
 <template>
-    <v-progress-linear :value="percent" rounded striped prominent color="blue" height="20" buffer-value="100" @click="$emit('click')">
+    <v-progress-linear :value="percent" rounded striped prominent :color="color" height="20" buffer-value="100" @click="$emit('click')">
         {{ displayedString }}
     </v-progress-linear>
 </template>
 
 <script lang="ts">
 import { ExperienceLevel } from '@/common/types/experienceLevel';
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 
 export default Vue.extend({
     props: {
@@ -14,6 +14,10 @@ export default Vue.extend({
             type: Number,
             required: true,
         },
+        experienceLevel: {
+            type: Object as PropType<ExperienceLevel>,
+            required: true,
+        }
     },
     computed: {
         displayedString(): string {
@@ -25,6 +29,9 @@ export default Vue.extend({
         percent(): number {
             return (this.experience / this.nextLevel.experience_required) * 100;
         },
+        color(): string { 
+            return this.$store.getters.experienceLevelColor(this.experienceLevel.id)
+        }
     },
 });
 </script>
