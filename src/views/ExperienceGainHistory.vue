@@ -39,7 +39,7 @@
                                     <HistoryItem :experienceGain="gain" :multipler="raider.experienceMultipler" />
                                 </v-col>
                                 <v-col cols="1" align="right">
-                                    <IconButton v-if="isLoggedIn" icon="mdi-trash-can-outline" @click="deleteExperienceGain(gain)" />
+                                    <IconButton v-if="isLoggedIn" icon="mdi-trash-can-outline" @click="deleteExperienceGain(gain)" tooltip="Delete Experience" />
                                 </v-col>
                             </v-row>
                         </v-timeline-item>

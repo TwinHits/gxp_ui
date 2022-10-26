@@ -4,7 +4,7 @@
             <v-list-item-title>{{ alias.name }}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-icon>
-            <IconButton icon="mdi-trash-can-outline" @click="$emit('deleteAlias', alias)" />
+            <IconButton icon="mdi-trash-can-outline" @click="$emit('deleteAlias', alias)" tooltip="Delete Alias" />
         </v-list-item-icon>
     </v-list-item>
 </template>

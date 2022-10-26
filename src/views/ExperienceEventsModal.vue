@@ -26,7 +26,7 @@
                     <v-text-field v-model="item.value" dense type="number" />
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <IconButton icon="mdi-content-save-outline" @click="save(item)" />
+                    <IconButton icon="mdi-content-save-outline" @click="save(item)" tooltip="Save Experience Event" />
                 </template>
             </v-data-table>
         </v-card-text>

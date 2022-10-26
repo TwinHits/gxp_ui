@@ -13,17 +13,19 @@
                             <v-text-field v-model="rename" hide-details dense outlined :label="raider.name"></v-text-field>
                         </v-col>
                         <v-col md="auto">
-                            <IconButton icon="mdi-content-save-outline" @click="renameRaider(raider, rename)" />
+                            <IconButton icon="mdi-content-save-outline" @click="renameRaider(raider, rename)" tooltip="Rename Raider" />
                         </v-col>
                         <v-col md="auto">
-                            <IconButton icon="mdi-close" @click="showRenameRaiderTextField = false" />
+                            <IconButton icon="mdi-close" @click="showRenameRaiderTextField = false" tooltip="Close" />
                         </v-col>
                     </v-row>
                 </v-col>
                 <v-col :cols="1">
                     <v-menu v-if="isLoggedIn" offset-y transition="slide-y-transition" bottom>
                         <template v-slot:activator="{ on, attrs }">
-                            <IconButton icon="mdi-dots-vertical" :bind="attrs" :on="on" />
+                            <v-btn icon v-bind="attrs" v-on="on">
+                                <v-icon>mdi-dots-vertical</v-icon>
+                            </v-btn>
                         </template>
                         <v-list>
                             <v-list-item link @click="recalculateExperience(raider)">
@@ -64,6 +66,7 @@
                         icon="mdi-plus-circle-outline"
                         @click="emitShowAddExperienceModal(raider)"
                         :disabled="!raider.active"
+                        tooltip="Add Experience" 
                     />
                 </v-col>
             </v-row>

@@ -7,7 +7,7 @@
                         {{ label }}
                     </v-col>
                     <v-col :cols="1" align="right">
-                        <IconButton icon="mdi-close" @click="$emit('close')" />
+                        <IconButton icon="mdi-close" @click="$emit('close')" tooltip="Close" />
                     </v-col>
                 </v-row>
             </v-card-title>

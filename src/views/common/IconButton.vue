@@ -1,9 +1,12 @@
 <template>
-    <v-btn icon @click="$emit('click')" v-on="on" v-bind="bind" :disabled="disabled">
-        <v-icon>
-            {{ icon }}
-        </v-icon>
-    </v-btn>
+    <v-tooltip bottom :disabled="tooltipDisabled">
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn icon @click="$emit('click')" :disabled="disabled" v-bind="attrs" v-on="on">
+                <v-icon>{{ icon }}</v-icon>
+            </v-btn>
+        </template>
+        <span>{{ tooltip }}</span>
+    </v-tooltip>
 </template>
 
 <script lang="ts">
@@ -15,16 +18,20 @@ export default Vue.extend({
             type: String,
             required: true,
         },
-        on: {
-            required: false,
-        },
-        bind: {
-            required: false,
-        },
         disabled: {
             type: Boolean,
             required: false,
             default: false,
+        },
+        tooltip: {
+            type: String,
+            required: false,
+            default: '',
+        },
+    },
+    computed: {
+        tooltipDisabled(): boolean {
+            return !this.tooltip;
         },
     },
 });

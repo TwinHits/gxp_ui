@@ -17,7 +17,7 @@
                     <v-text-field v-model="customGainValue" dense type="number" outlined label="Value" />
                 </v-col>
                 <v-col cols="1">
-                    <IconButton icon="mdi-plus-circle-outline" :disabled="!experienceEvent" @click="createExperience" />
+                    <IconButton icon="mdi-plus-circle-outline" :disabled="!experienceEvent" @click="createExperience" tooltip="Add Experience" />
                 </v-col>
             </v-row>
         </v-card-text>
