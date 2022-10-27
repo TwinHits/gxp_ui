@@ -1,5 +1,6 @@
 import { Alias } from '@/common/types/alias';
 import { Rename } from '@/common/types/rename';
+import { ExperienceLevel } from '@/common/types/experienceLevel';
 
 export interface Raider {
     id: string;
@@ -14,4 +15,5 @@ export interface Raider {
     renames: Rename[];
     main: string | undefined;
     active: boolean;
+    experienceLevel: ExperienceLevel;
 }

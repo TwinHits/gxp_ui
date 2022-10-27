@@ -23,6 +23,9 @@
                             <v-btn v-if="isLoggedIn" @click="showCreateRaider = true">Create Raider</v-btn>
                         </v-col>
                         <v-col cols="1">
+                            <IconButton v-if="isLoggedIn" @click="getLevelsRaidWarning" icon="mdi-bullhorn-variant-outline" />
+                        </v-col>
+                        <v-col cols="1">
                             <v-btn v-if="isLoggedIn && !recalculating" @click="recalculateExperience(raider)">Refresh</v-btn>
                             <LoadingCircle v-if="isLoggedIn && recalculating" :size="25" />
                         </v-col>
@@ -91,6 +94,7 @@ import AdminLoginModal from '@/views/AdminLoginModal.vue';
 import CreateRaiderModal from '@/views/CreateRaiderModal.vue';
 import ExperienceEventsModal from '@/views/ExperienceEventsModal.vue';
 import ExperienceLevelsModal from '@/views/ExperienceLevelsModal.vue';
+import IconButton from '@/views/common/IconButton.vue';
 import LoadingCircle from '@/views/common/LoadingCircle.vue';
 import LogUploads from '@/views/LogUploads.vue';
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
@@ -110,6 +114,7 @@ export default Vue.extend({
         CreateRaiderModal,
         ExperienceEventsModal,
         ExperienceLevelsModal,
+        IconButton,
         PlayerNameplate,
         LogUploads,
         LoadingCircle,
@@ -203,6 +208,23 @@ export default Vue.extend({
         logout() {
             this.$store.commit('logout');
         },
+        async getLevelsRaidWarning() {
+            const raidersByExperienceLevel = {} as Record<string, Array<string>>;
+            for (const raider of this.raiders) {
+                if (raider.experienceLevel.experience_required > 100) {
+                    if (!raidersByExperienceLevel[raider.experienceLevel.name]) {
+                        raidersByExperienceLevel[raider.experienceLevel.name] = [];
+                    }
+                    raidersByExperienceLevel[raider.experienceLevel.name].push(raider.name);
+                }
+            }
+
+            let result = "";
+            for (const [level, raiders] of Object.entries(raidersByExperienceLevel)) {
+                result = result + "/rw " + level + ": " + raiders.join(", ") + "\n";
+            }
+            await navigator.clipboard.writeText(result);
+        }
     },
     async mounted() {
         const events = await ExperienceEventsApi.getExperienceEvents();
