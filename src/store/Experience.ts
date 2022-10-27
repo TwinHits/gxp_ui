@@ -37,6 +37,7 @@ export default {
                 'HIGH_PERFORMANCE': 'mdi-format-vertical-align-top',
                 'MID_PERFORMANCE': 'mdi-format-align-top',
                 'LOW_PERFORMANCE': 'mdi-format-align-bottom',
+                'HEALER_TANK_LOW_PERFORMANCE': 'mdi-format-align-bottom',
                 'PREV_EXPAC_RAID': 'mdi-history',
             };
         },
@@ -55,6 +56,7 @@ export default {
                 'HIGH_PERFORMANCE': Colors.BLUE,
                 'MID_PERFORMANCE': Colors.GREEN,
                 'LOW_PERFORMANCE': Colors.GREY,
+                'HEALER_TANK_LOW_PERFORMANCE': Colors.GREY,
                 'PREV_EXPAC_RAID': Colors.PURPLE,
             };
         },

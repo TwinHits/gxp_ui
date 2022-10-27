@@ -132,9 +132,30 @@ export default Vue.extend({
         };
     },
     methods: {
+        async getLogs() {
+            const raids = await RaidsApi.getRaids();
+            const logs = await LogsApi.getLogs();
+
+            if (logs.length > 0) {
+                const raidsByCode = {} as Record<string, Raid>;
+                for (let raid of raids) {
+                    if (raid.log) {
+                        raidsByCode[raid.log.logsCode] = raid;
+                    }
+                }
+
+                for (let log of logs) {
+                    log.raid = raidsByCode[log.logsCode];
+                    log.loading = false;
+                }
+            }
+
+            return logs;
+        },
         async pullLogs() {
             this.pullLogsLoading = true;
             await LogsApi.pullLogsFromWarcraftLogs();
+            this.logs = await this.getLogs();
             this.pullLogsLoading = false;
         },
         async createRaid(log: Log) {
@@ -194,25 +215,7 @@ export default Vue.extend({
     },
     async mounted() {
         this.loading = true;
-
-        const raids = await RaidsApi.getRaids();
-        const logs = await LogsApi.getLogs();
-
-        if (logs.length > 0) {
-            const raidsByCode = {} as Record<string, Raid>;
-            for (let raid of raids) {
-                if (raid.log) {
-                    raidsByCode[raid.log.logsCode] = raid;
-                }
-            }
-
-            for (let log of logs) {
-                log.raid = raidsByCode[log.logsCode];
-                log.loading = false;
-            }
-        }
-
-        this.logs = logs;
+        this.logs = await this.getLogs();
         this.loading = false;
     },
 });
