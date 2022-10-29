@@ -1,37 +1,90 @@
 <template>
     <div class="containing-div">
         <v-row>
-            <v-col cols="12">
+            <v-col>
                 <v-toolbar>
                     <v-row align="center">
                         <v-col cols="5">
                             <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
                         </v-col>
-                        <v-col cols="1">
-                            <v-btn v-if="isLoggedIn" @click="showRaids = true">Raids</v-btn>
-                        </v-col>
-                        <v-col cols="1">
-                            <v-btn v-if="isLoggedIn" @click="showExperienceEvents = true">Events</v-btn>
-                        </v-col>
-                        <v-col cols="1">
-                            <v-btn v-if="isLoggedIn" @click="showExperienceLevels = true">Levels</v-btn>
-                        </v-col>
-                        <v-col cols="1">
+                        <v-col md="auto">
                             <v-switch v-if="isLoggedIn" v-model="includeInactiveRaiders" label="Include Inactive" @change="getRaiders" />
                         </v-col>
-                        <v-col cols="1">
-                            <v-btn v-if="isLoggedIn" @click="showCreateRaider = true">Create Raider</v-btn>
+                        <v-col>
+                            <v-spacer />
                         </v-col>
-                        <v-col cols="1">
-                            <IconButton v-if="isLoggedIn" @click="getLevelsRaidWarning" icon="mdi-bullhorn-variant-outline" />
+                        <v-col md="auto">
+                            <IconButton
+                                v-if="isLoggedIn"
+                                @click="showRaids = true"
+                                icon="mdi-table-plus"
+                                tooltip="Upload New Raid"
+                                :size="30"
+                            />
                         </v-col>
-                        <v-col cols="1">
-                            <v-btn v-if="isLoggedIn && !recalculating" @click="recalculateExperience(raider)">Refresh</v-btn>
-                            <LoadingCircle v-if="isLoggedIn && recalculating" :size="25" />
+                        <v-col md="auto">
+                            <IconButton
+                                v-if="isLoggedIn"
+                                @click="showCreateRaider = true"
+                                icon="mdi-account-plus-outline"
+                                tooltip="Create New Raider"
+                                :size="30"
+                            />
                         </v-col>
-                        <v-col cols="1" align="right">
-                            <v-btn v-if="!isLoggedIn" @click="showAdminLoginModal = true">Admin</v-btn>
-                            <v-btn v-if="isLoggedIn" @click="logout">Logout</v-btn>
+                        <v-col md="auto">
+                            <IconButton
+                                v-if="isLoggedIn"
+                                @click="showExperienceEvents = true"
+                                icon="mdi-calendar-edit-outline"
+                                tooltip="Edit Experience Events"
+                                :size="30"
+                            />
+                        </v-col>
+                        <v-col md="auto">
+                            <IconButton
+                                v-if="isLoggedIn"
+                                @click="showExperienceLevels = true"
+                                icon="mdi-playlist-edit"
+                                tooltip="Edit Experience Levels"
+                                :size="30"
+                            />
+                        </v-col>
+                        <v-col md="auto">
+                            <IconButton
+                                v-if="isLoggedIn && !recalculating"
+                                @click="recalculateExperience()"
+                                icon="mdi-refresh"
+                                tooltip="Refresh Experience"
+                                :size="30"
+                            />
+                            <LoadingCircle v-if="isLoggedIn && recalculating" :size="30" />
+                        </v-col>
+                        <v-col md="auto">
+                            <IconButton
+                                v-if="isLoggedIn"
+                                @click="showRaidWarningModal = true"
+                                icon="mdi-bullhorn-variant-outline"
+                                tooltip="Show Raid Warnings"
+                                :size="30"
+                            />
+                        </v-col>
+                        <v-col md="auto">
+                            <IconButton 
+                                @click="goToKofi" 
+                                icon="mdi-coffee-to-go-outline"
+                                tooltip="Power GXP with Coffee"
+                                :size="30"
+                            />
+                        </v-col>
+                        <v-col md="auto">
+                            <IconButton
+                                v-if="!isLoggedIn"
+                                @click="showAdminLoginModal = true"
+                                icon="mdi-login"
+                                tooltip="Admin Login"
+                                :size="30"
+                            />
+                            <IconButton v-if="isLoggedIn" @click="logout" icon="mdi-logout" tooltip="Logout" :size="30" />
                         </v-col>
                     </v-row>
                 </v-toolbar>
@@ -81,6 +134,12 @@
         />
         <AddAliasModal v-if="showAddAliasModal" :show="showAddAliasModal" :raider="raiderToAddAlias" @close="showAddAliasModal = false" />
         <AdminLoginModal v-if="showAdminLoginModal" :show="showAdminLoginModal" @close="showAdminLoginModal = false" />
+        <CopyRaidWarningModal
+            v-if="showRaidWarningModal"
+            :show="showRaidWarningModal"
+            @close="showRaidWarningModal = false"
+            :raiders="raiders"
+        />
     </div>
 </template>
 
@@ -92,6 +151,7 @@ import AddAliasModal from '@/views/AddAliasModal.vue';
 import AddExperienceModal from '@/views/AddExperienceModal.vue';
 import AdminLoginModal from '@/views/AdminLoginModal.vue';
 import CreateRaiderModal from '@/views/CreateRaiderModal.vue';
+import CopyRaidWarningModal from '@/views/CopyRaidWarningModal.vue';
 import ExperienceEventsModal from '@/views/ExperienceEventsModal.vue';
 import ExperienceLevelsModal from '@/views/ExperienceLevelsModal.vue';
 import IconButton from '@/views/common/IconButton.vue';
@@ -111,6 +171,7 @@ export default Vue.extend({
         AddAliasModal,
         AddExperienceModal,
         AdminLoginModal,
+        CopyRaidWarningModal,
         CreateRaiderModal,
         ExperienceEventsModal,
         ExperienceLevelsModal,
@@ -131,6 +192,7 @@ export default Vue.extend({
             showAddExperienceModal: false,
             showAddAliasModal: false,
             showAdminLoginModal: false,
+            showRaidWarningModal: false,
             searchTerm: '' as string,
             raiders: [] as Raider[],
             raiderToAltAdd: undefined as Raider | undefined,
@@ -208,23 +270,9 @@ export default Vue.extend({
         logout() {
             this.$store.commit('logout');
         },
-        async getLevelsRaidWarning() {
-            const raidersByExperienceLevel = {} as Record<string, Array<string>>;
-            for (const raider of this.raiders) {
-                if (raider.experienceLevel.experience_required > 100) {
-                    if (!raidersByExperienceLevel[raider.experienceLevel.name]) {
-                        raidersByExperienceLevel[raider.experienceLevel.name] = [];
-                    }
-                    raidersByExperienceLevel[raider.experienceLevel.name].push(raider.name);
-                }
-            }
-
-            let result = '';
-            for (const [level, raiders] of Object.entries(raidersByExperienceLevel)) {
-                result = result + '/rw ' + level + ': ' + raiders.join(', ') + '\n';
-            }
-            await navigator.clipboard.writeText(result);
-        },
+        goToKofi() {   
+            window.open("https://ko-fi.com/twinhits", "_blank");
+        }
     },
     async mounted() {
         const events = await ExperienceEventsApi.getExperienceEvents();

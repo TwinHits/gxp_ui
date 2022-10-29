@@ -2,7 +2,7 @@
     <v-tooltip bottom :disabled="tooltipDisabled">
         <template v-slot:activator="{ on, attrs }">
             <v-btn icon @click="$emit('click')" :disabled="disabled" v-bind="attrs" v-on="on">
-                <v-icon>{{ icon }}</v-icon>
+                <v-icon :size="size">{{ icon }}</v-icon>
             </v-btn>
         </template>
         <span>{{ tooltip }}</span>
@@ -27,6 +27,11 @@ export default Vue.extend({
             type: String,
             required: false,
             default: '',
+        },
+        size: {
+            type: Number,
+            required: false,
+            default: 25,
         },
     },
     computed: {
