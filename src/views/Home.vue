@@ -219,12 +219,12 @@ export default Vue.extend({
                 }
             }
 
-            let result = "";
+            let result = '';
             for (const [level, raiders] of Object.entries(raidersByExperienceLevel)) {
-                result = result + "/rw " + level + ": " + raiders.join(", ") + "\n";
+                result = result + '/rw ' + level + ': ' + raiders.join(', ') + '\n';
             }
             await navigator.clipboard.writeText(result);
-        }
+        },
     },
     async mounted() {
         const events = await ExperienceEventsApi.getExperienceEvents();

@@ -7,7 +7,15 @@ export function getDateFromUnixTime(unixTime: number): Date {
 }
 
 export function formatDateTimeForDisplay(date: Date): string {
-    return date.toLocaleString('en-us', {   weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
+    return date.toLocaleString('en-us', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    });
 }
 
 export function formatDateForDisplay(date: Date): string {

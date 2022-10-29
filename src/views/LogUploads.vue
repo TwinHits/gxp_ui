@@ -26,7 +26,12 @@
                         <LoadingCircle v-else :size="25" />
                     </v-col>
                     <v-col md="auto" align="center">
-                        <IconButton v-if="!deleteRaidsLoading" @click="deleteRaids" icon="mdi-delete-sweep-outline" tooltip="Delete All Raids" />
+                        <IconButton
+                            v-if="!deleteRaidsLoading"
+                            @click="deleteRaids"
+                            icon="mdi-delete-sweep-outline"
+                            tooltip="Delete All Raids"
+                        />
                         <LoadingCircle v-else :size="25" />
                     </v-col>
                 </v-row>
@@ -47,11 +52,26 @@
             <template v-slot:item.actions="{ item }">
                 <LoadingCircle v-if="item.loading" :size="25" />
                 <template v-else>
-                    <IconButton v-if="!item.raid && item.active" icon="mdi-content-save-outline" @click="updateLog(item)" tooltip="Save Raid" />
+                    <IconButton
+                        v-if="!item.raid && item.active"
+                        icon="mdi-content-save-outline"
+                        @click="updateLog(item)"
+                        tooltip="Save Raid"
+                    />
                     <IconButton v-if="!item.raid && item.active" icon="mdi-upload" @click="createRaid(item)" tooltip="Create Raid" />
-                    <IconButton v-if="!item.raid && item.active" icon="mdi-archive-outline" @click="setLogActive(item, false)" tooltip="Archive Raid" />
+                    <IconButton
+                        v-if="!item.raid && item.active"
+                        icon="mdi-archive-outline"
+                        @click="setLogActive(item, false)"
+                        tooltip="Archive Raid"
+                    />
                     <IconButton v-if="item.raid" icon="mdi-trash-can-outline" @click="deleteRaid(item)" tooltip="Delete Raid" />
-                    <IconButton v-if="!item.active" icon="mdi-archive-off-outline" @click="setLogActive(item, true)" tooltip="Activate Raid"  />
+                    <IconButton
+                        v-if="!item.active"
+                        icon="mdi-archive-off-outline"
+                        @click="setLogActive(item, true)"
+                        tooltip="Activate Raid"
+                    />
                 </template>
             </template>
         </v-data-table>

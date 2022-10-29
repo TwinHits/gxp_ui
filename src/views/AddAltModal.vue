@@ -7,7 +7,7 @@
                         <v-list-item-title>{{ alt.name }}</v-list-item-title>
                     </v-list-item-content>
                     <v-list-item-icon>
-                        <IconButton icon="mdi-trash-can-outline" @click="deleteAlt(alt)" tooltip="Delete Alt"/>
+                        <IconButton icon="mdi-trash-can-outline" @click="deleteAlt(alt)" tooltip="Delete Alt" />
                     </v-list-item-icon>
                 </v-list-item>
             </v-list>

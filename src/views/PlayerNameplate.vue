@@ -66,7 +66,7 @@
                         icon="mdi-plus-circle-outline"
                         @click="emitShowAddExperienceModal(raider)"
                         :disabled="!raider.active"
-                        tooltip="Add Experience" 
+                        tooltip="Add Experience"
                     />
                 </v-col>
             </v-row>
