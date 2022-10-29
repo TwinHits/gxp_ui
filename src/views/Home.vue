@@ -69,12 +69,10 @@
                             />
                         </v-col>
                         <v-col md="auto">
-                            <IconButton 
-                                @click="goToKofi" 
-                                icon="mdi-coffee-to-go-outline"
-                                tooltip="Power GXP with Coffee"
-                                :size="30"
-                            />
+                            <IconButton @click="showAboutGXPModal = true" icon="mdi-information-outline" tooltip="About GXP" :size="30" />
+                        </v-col>
+                        <v-col md="auto">
+                            <IconButton @click="goToKofi" icon="mdi-coffee-to-go-outline" tooltip="Power GXP with Coffee" :size="30" />
                         </v-col>
                         <v-col md="auto">
                             <IconButton
@@ -140,6 +138,7 @@
             @close="showRaidWarningModal = false"
             :raiders="raiders"
         />
+        <AboutGXPModal v-if="showAboutGXPModal" :show="showAboutGXPModal" @close="showAboutGXPModal = false" />
     </div>
 </template>
 
@@ -155,6 +154,7 @@ import CopyRaidWarningModal from '@/views/CopyRaidWarningModal.vue';
 import ExperienceEventsModal from '@/views/ExperienceEventsModal.vue';
 import ExperienceLevelsModal from '@/views/ExperienceLevelsModal.vue';
 import IconButton from '@/views/common/IconButton.vue';
+import AboutGXPModal from '@/views/AboutGXPModal.vue';
 import LoadingCircle from '@/views/common/LoadingCircle.vue';
 import LogUploads from '@/views/LogUploads.vue';
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
@@ -176,6 +176,7 @@ export default Vue.extend({
         ExperienceEventsModal,
         ExperienceLevelsModal,
         IconButton,
+        AboutGXPModal,
         PlayerNameplate,
         LogUploads,
         LoadingCircle,
@@ -193,6 +194,7 @@ export default Vue.extend({
             showAddAliasModal: false,
             showAdminLoginModal: false,
             showRaidWarningModal: false,
+            showAboutGXPModal: false,
             searchTerm: '' as string,
             raiders: [] as Raider[],
             raiderToAltAdd: undefined as Raider | undefined,
@@ -270,9 +272,9 @@ export default Vue.extend({
         logout() {
             this.$store.commit('logout');
         },
-        goToKofi() {   
-            window.open("https://ko-fi.com/twinhits", "_blank");
-        }
+        goToKofi() {
+            window.open('https://ko-fi.com/twinhits', '_blank');
+        },
     },
     async mounted() {
         const events = await ExperienceEventsApi.getExperienceEvents();
