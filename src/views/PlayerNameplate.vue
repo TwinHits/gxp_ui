@@ -169,6 +169,12 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+@import '@/style/Colors.scss';
+
+.player-nameplate-card {
+    background-color: $foreground !important;
+}
+
 .player-nameplate-options-card {
     bottom: 0;
     opacity: 1 !important;

@@ -1,6 +1,6 @@
 <template>
     <v-dialog :value="show" :width="width" @keydown.esc="$emit('close')" @click:outside="$emit('close')">
-        <v-card>
+        <v-card class="modal-dialog">
             <v-card-title>
                 <v-row no-gutters>
                     <v-col :cols="11">
@@ -45,4 +45,10 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@import '@/style/Colors.scss';
+
+.modal-dialog {
+    background-color: $foreground !important;
+}
+</style>

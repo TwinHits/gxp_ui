@@ -2,7 +2,7 @@
     <div class="containing-div">
         <v-row>
             <v-col>
-                <v-toolbar>
+                <v-toolbar class="admin-toolbar">
                     <v-row align="center">
                         <v-col cols="5">
                             <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
@@ -292,6 +292,12 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+@import '@/style/Colors.scss';
+
+.admin-toolbar {
+    background-color: $foreground !important;
+}
+
 .containing-div {
     width: 100%;
 }
