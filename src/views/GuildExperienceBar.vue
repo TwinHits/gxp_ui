@@ -27,7 +27,7 @@ export default Vue.extend({
             return this.$store.getters.nextExperienceLevel(this.experience);
         },
         percent(): number {
-            return (this.experience / this.nextLevel.experience_required) * 100;
+            return ((this.experience - this.experienceLevel.experience_required) / (this.nextLevel.experience_required - this.experienceLevel.experience_required) * 100);
         },
         color(): string {
             return this.$store.getters.experienceLevelColor(this.experienceLevel.id);
