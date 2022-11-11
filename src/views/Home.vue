@@ -206,8 +206,8 @@ export default Vue.extend({
     },
     computed: {
         filteredRaiders(): Raider[] {
-            if (this.searchTerm.toLowerCase()) {
-                return this.raiders.filter((raider: Raider) => raider.name.toLowerCase().includes(this.searchTerm));
+            if (this.searchTerm) {
+                return this.raiders.filter((raider: Raider) => raider.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
             } else {
                 return this.raiders;
             }
