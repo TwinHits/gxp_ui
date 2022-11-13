@@ -13,6 +13,7 @@ axios.interceptors.request.use(
                     await AuthApi.refreshAccessToken();
                 } else {
                     store.commit('logout');
+                    return request;
                 }
             }
 
