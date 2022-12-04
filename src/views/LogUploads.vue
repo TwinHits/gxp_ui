@@ -1,11 +1,11 @@
 <template>
     <ModalDialog label="Raids" :show="show" @close="$emit('close')">
         <v-data-table
+            class="elevation-1"
             :headers="headers"
             :items="logs"
             :items-per-page="10"
             item-key="logsCode"
-            class="elevation-1"
             :footer-props="{
                 showFirstLastPage: true,
                 firstIcon: 'mdi-arrow-collapse-left',
@@ -241,8 +241,14 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+@import '@/style/Colors.scss';
+
 .top-toolbar {
     margin-right: 1vw;
+}
+
+.theme--light.v-data-table {
+    background-color: $foreground;
 }
 </style>

@@ -29,4 +29,10 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped></style>
+<style lang='scss' scoped>
+@import '@/style/Colors.scss';
+
+.alias-list-item {
+    background-color: $foreground;
+}
+</style>

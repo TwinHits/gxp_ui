@@ -93,8 +93,11 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+@import '@/style/Colors.scss';
+
 .alt-list {
     margin: 0vh 1vw;
+    background-color: $foreground;
 }
 
 .alt-list-actions {
