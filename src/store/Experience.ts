@@ -39,6 +39,8 @@ export default {
                 'LOW_PERFORMANCE': 'mdi-format-align-bottom',
                 'HEALER_TANK_LOW_PERFORMANCE': 'mdi-format-align-bottom',
                 'PREV_EXPAC_RAID': 'mdi-history',
+                'MAIN_CHANGE': 'mdi-account-arrow-up-outline',
+
             };
         },
         setExperienceEventColors(state: any) {
@@ -58,6 +60,7 @@ export default {
                 'LOW_PERFORMANCE': Colors.GREY,
                 'HEALER_TANK_LOW_PERFORMANCE': Colors.GREY,
                 'PREV_EXPAC_RAID': Colors.PURPLE,
+                'MAIN_CHANGE': Colors.GREY,
             };
         },
         setExperienceLevelColors(state: any) {

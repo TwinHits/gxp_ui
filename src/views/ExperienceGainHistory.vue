@@ -7,7 +7,7 @@
                 </v-col>
             </v-row>
             <div v-else>
-                <v-card-subtitle class="experience-multipler"> Experience Multipler: {{ experienceMultiplerLabel }} </v-card-subtitle>
+                <!-- v-card-subtitle class="experience-multipler"> Experience Multipler: {{ experienceMultiplerLabel }} </v-card-subtitle-->
                 <v-timeline
                     class="experience-history-timeline"
                     v-for="(gains, raidId) in experienceGainsByRaidId"
@@ -22,7 +22,7 @@
                                 {{ formatTimestamp(raidsByRaidId[raidId].timestamp) }}
                             </v-col>
                             <v-col align="center"> Zone: {{ raidsByRaidId[raidId].log.zone }} </v-col>
-                            <v-col align="center"> Experience: {{ calculateExperienceSoFar(raidId) }} </v-col>
+                            <!--v-col align="center"> Experience: {{ calculateExperienceSoFar(raidId) }} </v-col-->
                         </v-row>
                         <v-divider />
                         <v-timeline-item
@@ -93,6 +93,7 @@ export default Vue.extend({
             loading: false,
             raidsByRaidId: {} as Record<string, Raid>,
             experienceGainsByRaidId: {} as Record<string, ExperienceGain[]>,
+            gainsWithNoRaid: [] as ExperienceGain[],
         };
     },
     computed: {
@@ -148,7 +149,6 @@ export default Vue.extend({
             this.raidsByRaidId[r.id] = r;
         });
 
-        const gainsWithNoRaid = [] as ExperienceGain[];
         const experienceGains = await (await ExperienceGainsApi.getExperienceGainsForRaiderId(this.raider.id)).reverse();
         for (const gain of experienceGains) {
             if (gain.raid) {
@@ -157,7 +157,19 @@ export default Vue.extend({
                 }
                 this.experienceGainsByRaidId[gain.raid].push(gain);
             } else {
-                gainsWithNoRaid.push(gain);
+                this.gainsWithNoRaid.push(gain);
+            }
+        }
+
+        let nextGainWithoutRaid = this.gainsWithNoRaid.shift();
+        for (let gains of Object.values(this.experienceGainsByRaidId)) {
+            const latestRaidGainTimstamp = gains[0].timestamp;
+            while (nextGainWithoutRaid && latestRaidGainTimstamp < nextGainWithoutRaid.timestamp) {
+                gains.unshift(nextGainWithoutRaid);
+                nextGainWithoutRaid = this.gainsWithNoRaid.shift();
+            }
+            if (!nextGainWithoutRaid) {
+                break;
             }
         }
 

@@ -9,6 +9,9 @@
                     <v-list-item-icon>
                         <IconButton icon="mdi-trash-can-outline" @click="deleteAlt(alt)" tooltip="Delete Alt" />
                     </v-list-item-icon>
+                    <v-list-item-icon>
+                        <IconButton icon="mdi-account-arrow-up-outline" @click="makeMain(alt)" tooltip="Make Main" />
+                    </v-list-item-icon>
                 </v-list-item>
             </v-list>
             <v-row class="alt-list-actions">
@@ -88,6 +91,10 @@ export default Vue.extend({
             await RaidersApi.updateRaider(alt);
             this.raider.alts.splice(this.raider.alts.findIndex((a: any) => a.id === alt.id, 1));
         },
+        async makeMain(alt: Raider) {
+            alt.main = this.raider.id;
+            await RaidersApi.updateRaider(alt);
+        },
     },
 });
 </script>
@@ -97,7 +104,7 @@ export default Vue.extend({
 
 .alt-list {
     margin: 0vh 1vw;
-    background-color: $foreground;
+    background-color: $foreground !important;
 }
 
 .alt-list-actions {
