@@ -1,4 +1,5 @@
 import { Raid } from '@/common/types/raid';
+import { Raider } from '@/common/types/raider';
 
 export interface Log {
     logsCode: string;
@@ -9,4 +10,5 @@ export interface Log {
     raid?: Raid;
     loading?: boolean;
     optional: boolean;
+    reserve_raiders: string[];
 }

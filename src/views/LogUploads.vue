@@ -1,6 +1,7 @@
 <template>
     <ModalDialog label="Raids" :show="show" @close="$emit('close')">
         <v-data-table
+            v-if="!showLogUploadDetailsPage"
             class="elevation-1"
             :headers="headers"
             :items="logs"
@@ -58,7 +59,7 @@
                         @click="updateLog(item)"
                         tooltip="Save Raid"
                     />
-                    <IconButton v-if="!item.raid && item.active" icon="mdi-upload" @click="createRaid(item)" tooltip="Create Raid" />
+                    <IconButton v-if="!item.raid && item.active" icon="mdi-upload" @click="continueToLogDetails(item)" tooltip="Create Raid" />
                     <IconButton
                         v-if="!item.raid && item.active"
                         icon="mdi-archive-outline"
@@ -75,18 +76,20 @@
                 </template>
             </template>
         </v-data-table>
+        <LogUploadDetails v-if="showLogUploadDetailsPage" :log="logToUpload" @addReserves="addReserves" @goBack="goBack" />
     </ModalDialog>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 
-import LoadingCircle from '@/views/common/LoadingCircle.vue';
-import ModalDialog from '@/views/common/ModalDialog.vue';
 import IconButton from '@/views/common/IconButton.vue';
+import LoadingCircle from '@/views/common/LoadingCircle.vue';
+import LogUploadDetails from '@/views/LogUploadDetails.vue'
+import ModalDialog from '@/views/common/ModalDialog.vue';
 
-import { Raid } from '@/common/types/raid';
 import { Log } from '@/common/types/log';
+import { Raid } from '@/common/types/raid';
 
 import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
 
@@ -97,6 +100,7 @@ export default Vue.extend({
     components: {
         IconButton,
         LoadingCircle,
+        LogUploadDetails,
         ModalDialog,
     },
     props: {
@@ -149,6 +153,8 @@ export default Vue.extend({
             pullLogsLoading: false,
             createRaidsLoading: false,
             deleteRaidsLoading: false,
+            logToUpload: undefined as Log | undefined,
+            showLogUploadDetailsPage: false,
         };
     },
     methods: {
@@ -182,7 +188,7 @@ export default Vue.extend({
             if (!log.raid && log.active) {
                 log.loading = true;
                 await LogsApi.updateLog(log);
-                log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId);
+                log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId, log.reserve_raiders);
                 this.$emit('refreshRaiders');
                 log.loading = false;
             }
@@ -193,7 +199,7 @@ export default Vue.extend({
                 if (!log.raid && log.active) {
                     log.loading = true;
                     await LogsApi.updateLog(log);
-                    log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId);
+                    log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId, log.reserve_raiders);
                     log.loading = false;
                 }
             }
@@ -232,6 +238,22 @@ export default Vue.extend({
         getFormattedDate(timestamp: number) {
             return DateTimeUtils.formatDateTimeForDisplay(DateTimeUtils.getDateFromUnixTime(timestamp));
         },
+        continueToLogDetails(log: Log) {
+            if (log) {
+                this.logToUpload = log;
+                this.showLogUploadDetailsPage = true;
+            }
+        },
+        addReserves(reserves: string[]) {
+            if (this.logToUpload) {
+                this.showLogUploadDetailsPage = false;
+                this.logToUpload.reserve_raiders = reserves;
+                this.createRaid(this.logToUpload);
+            }
+        },
+        goBack() {
+            this.showLogUploadDetailsPage = false;
+        }
     },
     async mounted() {
         this.loading = true;

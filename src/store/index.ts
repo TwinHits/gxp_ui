@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import Auth from '@/store/Auth';
 import Error from '@/store/Error';
 import Experience from '@/store/Experience';
+import Raiders from '@/store/Raiders';
 
 Vue.use(Vuex);
 
@@ -12,5 +13,6 @@ export default new Vuex.Store({
         Auth,
         Error,
         Experience,
+        Raiders,
     },
 });

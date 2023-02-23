@@ -226,8 +226,10 @@ export default Vue.extend({
         async getRaiders() {
             if (this.includeInactiveRaiders) {
                 this.raiders = await RaidersApi.getRaiders();
+                this.$store.commit('setRaiders', this.raiders);
             } else {
                 this.raiders = await RaidersApi.getRaiders(true);
+                this.$store.commit('setActiveRaiders', this.raiders);
             }
 
             // Don't display alts as nameplates
@@ -248,6 +250,7 @@ export default Vue.extend({
                 raider.alts = alts;
             }
             this.raiders = Array.from(idToRaiderMap.values());
+            this.$store.commit('setActiveRaiderMains', this.raiders);
 
             // Sort by experience
             this.raiders.sort((lhs: Raider, rhs: Raider) => {
