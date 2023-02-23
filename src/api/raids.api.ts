@@ -23,7 +23,7 @@ export async function getRaid(id: string): Promise<Raid> {
 }
 
 export async function getRaids(): Promise<Raid[]> {
-    return (await Api.getAllPaginated(`${config.gxpApi.baseUrl}/raids`)) as Raid[];
+    return (await Api.getAllPaginated(`${config.gxpApi.baseUrl}/raids/`)) as Raid[];
 }
 
 export async function deleteRaid(id: string) {
