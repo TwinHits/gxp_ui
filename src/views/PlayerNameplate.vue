@@ -1,10 +1,10 @@
 <template>
     <v-card class="player-nameplate-card" elevation="6" outlined>
         <v-card-title>
-            <v-row no-gutters>
-                <v-col :cols="11">
+            <v-row no-gutters justify="space-between">
+                <v-col md="auto">
                     <v-row v-if="!showRenameRaiderTextField">
-                        <v-col :cols="5" :class="activeClass">
+                        <v-col md="auto" :class="activeClass">
                             {{ raider.name }}
                         </v-col>
                     </v-row>
@@ -20,7 +20,7 @@
                         </v-col>
                     </v-row>
                 </v-col>
-                <v-col :cols="1">
+                <v-col md="auto">
                     <v-menu v-if="isLoggedIn" offset-y transition="slide-y-transition" bottom>
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn icon v-bind="attrs" v-on="on">
