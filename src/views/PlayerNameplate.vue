@@ -70,11 +70,11 @@
                     />
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col cols="4">{{ raider.experienceLevel.name }}</v-col>
-                <v-col cols="4">Joined: {{ joinDate }}</v-col>
-                <v-col cols="2">Weeks: {{ raider.totalWeeks }}</v-col>
-                <v-col cols="2">Raids: {{ raider.totalRaids }}</v-col>
+            <v-row justify="space-between">
+                <v-col md="auto" class="player-nameplate-rank">{{ raider.experienceLevel.name }}</v-col>
+                <v-col md="auto">Joined: {{ joinDate }}</v-col>
+                <v-col md="auto">Weeks: {{ raider.totalWeeks }}</v-col>
+                <v-col md="auto">Raids: {{ raider.totalRaids }}</v-col>
             </v-row>
         </v-card-subtitle>
         <ExperienceGainHistory v-if="showHistory" :show="showHistory" :raider="raider" @close="showHistory = false" />
@@ -185,6 +185,10 @@ export default Vue.extend({
 
 .player-nameplate-subtitle-label {
     font-weight: 600;
+}
+
+.player-nameplate-rank {
+    font-weight: 550;
 }
 
 .player-nameplate-inactive {
