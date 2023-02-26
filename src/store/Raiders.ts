@@ -5,25 +5,38 @@ export default {
         raiders: [] as Raider[],
         activeRaiders: [] as Raider[],
         activeRaiderMains: [] as Raider[],
+        raiderMains: [] as Raider[],
         raidersById: {} as Record<string, Raider>,
     }),
     mutations: {
         setRaiders(state: any, raiders: Raider[]) {
             state.raiders = raiders;
-            raiders.map((r: Raider) => state.raidersById[r.id] = r);
-        },
-        setActiveRaiders(state: any, activeRaiders: Raider[]) {
-            state.activeRaiders = activeRaiders;
-            activeRaiders.map((r: Raider) => state.raidersById[r.id] = r);
-        },
-        setActiveRaiderMains(state: any, activeRaiderMains: Raider[]) {
-            state.activeRaiderMains = activeRaiderMains;
-            activeRaiderMains.map((r: Raider) => state.raidersById[r.id] = r);
+            state.raiders.sort((lhs: Raider, rhs: Raider) => {
+                return lhs.experience > rhs.experience ? -1 : 1;
+            });
+
+            for (const raider of raiders) {
+                state.raidersById[raider.id] = raider;
+                const active = raider.active;
+                const isMain = raider.main === null;
+                if (active) {
+                    state.activeRaiders.push(raider);
+                    if (isMain) {
+                        state.activeRaiderMains.push(raider);
+                        state.raiderMains.push(raider);
+                    }
+                } else if (isMain) {
+                    state.raiderMains.push(raider);
+                }
+            }
         },
     },
     getters: {
         raiders: (state: any) => {
             return state.raiders;
+        },
+        raiderMains: (state: any) => {
+            return state.raiderMains;
         },
         activeRaiders: (state: any) => {
             return state.activeRaiders;

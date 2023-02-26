@@ -8,7 +8,7 @@
                             <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
                         </v-col>
                         <v-col md="auto" class="toggle-switch-col">
-                            <ToggleSwitch v-if="isLoggedIn" v-model="includeInactiveRaiders" @change="getRaiders" :color="includeInactiveRaidersColor" :icon="includeInactiveRaidersIcon" />
+                            <ToggleSwitch v-if="isLoggedIn" v-model="includeInactiveRaiders" :color="includeInactiveRaidersColor" :icon="includeInactiveRaidersIcon" />
                         </v-col>
                         <v-col>
                             <v-spacer />
@@ -209,11 +209,22 @@ export default Vue.extend({
         };
     },
     computed: {
-        filteredRaiders(): Raider[] {
-            if (this.searchTerm) {
-                return this.raiders.filter((raider: Raider) => raider.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+        validatedSearchTerm(): string {
+            if (this.searchTerm.length >= 2) {
+                return this.searchTerm.toLowerCase();
             } else {
-                return this.raiders;
+                return "";
+            }
+        },
+        filteredRaiders(): Raider[] {
+            if (this.validatedSearchTerm) {
+                return this.$store.getters.raiders.filter((raider: Raider) => raider.name.toLowerCase().includes(this.validatedSearchTerm));
+            } else if (!this.includeInactiveRaiders) {
+                return this.$store.getters.activeRaiderMains;
+            } else if (this.includeInactiveRaiders) {
+                return this.$store.getters.raiderMains;
+            } else {
+                return this.$store.getters.raiders;
             }
         },
         numberOfRows(): number {
@@ -234,23 +245,8 @@ export default Vue.extend({
     },
     methods: {
         async getRaiders() {
-            if (this.includeInactiveRaiders) {
-                this.raiders = await RaidersApi.getRaiders(undefined, true);
-                this.$store.commit('setRaiders', this.raiders);
-            } else {
-                this.raiders = await RaidersApi.getRaiders(true, true);
-                this.$store.commit('setActiveRaiders', this.raiders);
-            }
-
-            // Don't display alts as nameplates
-            const raidersWithoutAlts = this.raiders.filter((r: Raider) => r.main === null);
-            this.$store.commit('setActiveRaiderMains', raidersWithoutAlts);
-            this.raiders = raidersWithoutAlts;
-
-            // Sort by experience
-            this.raiders.sort((lhs: Raider, rhs: Raider) => {
-                return lhs.experience > rhs.experience ? -1 : 1;
-            });
+            const raiders = await RaidersApi.getRaiders();
+            this.$store.commit('setRaiders', raiders);
         },
         async updateRaider(raider: Raider) {
             const updatedRaider = await RaidersApi.updateRaider(raider);
