@@ -4,7 +4,13 @@ import { Raid } from '@/common/types/raid';
 
 import config from '@/../config.json';
 
-export async function createRaid(logsCode: string, timestamp: number, zone: string, raidHelperEventId: number, reserve_raiders: string[]): Promise<Raid> {
+export async function createRaid(
+    logsCode: string,
+    timestamp: number,
+    zone: string,
+    raidHelperEventId: number,
+    reserve_raiders: string[],
+): Promise<Raid> {
     return (await Api.post(`${config.gxpApi.baseUrl}/raids/`, {
         log: {
             logsCode,

@@ -31,7 +31,7 @@ export default Vue.extend({
     data() {
         return {
             reflectedValue: this.value,
-        }
+        };
     },
     computed: {
         tooltipDisabled(): boolean {
@@ -43,9 +43,9 @@ export default Vue.extend({
             this.reflectedValue = newValue;
         },
         reflectedValue(newValue) {
-            this.$emit("input", newValue);
-        }
-    }
+            this.$emit('input', newValue);
+        },
+    },
 });
 </script>
 

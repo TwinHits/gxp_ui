@@ -29,7 +29,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 @import '@/style/Colors.scss';
 
 .alias-list-item {

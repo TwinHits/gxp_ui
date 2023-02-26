@@ -8,7 +8,12 @@
                             <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
                         </v-col>
                         <v-col md="auto" class="toggle-switch-col">
-                            <ToggleSwitch v-if="isLoggedIn" v-model="includeInactiveRaiders" :color="includeInactiveRaidersColor" :icon="includeInactiveRaidersIcon" />
+                            <ToggleSwitch
+                                v-if="isLoggedIn"
+                                v-model="includeInactiveRaiders"
+                                :color="includeInactiveRaidersColor"
+                                :icon="includeInactiveRaidersIcon"
+                            />
                         </v-col>
                         <v-col>
                             <v-spacer />
@@ -158,7 +163,7 @@ import AboutGXPModal from '@/views/AboutGXPModal.vue';
 import LoadingCircle from '@/views/common/LoadingCircle.vue';
 import LogUploads from '@/views/LogUploads.vue';
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
-import ToggleSwitch from '@/views/common/ToggleSwitch.vue'
+import ToggleSwitch from '@/views/common/ToggleSwitch.vue';
 
 import { Raider } from '@/common/types/raider';
 
@@ -213,7 +218,7 @@ export default Vue.extend({
             if (this.searchTerm.length >= 2) {
                 return this.searchTerm.toLowerCase();
             } else {
-                return "";
+                return '';
             }
         },
         filteredRaiders(): Raider[] {
@@ -240,8 +245,8 @@ export default Vue.extend({
             return this.includeInactiveRaiders ? Colors.GREY : Colors.GREY;
         },
         includeInactiveRaidersIcon(): string {
-            return this.includeInactiveRaiders ? "mdi-ghost-outline" : "mdi-ghost-off-outline";
-        }
+            return this.includeInactiveRaiders ? 'mdi-ghost-outline' : 'mdi-ghost-off-outline';
+        },
     },
     methods: {
         async getRaiders() {
