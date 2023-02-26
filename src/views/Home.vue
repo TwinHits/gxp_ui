@@ -3,12 +3,12 @@
         <v-row>
             <v-col>
                 <v-toolbar class="admin-toolbar">
-                    <v-row align="center">
+                    <v-row align="center" justify="center">
                         <v-col cols="5">
                             <v-text-field v-model="searchTerm" prepend-icon="mdi-magnify" single-line label="Search"></v-text-field>
                         </v-col>
-                        <v-col md="auto">
-                            <v-switch v-if="isLoggedIn" v-model="includeInactiveRaiders" label="Include Inactive" @change="getRaiders" />
+                        <v-col md="auto" class="toggle-switch-col">
+                            <ToggleSwitch v-if="isLoggedIn" v-model="includeInactiveRaiders" @change="getRaiders" :color="includeInactiveRaidersColor" :icon="includeInactiveRaidersIcon" />
                         </v-col>
                         <v-col>
                             <v-spacer />
@@ -158,8 +158,11 @@ import AboutGXPModal from '@/views/AboutGXPModal.vue';
 import LoadingCircle from '@/views/common/LoadingCircle.vue';
 import LogUploads from '@/views/LogUploads.vue';
 import PlayerNameplate from '@/views/PlayerNameplate.vue';
+import ToggleSwitch from '@/views/common/ToggleSwitch.vue'
 
 import { Raider } from '@/common/types/raider';
+
+import * as Colors from '@/common/constants/colors';
 
 import * as RaidersApi from '@/api/raiders.api';
 import * as ExperienceEventsApi from '@/api/experienceEvents.api';
@@ -180,6 +183,7 @@ export default Vue.extend({
         PlayerNameplate,
         LogUploads,
         LoadingCircle,
+        ToggleSwitch,
     },
     data() {
         return {
@@ -221,36 +225,27 @@ export default Vue.extend({
         isLoggedIn(): boolean {
             return this.$store.getters.isLoggedIn;
         },
+        includeInactiveRaidersColor(): string {
+            return this.includeInactiveRaiders ? Colors.GREY : Colors.GREY;
+        },
+        includeInactiveRaidersIcon(): string {
+            return this.includeInactiveRaiders ? "mdi-ghost-outline" : "mdi-ghost-off-outline";
+        }
     },
     methods: {
         async getRaiders() {
             if (this.includeInactiveRaiders) {
-                this.raiders = await RaidersApi.getRaiders();
+                this.raiders = await RaidersApi.getRaiders(undefined, true);
                 this.$store.commit('setRaiders', this.raiders);
             } else {
-                this.raiders = await RaidersApi.getRaiders(true);
+                this.raiders = await RaidersApi.getRaiders(true, true);
                 this.$store.commit('setActiveRaiders', this.raiders);
             }
 
             // Don't display alts as nameplates
-            const idToRaiderMap = new Map() as Map<string, Raider>;
-            for (let raider of this.raiders) {
-                idToRaiderMap.set(raider.id, raider);
-            }
-
-            for (let raider of this.raiders) {
-                const alts = [] as Raider[];
-                for (let alt of raider.alts) {
-                    const raider = idToRaiderMap.get((alt as unknown) as string);
-                    if (raider) {
-                        alts.push(raider);
-                        idToRaiderMap.delete((alt as unknown) as string);
-                    }
-                }
-                raider.alts = alts;
-            }
-            this.raiders = Array.from(idToRaiderMap.values());
-            this.$store.commit('setActiveRaiderMains', this.raiders);
+            const raidersWithoutAlts = this.raiders.filter((r: Raider) => r.main === null);
+            this.$store.commit('setActiveRaiderMains', raidersWithoutAlts);
+            this.raiders = raidersWithoutAlts;
 
             // Sort by experience
             this.raiders.sort((lhs: Raider, rhs: Raider) => {
@@ -280,6 +275,8 @@ export default Vue.extend({
         },
     },
     async mounted() {
+        this.getRaiders();
+
         const events = await ExperienceEventsApi.getExperienceEvents();
         this.$store.commit('setExperienceEvents', events);
         this.$store.commit('setExperienceEventIcons');
@@ -288,8 +285,6 @@ export default Vue.extend({
         const levels = await ExperienceLevelsApi.getExperienceLevels();
         this.$store.commit('setExperienceLevels', levels);
         this.$store.commit('setExperienceLevelColors');
-
-        await this.getRaiders();
     },
 });
 </script>
@@ -311,5 +306,9 @@ export default Vue.extend({
 
 .player-nameplate-col {
     width: 20%;
+}
+
+.toggle-switch-col {
+    padding-top: 3vh;
 }
 </style>

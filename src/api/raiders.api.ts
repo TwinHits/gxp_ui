@@ -11,7 +11,7 @@ export async function createRaider(name: string, joinTimestamp?: number): Promis
     });
 }
 
-export async function updateRaider(raider: Raider): Promise<Raider> {
+export async function updateRaider(raider: Raider):Promise<Raider> {
     return await Api.put(`${config.gxpApi.baseUrl}/raiders/${raider.id}/`, raider);
 }
 
@@ -19,8 +19,16 @@ export async function getRaider(id: string): Promise<Raider> {
     return await Api.get(`${config.gxpApi.baseUrl}/raiders/${id}/`);
 }
 
-export async function getRaiders(active?: boolean): Promise<Raider[]> {
-    const queryParams = { active: active };
+export async function getRaiders(active?: boolean, isMain?: boolean): Promise<Raider[]> {
+    let main = undefined;
+    if (isMain) {
+        main = "null";
+    }
+
+    const queryParams = { 
+        active: active, 
+        main: main,
+    };
     return await Api.getAllPaginated(`${config.gxpApi.baseUrl}/raiders/`, queryParams);
 }
 
