@@ -6,4 +6,5 @@ export interface Raid {
     zone: string;
     timestamp: number;
     optional: boolean;
+    raiders: string[];
 }

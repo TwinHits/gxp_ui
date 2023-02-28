@@ -1,7 +1,7 @@
 <template>
     <ModalDialog label="Raids" :show="show" @close="$emit('close')">
         <v-data-table
-            v-if="!showLogUploadDetailsPage"
+            v-if="!selectedLog"
             class="elevation-1"
             :headers="headers"
             :items="logs"
@@ -47,19 +47,18 @@
                 <v-icon v-if="!item.optional">mdi-asterisk</v-icon>
             </template>
             <template v-slot:item.raidHelperEventId="{ item }">
-                <v-text-field v-if="!item.raid" v-model="item.raidHelperEventId" dense />
-                <template v-if="item.raid">{{ item.raidHelperEventId }}</template>
+                <template>{{ item.raidHelperEventId }}</template>
             </template>
             <template v-slot:item.actions="{ item }">
                 <LoadingCircle v-if="item.loading" :size="25" />
                 <template v-else>
                     <IconButton
                         v-if="!item.raid && item.active"
-                        icon="mdi-content-save-outline"
-                        @click="updateLog(item)"
-                        tooltip="Save Raid"
+                        icon="mdi-upload"
+                        @click="continueToLogDetails(item)"
+                        tooltip="Create Raid"
                     />
-                    <IconButton v-if="!item.raid && item.active" icon="mdi-upload" @click="continueToLogDetails(item)" tooltip="Create Raid" />
+                    <IconButton v-if="item.raid" icon="mdi-information-outline" @click="continueToLogDetails(item)" tooltip="Raid Info" />
                     <IconButton
                         v-if="!item.raid && item.active"
                         icon="mdi-archive-outline"
@@ -76,7 +75,7 @@
                 </template>
             </template>
         </v-data-table>
-        <LogUploadDetails v-if="showLogUploadDetailsPage" :log="logToUpload" @addReserves="addReserves" @goBack="goBack" />
+        <LogUploadDetails v-if="selectedLog" :log="selectedLog" @saveAndUpload="saveAndUpload" @goBack="goBack" />
     </ModalDialog>
 </template>
 
@@ -85,11 +84,10 @@ import Vue from 'vue';
 
 import IconButton from '@/views/common/IconButton.vue';
 import LoadingCircle from '@/views/common/LoadingCircle.vue';
-import LogUploadDetails from '@/views/LogUploadDetails.vue'
+import LogUploadDetails from '@/views/LogUploadDetails.vue';
 import ModalDialog from '@/views/common/ModalDialog.vue';
 
 import { Log } from '@/common/types/log';
-import { Raid } from '@/common/types/raid';
 
 import * as DateTimeUtils from '@/common/utils/dateTimeUtils';
 
@@ -134,13 +132,13 @@ export default Vue.extend({
                     text: 'Uploaded',
                     value: 'raid',
                     align: 'center',
-                    width: '12vh',
+                    width: '10vh',
                 },
                 {
                     text: 'Main Raid',
                     value: 'optional',
                     align: 'center',
-                    width: '12vh',
+                    width: '10vh',
                 },
                 {
                     text: 'Actions',
@@ -153,35 +151,14 @@ export default Vue.extend({
             pullLogsLoading: false,
             createRaidsLoading: false,
             deleteRaidsLoading: false,
-            logToUpload: undefined as Log | undefined,
-            showLogUploadDetailsPage: false,
+            selectedLog: undefined as Log | undefined,
         };
     },
     methods: {
-        async getLogs() {
-            const raids = await RaidsApi.getRaids();
-            const logs = await LogsApi.getLogs();
-
-            if (logs.length > 0) {
-                const raidsByCode = {} as Record<string, Raid>;
-                for (let raid of raids) {
-                    if (raid.log) {
-                        raidsByCode[raid.log.logsCode] = raid;
-                    }
-                }
-
-                for (let log of logs) {
-                    log.raid = raidsByCode[log.logsCode];
-                    log.loading = false;
-                }
-            }
-
-            return logs;
-        },
         async pullLogs() {
             this.pullLogsLoading = true;
             await LogsApi.pullLogsFromWarcraftLogs();
-            this.logs = await this.getLogs();
+            this.logs = await this.$store.dispatch('getLogs');
             this.pullLogsLoading = false;
         },
         async createRaid(log: Log) {
@@ -240,24 +217,24 @@ export default Vue.extend({
         },
         continueToLogDetails(log: Log) {
             if (log) {
-                this.logToUpload = log;
-                this.showLogUploadDetailsPage = true;
+                this.selectedLog = log;
             }
         },
-        addReserves(reserves: string[]) {
-            if (this.logToUpload) {
-                this.showLogUploadDetailsPage = false;
-                this.logToUpload.reserve_raiders = reserves;
-                this.createRaid(this.logToUpload);
+        saveAndUpload(raidHelperEventId: number, reserves: string[]) {
+            if (this.selectedLog) {
+                this.selectedLog.reserve_raiders = reserves;
+                this.selectedLog.raidHelperEventId = raidHelperEventId;
+                this.createRaid(this.selectedLog);
             }
+            this.goBack();
         },
         goBack() {
-            this.showLogUploadDetailsPage = false;
-        }
+            this.selectedLog = undefined;
+        },
     },
     async mounted() {
         this.loading = true;
-        this.logs = await this.getLogs();
+        this.logs = await this.$store.dispatch('getLogs');
         this.loading = false;
     },
 });

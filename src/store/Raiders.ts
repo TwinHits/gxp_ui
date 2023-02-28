@@ -47,5 +47,12 @@ export default {
         raider: (state: any) => (id: string) => {
             return state.raidersById[id];
         },
+        raidersForIds: (state: any, getters: any) => (ids: string[]) => {
+            if (ids) {
+                return ids.map((id: string) => getters.raider(id));
+            } else {
+                return [];
+            }
+        },
     },
 };
