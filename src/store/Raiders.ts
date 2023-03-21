@@ -10,6 +10,12 @@ export default {
     }),
     mutations: {
         setRaiders(state: any, raiders: Raider[]) {
+            state.raiders = [];
+            state.activeRaiders = [];
+            state.activeRaiderMains = [];
+            state.raiderMains = [];
+            state.raidersById = {};
+
             state.raiders = raiders;
             state.raiders.sort((lhs: Raider, rhs: Raider) => {
                 return lhs.experience > rhs.experience ? -1 : 1;

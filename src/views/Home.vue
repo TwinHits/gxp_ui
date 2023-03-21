@@ -122,7 +122,7 @@
             v-if="raiderToAltAdd"
             :show="showAddAlt"
             :raider="raiderToAltAdd"
-            :raiders="raiders"
+            :raiders="activeRaiderMains"
             @close="showAddAlt = false"
             @refreshRaiders="getRaiders"
         />
@@ -141,7 +141,7 @@
             v-if="showRaidWarningModal"
             :show="showRaidWarningModal"
             @close="showRaidWarningModal = false"
-            :raiders="raiders"
+            :raiders="activeRaiderMains"
         />
         <AboutGXPModal v-if="showAboutGXPModal" :show="showAboutGXPModal" @close="showAboutGXPModal = false" />
     </div>
@@ -205,7 +205,6 @@ export default Vue.extend({
             showRaidWarningModal: false,
             showAboutGXPModal: false,
             searchTerm: '' as string,
-            raiders: [] as Raider[],
             raiderToAltAdd: undefined as Raider | undefined,
             raiderToAddExperience: undefined as Raider | undefined,
             raiderToAddAlias: undefined as Raider | undefined,
@@ -221,15 +220,27 @@ export default Vue.extend({
                 return '';
             }
         },
+        raiders(): Raider [] {
+            return this.$store.getters.raiders;
+        },
+        activeRaiders(): Raider [] {
+            return this.$store.getters.activeRaiders;
+        },
+        raiderMains(): Raider [] {
+            return this.$store.getters.raiderMains;
+        },
+        activeRaiderMains(): Raider [] {
+            return this.$store.getters.activeRaiderMains;
+        },
         filteredRaiders(): Raider[] {
             if (this.validatedSearchTerm) {
-                return this.$store.getters.raiders.filter((raider: Raider) => raider.name.toLowerCase().includes(this.validatedSearchTerm));
+                return this.raiders.filter((raider: Raider) => raider.name.toLowerCase().includes(this.validatedSearchTerm));
             } else if (!this.includeInactiveRaiders) {
-                return this.$store.getters.activeRaiderMains;
+                return this.activeRaiderMains;
             } else if (this.includeInactiveRaiders) {
-                return this.$store.getters.raiderMains;
+                return this.raiderMains;
             } else {
-                return this.$store.getters.raiders;
+                return this.raiders;
             }
         },
         numberOfRows(): number {
