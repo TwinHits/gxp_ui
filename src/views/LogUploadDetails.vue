@@ -3,7 +3,7 @@
         <v-tabs v-model="tab" class="tabs-row" fixed-tabs>
             <v-tab :disabled="doesLogHaveRaid">{{ TABS.Upload }}</v-tab>
             <v-tab :disabled="!doesLogHaveRaid">{{ TABS.Raiders }}</v-tab>
-            <v-tab >{{ TABS.Reserves }}</v-tab>
+            <v-tab>{{ TABS.Reserves }}</v-tab>
             <v-tab :disabled="!doesLogHaveRaid">{{ TABS.Issues }}</v-tab>
         </v-tabs>
         <v-card-text v-if="tab === 0">
@@ -96,11 +96,11 @@ import { Raider } from '@/common/types/raider';
 import IconButton from '@/views/common/IconButton.vue';
 
 const TABS = {
-    Upload: "Upload",
-    Raiders: "Raiders",
-    Reserves: "Reserves",
-    Issues: "Issues",
-}
+    Upload: 'Upload',
+    Raiders: 'Raiders',
+    Reserves: 'Reserves',
+    Issues: 'Issues',
+};
 
 export default Vue.extend({
     components: {
@@ -179,7 +179,9 @@ export default Vue.extend({
 <style scoped lang="scss">
 @import '@/style/Colors.scss';
 
-.reserves-list, .raiders-list, .issues-list {
+.reserves-list,
+.raiders-list,
+.issues-list {
     background-color: $foreground;
 }
 

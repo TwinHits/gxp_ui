@@ -220,16 +220,16 @@ export default Vue.extend({
                 return '';
             }
         },
-        raiders(): Raider [] {
+        raiders(): Raider[] {
             return this.$store.getters.raiders;
         },
-        activeRaiders(): Raider [] {
+        activeRaiders(): Raider[] {
             return this.$store.getters.activeRaiders;
         },
-        raiderMains(): Raider [] {
+        raiderMains(): Raider[] {
             return this.$store.getters.raiderMains;
         },
-        activeRaiderMains(): Raider [] {
+        activeRaiderMains(): Raider[] {
             return this.$store.getters.activeRaiderMains;
         },
         filteredRaiders(): Raider[] {

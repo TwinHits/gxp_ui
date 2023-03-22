@@ -45,7 +45,7 @@ export default {
             context.commit('setLogs', logs);
 
             return context.getters.logs;
-        }
+        },
     },
     getters: {
         raids: (state: any) => {
