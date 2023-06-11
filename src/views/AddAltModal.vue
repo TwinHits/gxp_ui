@@ -2,7 +2,7 @@
     <ModalDialog :label="label" :show="show" :width="'33%'" @close="$emit('close')">
         <v-card-text>
             <v-list class="alt-list" dense>
-                <v-list-item v-for="alt in raider.alts" :key="alt.id">
+                <v-list-item v-for="alt in alts" :key="alt.id">
                     <v-list-item-content>
                         <v-list-item-title>{{ alt.name }}</v-list-item-title>
                     </v-list-item-content>
@@ -58,10 +58,6 @@ export default Vue.extend({
             required: true,
             type: Object as PropType<Raider>,
         },
-        raiders: {
-            required: true,
-            type: Array as PropType<Raider[]>,
-        },
     },
     data() {
         return {
@@ -69,15 +65,21 @@ export default Vue.extend({
         };
     },
     computed: {
+        alts(): Raider[] {
+            return this.$store.getters.raidersForIds(this.raider.alts);
+        },
         label(): string {
             return `Add Alt to ${this.raider.name}`;
         },
         filteredRaiders(): Raider[] {
             const raiderAndAlts = this.raider.alts.concat([this.raider]);
-            return this.raiders.filter((r: Raider) => !raiderAndAlts.includes(r));
+            return this.$store.getters.raiders.filter((r: Raider) => !raiderAndAlts.includes(r) && !r.main);
         },
     },
     methods: {
+        getRaiderById(id: string) {
+            return this.$store.getters.raider(id);
+        },
         async createAlt() {
             if (this.alt) {
                 this.alt.main = this.raider.id;
