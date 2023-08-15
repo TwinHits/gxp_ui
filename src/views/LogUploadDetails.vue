@@ -7,7 +7,14 @@
             <v-tab :disabled="!doesLogHaveRaid">{{ TABS.Issues }}</v-tab>
         </v-tabs>
         <v-card-text v-if="tab === 0">
-            <v-text-field label="Raid Helper Event Id" v-model="raidHelperEventId" dense />
+            <v-row>
+                <v-col>
+                    <v-text-field label="Raid Helper Event Id" v-model="raidHelperEventId" dense />
+                </v-col>
+                <v-col>
+                    <v-checkbox v-model="splitRun" label="Split Run" />
+                </v-col>
+            </v-row>
         </v-card-text>
         <v-card-text v-if="tab === 1">
             <v-row>
@@ -114,6 +121,7 @@ export default Vue.extend({
             reserves: [] as Raider[],
             raiders: [] as Raider[],
             raidHelperEventId: undefined as number | undefined,
+            splitRun: false as boolean,
         };
     },
     computed: {
@@ -151,7 +159,7 @@ export default Vue.extend({
         saveAndUpload() {
             const reserveIds = this.reserves.map((r: Raider) => r.id);
             const raidHelperEventId = this.raidHelperEventId;
-            this.$emit('saveAndUpload', raidHelperEventId, reserveIds);
+            this.$emit('saveAndUpload', raidHelperEventId, reserveIds, splitRun);
         },
         goBack() {
             this.$emit('goBack');

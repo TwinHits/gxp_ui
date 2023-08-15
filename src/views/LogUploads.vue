@@ -220,10 +220,11 @@ export default Vue.extend({
                 this.selectedLog = log;
             }
         },
-        saveAndUpload(raidHelperEventId: number, reserves: string[]) {
+        saveAndUpload(raidHelperEventId: number, reserves: string[], splitRun: boolean) {
             if (this.selectedLog) {
                 this.selectedLog.reserve_raiders = reserves;
                 this.selectedLog.raidHelperEventId = raidHelperEventId;
+                this.selectedLog.splitRun = splitRun;
                 this.createRaid(this.selectedLog);
             }
             this.goBack();
