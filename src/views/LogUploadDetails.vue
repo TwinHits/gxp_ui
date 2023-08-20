@@ -146,6 +146,7 @@ export default Vue.extend({
                 this.raiders = this.$store.getters.raidersForIds(log.raid.raiders);
             }
             this.raidHelperEventId = log.raidHelperEventId;
+            this.splitRun = log.split_run as boolean;
         },
         addReserve() {
             if (this.reserve) {
@@ -159,7 +160,7 @@ export default Vue.extend({
         saveAndUpload() {
             const reserveIds = this.reserves.map((r: Raider) => r.id);
             const raidHelperEventId = this.raidHelperEventId;
-            this.$emit('saveAndUpload', raidHelperEventId, reserveIds, splitRun);
+            this.$emit('saveAndUpload', raidHelperEventId, reserveIds, this.splitRun);
         },
         goBack() {
             this.$emit('goBack');

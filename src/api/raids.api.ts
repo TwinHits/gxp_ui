@@ -10,6 +10,7 @@ export async function createRaid(
     zone: string,
     raidHelperEventId: number,
     reserve_raiders: string[],
+    split_run: boolean,
 ): Promise<Raid> {
     return (await Api.post(`${config.gxpApi.baseUrl}/raids/`, {
         log: {
@@ -21,6 +22,7 @@ export async function createRaid(
         timestamp,
         zone,
         reserve_raiders,
+        split_run,
     })) as Raid;
 }
 

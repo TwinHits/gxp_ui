@@ -165,7 +165,14 @@ export default Vue.extend({
             if (!log.raid && log.active) {
                 log.loading = true;
                 await LogsApi.updateLog(log);
-                log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId, log.reserve_raiders);
+                log.raid = await RaidsApi.createRaid(
+                    log.logsCode,
+                    log.timestamp,
+                    log.zone,
+                    log.raidHelperEventId,
+                    log.reserve_raiders,
+                    log.split_run,
+                );
                 this.$emit('refreshRaiders');
                 log.loading = false;
             }
@@ -176,7 +183,14 @@ export default Vue.extend({
                 if (!log.raid && log.active) {
                     log.loading = true;
                     await LogsApi.updateLog(log);
-                    log.raid = await RaidsApi.createRaid(log.logsCode, log.timestamp, log.zone, log.raidHelperEventId, log.reserve_raiders);
+                    log.raid = await RaidsApi.createRaid(
+                        log.logsCode,
+                        log.timestamp,
+                        log.zone,
+                        log.raidHelperEventId,
+                        log.reserve_raiders,
+                        log.split_run,
+                    );
                     log.loading = false;
                 }
             }
@@ -224,7 +238,7 @@ export default Vue.extend({
             if (this.selectedLog) {
                 this.selectedLog.reserve_raiders = reserves;
                 this.selectedLog.raidHelperEventId = raidHelperEventId;
-                this.selectedLog.splitRun = splitRun;
+                this.selectedLog.split_run = splitRun;
                 this.createRaid(this.selectedLog);
             }
             this.goBack();

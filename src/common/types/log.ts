@@ -10,5 +10,5 @@ export interface Log {
     loading?: boolean;
     optional: boolean;
     reserve_raiders: string[];
-    splitRun?: boolean;
+    split_run: boolean;
 }
